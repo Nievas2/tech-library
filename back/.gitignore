@@ -1,0 +1,12 @@
+# Dependencias
+node_modules/
+
+# Archivos generados por la build
+dist/
+
+# Variables de entorno
+.env
+.production.env
+
+# Directorios de bases de datos locales (si se generan)
+mysql/
