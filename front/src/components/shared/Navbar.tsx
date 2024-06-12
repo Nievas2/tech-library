@@ -56,14 +56,17 @@ const Navbar = () => {
                   <div className="flex flex-shrink-0 items-center">
                     {/* lOGO Y TITULO */}
                   </div>
-                  <div className="hidden sm:ml-6 sm:flex sm:justify-end sm:flex-grow">
-                    <div className="flex space-x-4">
+                  <div className="hidden items-center sm:ml-6 sm:flex sm:justify-end sm:flex-grow">
+                    <div className="flex items-center">
                       <a
                         href="#"
                         className="text-black rounded-md px-3 py-2 text-sm font-medium"
                       >
                         Home
                       </a>
+                      <div className="text-black rounded-md px-3 py-2 text-sm font-medium">
+                      <ModeToggle />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -88,9 +91,6 @@ const Navbar = () => {
                   >
                     <ModeToggle />
                   </div>
-                  <button className="rounded-md bg-slate-400 px-3 py-2 text-base font-medium dark:bg-red-500">
-                    test
-                  </button>
                 </div>
               </div>
             </div>

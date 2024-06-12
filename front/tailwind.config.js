@@ -75,9 +75,20 @@ module.exports = {
     fontFamily: {
       poppins: ["Poppins", "sans-serif"]
     },
+    /*
+primary: #f72585
+secondaries:
+#b5179e
+#7209b7
+
+
+*/
     colors: {
       "light": "#F9F7EE",
-      "dark": "#0E100F"
+      "dark": "#0E100F",
+      "main": "#f72585",
+      "auxiliary": "#b5179e",
+      "tertiary": "#7209b7",
     }
   },
   plugins: [require("tailwindcss-animate")]
