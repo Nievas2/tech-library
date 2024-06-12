@@ -5,11 +5,11 @@ import { Icon } from "@iconify/react"
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
-  const [isLoged, setIsLoged] = useState(true)
+  const [isLoged, setIsLoged] = useState(false)
   return (
-    <div>
-      <main className="h-full w-full overflow-x-scroll-hidden">
-        <nav className="sticky top-0 z-20 border-b-[1px] border-b-dark bg-light dark:bg-dark dark:border-b-light ">
+    <div className="h-16">
+      <main className="h-full w-full absolute">
+        <nav className="sticky w-full top-0 z-20 border-b-[1px] border-b-dark bg-light dark:bg-dark dark:border-b-light ">
           <div className="mx-auto max-w-7xl px-1 sm:px-3 lg:px-4">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
@@ -60,7 +60,6 @@ const Navbar = () => {
               <div className="flex flex-1 items-center justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   {/* lOGO Y TITULO */}
-                  <button onClick={() => setIsLoged(!isLoged)}>test</button>
                 </div>
                 <div
                   className={`flex-grow items-center sm:ml-6 flex justify-end `}
@@ -82,12 +81,14 @@ const Navbar = () => {
                           <ModeToggle />
                         </div>
                         <div className="flex text-black rounded-md items-center py-2 text-sm font-medium">
-                          <Icon
-                            icon="material-symbols:logout"
-                            className="rounded-md mx-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
-                            width="36"
-                            height="36"
-                          />
+                          <button>
+                            <Icon
+                              icon="material-symbols:logout"
+                              className="rounded-md mx-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+                              width="36"
+                              height="36"
+                            />
+                          </button>
                         </div>
                       </section>
                     ) : (
@@ -124,11 +125,11 @@ const Navbar = () => {
               id="mobile-menu"
             >
               <div
-                className={`h-[100vh] w-[70%] fixed top-[64px] duration-300 right-[-20%] ${
+                className={`h-[90vh] w-[50%] fixed top-[64px] duration-300 right-[0%] ${
                   !open ? "translate-x-[100%]" : ""
                 } border-l-[1px] border-l-dark bg-light dark:bg-dark dark:border-l-light  `}
               >
-                <div className="flex flex-col px-2 pb-3 pt-2 gap-10">
+                <div className="flex flex-col px-2 pb-3 pt-2 gap-10 h-full">
                   <h2 className="text-center text-2xl">Tech Library</h2>
                   <div>
                     <ItemsNavbar
@@ -137,7 +138,6 @@ const Navbar = () => {
                       key={crypto.randomUUID()}
                     />
                   </div>
-
                   <div>
                     <ItemsNavbar
                       name="FAVORITES"
@@ -145,9 +145,15 @@ const Navbar = () => {
                       key={crypto.randomUUID()}
                     />
                   </div>
-                  <div className="flex flex-1 justify-self-end">
-                    <h4>asdsss</h4>
-                  </div>
+                  <section className="flex flex-row flex-1 items-end">
+                    <div className="basis-1/4 flex justify-center items-center py-2 h-20">
+                      <div className="rounded-full h-10 w-10 bg-light"></div>
+                    </div>
+                    <div className="basis-3/4 flex flex-col justify-center items-start text-left py-2 h-20">
+                      <h5>ejemplo@gmail.com</h5>
+                      <button>LOGOUT</button>
+                    </div>
+                  </section>
                 </div>
               </div>
             </div>
