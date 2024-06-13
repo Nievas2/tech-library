@@ -1,5 +1,5 @@
-import { UserController } from "../controllers/user.controller";
-import { BaseRouter } from "./router";
+import { UserController } from "./controllers/user.controller";
+import { BaseRouter } from "./../shared/router/router";
 
 /**
  * @version 1.0.0
