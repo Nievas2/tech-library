@@ -21,7 +21,37 @@ export const useTecnologies = create<State>((set, get) => {
         id: 2,
         name: "typescript",
         selected: false
-      }
+      },
+      {
+        id: 3,
+        name: "react",
+        selected: false
+      },
+      {
+        id: 4,
+        name: "nextjs",
+        selected: false
+      },
+      {
+        id: 5,
+        name: "nodejs",
+        selected: false
+      },
+      {
+        id: 6,
+        name: "graphql",
+        selected: false
+      },
+      {
+        id: 7,
+        name: "tailwindcss",
+        selected: false
+      },
+      {
+        id: 8,
+        name: "tailwindui",
+        selected: false
+      },
     ],
     favorites: undefined,
     activeTecnology: (tecnologyId: number) => {

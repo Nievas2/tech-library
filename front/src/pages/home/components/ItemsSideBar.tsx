@@ -13,7 +13,7 @@ export default function ItemsSideBar({ tecnology }: ItemsSideBarProps) {
     activeTecnology(tecnology.id)
   }
   return (
-    <li className="flex border-separate">
+    <li className="flex border-separate py-1">
       <button
         className={`${active ? "text-main" : ""}`}
         onClick={handleClick}
