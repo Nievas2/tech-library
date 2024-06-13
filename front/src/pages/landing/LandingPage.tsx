@@ -1,8 +1,9 @@
+import Marketing from "./components/Marketing"
 
 const LandingPage = () => {
   return (
-    <div>
-      LandingPage
+    <div className="flex my-auto">
+      <Marketing />
     </div>
   )
 }

@@ -2,7 +2,41 @@
 const RegisterPage = () => {
   return (
     <div>
-      RegisterPage
+      <h1>Register</h1>
+      <h1>Register</h1>
+      <h1>Register</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
+      <h1>Register Page</h1>
     </div>
   )
 }
