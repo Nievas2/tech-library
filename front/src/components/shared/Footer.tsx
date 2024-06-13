@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <div className='border-t-[1px] border-t-dark bg-light dark:bg-dark dark:border-t-light p-4 text-dark dark:text-light'>
+    <div className='border-t-[1px] w-full border-t-dark bg-light dark:bg-dark dark:border-t-light p-4 text-dark dark:text-light'>
       <div className='flex flex-col gap-1 items-center justify-center'>
         <p className='font-semibold'>
           Created with 💖 by
@@ -18,7 +18,6 @@ const Footer = () => {
             @Sani
           </a>
         </div>
-
       </div>
       {/* Footer <Icon icon="fxemoji:roastedsweetpotato" width="24" height="24" /> */}
     </div>
