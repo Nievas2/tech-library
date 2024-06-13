@@ -1,28 +1,47 @@
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ItemsSideBar from "./ItemsSideBar"
+import { useState } from "react"
 
 export default function SideBar() {
+  const [open, setOpen] = useState(true)
 
   return (
-    <section className="h-full w-5/12 absolute left-0 top-0 bg-light dark:bg-dark">
-      <div className="w-full h-[100vh] relative p-2 border-r-[1px] border-r-dark dark:border-r-light">
-        <div className="absolute right-[-22px] top-1 bg-dark dark:bg-light rounded-full ">
-          {/* <Icon
-            icon="mingcute:right-fill"
-            width="36"
-            height="36"
-            color="#f72585"
-          /> */}
-          <Icon
-            icon="mingcute:left-fill"
-            width="36"
-            height="36"
-            color="#f72585"
-          />
+    <section
+      className={`h-full duration-500 ease-out ${
+        open ? "w-32 sm:w-60" : "w-0"
+      } bg-light dark:bg-dark`}
+    >
+      <div
+        className={`w-full h-[100vh] relative  border-r-[1px] border-r-dark dark:border-r-light ${
+          open ? "p-2" : "p-0"
+        }`}
+      >
+        <div
+          className={`absolute duration-150 ${
+            open ? "right-[-16px]" : "right-[-40px]"
+          } top-1`}
+        >
+          <button
+            onClick={() => setOpen(!open)}
+            className="bg-dark dark:bg-light rounded-full"
+          >
+            <Icon
+              icon="mingcute:right-fill"
+              width="36"
+              height="36"
+              color="#f72585"
+              className={`duration-300 ${open ? " rotate-180" : ""}`}
+            />
+          </button>
         </div>
-        <ul>
-          <ItemsSideBar name="javascript" active={true} />
-          <ItemsSideBar name="java" active={false} />
+        <ul className={`${open ? "block" : "hidden"}`}>
+          <li>
+            <h1 className="text-xl font-bold">Tecnologies</h1>
+          </li>
+          <ItemsSideBar
+            name={"javascript"}
+            selected={true}
+          />
         </ul>
       </div>
     </section>
