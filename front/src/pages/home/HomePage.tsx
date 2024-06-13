@@ -1,17 +1,28 @@
-import SideBar from "./components/SideBar"
+import Card from "@/components/shared/Card"
 
 const HomePage = () => {
   return (
     <>
-      <div className="flex flex-row gap-6 flex-wrap w-screen">
-        <SideBar />
-        <section>
-       {/*    <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card /> */}
-        </section>
+      <h1>SerachBar</h1>
+      <div className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-10 mb-10">
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
       </div>
     </>
   )
