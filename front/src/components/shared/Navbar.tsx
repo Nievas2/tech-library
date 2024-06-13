@@ -7,9 +7,9 @@ const Navbar = () => {
   const [open, setOpen] = useState(false)
   const [isLoged, setIsLoged] = useState(false)
   return (
-    <div className="h-16">
+    <div className="">
       <main className="h-full w-full absolute">
-        <nav className="sticky w-full top-0 z-20 border-b-[1px] border-b-dark bg-light dark:bg-dark dark:border-b-light ">
+        <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-light dark:bg-dark dark:border-b-light ">
           <div className="mx-auto max-w-7xl px-1 sm:px-3 lg:px-4">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
@@ -23,43 +23,38 @@ const Navbar = () => {
                   <span className="absolute -inset-0.5"></span>
                   <span className="sr-only">Open main menu</span>
                   {isLoged && (
-                    <svg
-                      className="block h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                      style={{ display: open ? "block" : "hidden" }}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                      />
-                    </svg>
+                    <div>
+                      {open == true ? (
+                        <Icon
+                          icon="material-symbols:close"
+                          width="26"
+                          height="26"
+                        />
+                      ) : (
+                        <Icon
+                          icon="material-symbols:menu"
+                          width="26"
+                          height="26"
+                        />
+                      )}
+                    </div>
                   )}
 
-                  {/*  <svg
-                    className="hidden h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                    style={{ display: open ? "block" : "hidden" }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg> */}
+                  {/*   */}
                 </button>
               </div>
               <div className="flex flex-1 items-center justify-start">
-                <div className="flex flex-shrink-0 items-center">
+                <div className="flex flex-shrink-0 items-center gap-1">
                   {/* lOGO Y TITULO */}
+                  <Icon
+                    icon="system-uicons:book"
+                    width="42"
+                    height="42"
+                  />
+                  <h1 className="text-2xl font-bold hidden sm:block">
+                    Tech Library
+                  </h1>
+                  <button onClick={() => setIsLoged(!isLoged)}>test</button>
                 </div>
                 <div
                   className={`flex-grow items-center sm:ml-6 flex justify-end `}
@@ -147,7 +142,7 @@ const Navbar = () => {
                   </div>
                   <section className="flex flex-row flex-1 items-end">
                     <div className="basis-1/4 flex justify-center items-center py-2 h-20">
-                      <div className="rounded-full h-10 w-10 bg-light"></div>
+                      <div className="rounded-full h-10 w-10 bg-dark dark:bg-light"></div>
                     </div>
                     <div className="basis-3/4 flex flex-col justify-center items-start text-left py-2 h-20">
                       <h5>ejemplo@gmail.com</h5>
