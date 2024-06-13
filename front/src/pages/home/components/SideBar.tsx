@@ -1,9 +1,13 @@
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ItemsSideBar from "./ItemsSideBar"
+import { useTecnologies } from "@/stores/Tecnologies"
+import { Tecnology } from "@/interfaces/Tecnology"
 import { useState } from "react"
 
 export default function SideBar() {
   const [open, setOpen] = useState(true)
+  const tecnologies = useTecnologies((state) => state.tecnologies)
+  console.log(tecnologies)
 
   return (
     <section
@@ -38,10 +42,17 @@ export default function SideBar() {
           <li>
             <h1 className="text-xl font-bold">Tecnologies</h1>
           </li>
+          {tecnologies?.map((tecnology: Tecnology) => (
+            <ItemsSideBar
+              key={tecnology.name}
+              tecnology={tecnology}
+            />
+          ))}
+          {/* 
           <ItemsSideBar
             name={"javascript"}
             selected={true}
-          />
+          /> */}
         </ul>
       </div>
     </section>

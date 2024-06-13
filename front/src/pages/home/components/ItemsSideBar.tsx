@@ -1,17 +1,16 @@
+import { Tecnology } from "@/interfaces/Tecnology"
+import { useTecnologies } from "@/stores/Tecnologies"
 import { useState } from "react"
 
-export interface exampleDate {
-  name: string
-  selected: boolean
-}
 interface ItemsSideBarProps {
-  name: string
-  selected: boolean
+  tecnology: Tecnology
 }
-export default function ItemsSideBar({ name, selected }: ItemsSideBarProps) {
-  const [active, setActive] = useState(selected)
+export default function ItemsSideBar({ tecnology }: ItemsSideBarProps) {
+  const [active, setActive] = useState(tecnology.selected)
+  const activeTecnology = useTecnologies(state => state.activeTecnology)
   function handleClick() {
     setActive(!active)
+    activeTecnology(tecnology.id)
   }
   return (
     <li className="flex border-separate">
@@ -19,7 +18,7 @@ export default function ItemsSideBar({ name, selected }: ItemsSideBarProps) {
         className={`${active ? "text-main" : ""}`}
         onClick={handleClick}
       >
-        {name}
+        {tecnology.name}
       </button>
     </li>
   )
