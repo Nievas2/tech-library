@@ -1,3 +1,4 @@
+import Footer from "./components/shared/Footer"
 import Navbar from "./components/shared/Navbar"
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
         <h1 className="text-auxiliary font-bold text-4xl">text</h1>
         <h1 className="text-tertiary font-light text-4xl">text</h1>
       </section>
-      
+      <Footer />
     </main>
       
   )
