@@ -87,3 +87,23 @@ secondaries:
     @apply bg-background text-foreground;
   }
 }
+
+.text-stroke-dark {
+  text-shadow : -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  color       : white;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.5s ease-in-out;
+}
+
+@keyframes fade-in-scale {
+  0% {
+    opacity: 1;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
