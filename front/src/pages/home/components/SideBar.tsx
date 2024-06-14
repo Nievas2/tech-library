@@ -9,8 +9,8 @@ export default function SideBar() {
   const tecnologies = useTecnologies((state) => state.tecnologies)
   return (
     <section
-      className={`h-full duration-500 ease-out ${
-        open ? "w-32 sm:w-60" : "w-0"
+      className={`h-full duration-500 ease-out absolute sm:static ${
+        open ? "w-60" : "w-0"
       } bg-light dark:bg-dark`}
     >
       <div
