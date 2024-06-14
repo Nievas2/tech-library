@@ -5,22 +5,22 @@ import { Tecnology } from "@/interfaces/Tecnology"
 import { useState } from "react"
 
 export default function SideBar() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   const tecnologies = useTecnologies((state) => state.tecnologies)
   return (
     <section
-      className={`h-full duration-500 ease-out absolute sm:static ${
+      className={`h-full duration-500 ease-out absolute md:static ${
         open ? "w-60" : "w-0"
       } bg-light dark:bg-dark`}
     >
       <div
-        className={`w-full h-[100vh] relative ${
+        className={`w-full h-full relative ${
           open ? "p-2 border-r-[1px] border-r-dark dark:border-r-light" : "p-0"
         }`}
       >
         <div
           className={`absolute duration-150 ${
-            open ? "right-[-16px]" : "right-[-40px]"
+            open ? "right-[-16px]" : "right-[-40px] xl:right-[-20px]"
           } top-1`}
         >
           <button
