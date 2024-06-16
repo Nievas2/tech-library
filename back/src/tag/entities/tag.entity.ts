@@ -19,7 +19,10 @@ import { LibraryEntity } from "../../library/entities/library.entity";
 export class TagEntity extends BaseEntity {
 
     @Column({ type: "varchar", length: 15, unique: true, nullable: false })
-    private name!: string
+    name!: string
+
+    @Column({ type: "varchar", length: 7, nullable: false })
+    color!: string
 
     @ManyToMany(() => LibraryEntity, (library) => library.tags)
     libraries!: Promise<LibraryEntity[]>
@@ -28,23 +31,4 @@ export class TagEntity extends BaseEntity {
         super();
         this.name = name
     }
-
-    //Getters and Setters start
-    public getName(): string {
-        return this.name
-    }
-
-    public setName(name: string) {
-        this.name = name
-    }
-
-    public getLibraries(): Promise<LibraryEntity[]> {
-        return this.libraries
-    }
-
-    //Getters and Setters end
-
-    //Methods start
-
-    //Methods end
 }

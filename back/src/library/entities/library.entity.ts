@@ -43,16 +43,16 @@ import { TagEntity } from "../../tag/entities/tag.entity";
 @Entity({ name: "librarys" })
 export class LibraryEntity extends BaseEntity {
   @Column({ type: "varchar", unique: true, length: 25, nullable: false })
-  private name!: string;
+  name!: string;
 
   @Column({ type: "varchar", length: 255, nullable: false })
-  private description!: string;
+  description!: string;
 
   @Column({ type: "bigint", default: 0, nullable: false })
-  private likes!: number;
+  likes!: number;
 
   @Column({ type: "boolean", default: true, nullable: false })
-  private isActive!: boolean;
+  isActive!: boolean;
 
   @Column({ type: "enum", enum: State, default: State.PENDING })
   state!: State;
@@ -128,45 +128,4 @@ export class LibraryEntity extends BaseEntity {
 
   //Methods end
 
-  //Getters and Setters start
-  public getName(): string {
-    return this.name;
-  }
-
-  public setName(name: string): void {
-    this.name = name;
-  }
-
-  public getDescription(): string {
-    return this.description;
-  }
-
-  public setDescription(description: string): void {
-    this.description = description;
-  }
-
-  public getLikes(): number {
-    return this.likes;
-  }
-
-  public setLikes(likes: number): void {
-    this.likes = likes;
-  }
-
-  public getIsActive(): boolean {
-    return this.isActive;
-  }
-
-  public setIsActive(isActive: boolean): void {
-    this.isActive = isActive;
-  }
-
-  public getState(): State {
-    return this.state;
-  }
-
-  public setState(state: State): void {
-    this.state = state;
-  }
-  //Getters and Setters end
 }
