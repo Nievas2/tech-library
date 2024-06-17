@@ -40,12 +40,12 @@ const Navbar = () => {
           </div>
           
           <div className="flex flex-1 items-center justify-start">
-            <div className="flex flex-shrink-0 items-center gap-1">
+            <a className="flex flex-shrink-0 items-center gap-1" href="/home">
               <Icon icon="system-uicons:book" width="42" height="42" />
               <h1 className="text-2xl font-bold hidden sm:block">
                 Tech Library
               </h1>
-            </div>
+            </a>
 
             <div className={`flex-grow items-center flex justify-end `}>
               <div className="flex items-center justify-center gap-3">
