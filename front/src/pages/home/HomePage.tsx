@@ -1,306 +1,449 @@
 import CardsContainer from "@/components/shared/CardsContainer"
 import SideBar from "./components/SideBar"
+import { Library } from "@/interfaces/Library"
 
 const HomePage = () => {
-  const tagColors = {
-    JavaScript: {
-      bgColor: "#F7DC6F",
-      borderColor: "#F7DC6F"
-    },
-    Frontend: {
-      bgColor: "#3498DB",
-      borderColor: "#3498DB"
-    },
-    UI: {
-      bgColor: "#9B59B6",
-      borderColor: "#9B59B6"
-    },
-    Backend: {
-      bgColor: "#2E4053",
-      borderColor: "#2E4053"
-    },
-    Server: {
-      bgColor: "#8B9467",
-      borderColor: "#8B9467"
-    },
-    "Version Control": {
-      bgColor: "#4CAF50",
-      borderColor: "#4CAF50"
-    },
-    Collaboration: {
-      bgColor: "#8BC34A",
-      borderColor: "#8BC34A"
-    },
-    Development: {
-      bgColor: "#FFC107",
-      borderColor: "#FFC107"
-    },
-    Database: {
-      bgColor: "#4CAF50",
-      borderColor: "#4CAF50"
-    },
-    NoSQL: {
-      bgColor: "#8BC34A",
-      borderColor: "#8BC34A"
-    },
-    "Data Storage": {
-      bgColor: "#FFC107",
-      borderColor: "#FFC107"
-    },
-    Containerization: {
-      bgColor: "#2E4053",
-      borderColor: "#2E4053"
-    },
-    DevOps: {
-      bgColor: "#8B9467",
-      borderColor: "#8B9467"
-    },
-    Cloud: {
-      bgColor: "#4CAF50",
-      borderColor: "#4CAF50"
-    },
-    AI: {
-      bgColor: "#2E4053",
-      borderColor: "#2E4053"
-    },
-    "Machine Learning": {
-      bgColor: "#8BC34A",
-      borderColor: "#8BC34A"
-    },
-    "Deep Learning": {
-      bgColor: "#4CAF50",
-      borderColor: "#4CAF50"
-    },
-    "Computer Vision": {
-      bgColor: "#8BC34A",
-      borderColor: "#8BC34A"
-    },
-    "Image Processing": {
-      bgColor: "#4CAF50",
-      borderColor: "#4CAF50"
-    },
-    CSS: {
-      bgColor: "#2E4053",
-      borderColor: "#2E4053"
-    },
-    Design: {
-      bgColor: "#9B59B6",
-      borderColor: "#9B59B6"
-    }
-  }
-
-  const cardsData = [
+  const cardsData: Library[] = [
     {
-      title: "React",
-      description:
-        "Un framework de JavaScript para construir interfaces de usuario",
-      tags: ["JavaScript", "Frontend", "UI"],
-      createdBy: "John Doe",
-      tagColors: tagColors
+      id: 1,
+      name: "React",
+      description: "Un framework de JavaScript para construir interfaces de usuario",
+      tags: [
+        { id: 1, name: "JavaScript", bgColor: "#F7DC6F", borderColor: "#F7DC6F" },
+        { id: 2, name: "Frontend", bgColor: "#3498DB", borderColor: "#3498DB" },
+        { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+      ],
+      likes: 1,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 1,
+        name: "John",
+        lastname: "Doe",
+        username: "johndoe",
+        password: "password123",
+        email: "johndoe@me.com"
+      }
     },
     {
-      title: "Node.js",
+      id: 2,
+      name: "Node.js",
       description: "Un entorno de ejecución de JavaScript para servidores",
-      tags: ["JavaScript", "Backend", "Server"],
-      createdBy: "Jane Smith",
-      tagColors: tagColors
+      tags: [
+        { id: 4, name: "JavaScript", bgColor: "#F7DC6F", borderColor: "#F7DC6F" },
+        { id: 5, name: "Backend", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 6, name: "Server", bgColor: "#8B9467", borderColor: "#8B9467" }
+      ],
+      likes: 2,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 2,
+        name: "Jane",
+        lastname: "Smith",
+        username: "janesmith",
+        password: "password123",
+        email: "janesmith@me.com"
+      }
     },
     {
-      title: "Git",
+      id: 3,
+      name: "Git",
       description: "Un sistema de control de versiones para proyectos",
-      tags: ["Version Control", "Collaboration", "Development"],
-      createdBy: "Bob Johnson",
-      tagColors: tagColors
+      tags: [
+        { id: 7, name: "Version Control", bgColor: "#4CAF50", borderColor: "#4CAF50" },
+        { id: 8, name: "Collaboration", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 9, name: "Development", bgColor: "#FFC107", borderColor: "#FFC107" }
+      ],
+      likes: 3,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 3,
+        name: "Bob",
+        lastname: "Johnson",
+        username: "bobjohnson",
+        password: "password123",
+        email: "bobjohnson@me.com"
+      }
     },
     {
-      title: "Express.js",
+      id: 4,
+      name: "Express.js",
       description: "Un framework de Node.js para crear aplicaciones web",
-      tags: ["Node.js", "Web Development", "API"],
-      createdBy: "Alice Brown",
-      tagColors: tagColors
+      tags: [
+        { id: 10, name: "Node.js", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 11, name: "Web Development", bgColor: "#8B9467", borderColor: "#8B9467" },
+        { id: 12, name: "API", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 4,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 4,
+        name: "Alice",
+        lastname: "Brown",
+        username: "alicebrown",
+        password: "password123",
+        email: "alicebrown@me.com"
+      }
     },
     {
-      title: "MongoDB",
-      description:
-        "Un sistema de base de datos NoSQL para almacenar y recuperar datos",
-      tags: ["Database", "NoSQL", "Data Storage"],
-      createdBy: "Mike Davis",
-      tagColors: tagColors
+      id: 5,
+      name: "MongoDB",
+      description: "Un sistema de base de datos NoSQL para almacenar y recuperar datos",
+      tags: [
+        { id: 13, name: "Database", bgColor: "#4CAF50", borderColor: "#4CAF50" },
+        { id: 14, name: "NoSQL", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 15, name: "Data Storage", bgColor: "#FFC107", borderColor: "#FFC107" }
+      ],
+      likes: 5,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 5,
+        name: "Mike",
+        lastname: "Davis",
+        username: "mikedavis",
+        password: "password123",
+        email: "mikedavis@me.com"
+      }
     },
     {
-      title: "HTML/CSS",
-      description:
-        "Un lenguaje de marcado y un lenguaje de estilo para crear páginas web",
-      tags: ["Web Development", "Frontend", "UI"],
-      createdBy: "Emily Chen",
-      tagColors: tagColors
+      id: 6,
+      name: "HTML/CSS",
+      description: "Un lenguaje de marcado y un lenguaje de estilo para crear páginas web",
+      tags: [
+        { id: 16, name: "Web Development", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 17, name: "Frontend", bgColor: "#3498DB", borderColor: "#3498DB" },
+        { id: 18, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+      ],
+      likes: 6,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 6,
+        name: "Emily",
+        lastname: "Chen",
+        username: "emilychen",
+        password: "password123",
+        email: "emilychen@me.com"
+      }
     },
     {
-      title: "JavaScript",
-      description:
-        "Un lenguaje de programación para crear aplicaciones web dinámicas",
-      tags: ["Programming", "Web Development", "Frontend"],
-      createdBy: "David Lee",
-      tagColors: tagColors
+      id: 7,
+      name: "JavaScript",
+      description: "Un lenguaje de programación para crear aplicaciones web dinámicas",
+      tags: [
+        { id: 19, name: "Programming", bgColor: "#F7DC6F", borderColor: "#F7DC6F" },
+        { id: 20, name: "Web Development", bgColor: "#8B9467", borderColor: "#8B9467" },
+        { id: 21, name: "Frontend", bgColor: "#3498DB", borderColor: "#3498DB" }
+      ],
+      likes: 7,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 7,
+        name: "David",
+        lastname: "Lee",
+        username: "davidlee",
+        password: "password123",
+        email: "davidlee@me.com"
+      }
     },
     {
-      title: "Python",
-      description:
-        "Un lenguaje de programación para crear aplicaciones y scripts",
-      tags: ["Programming", "Development", "Scripting"],
-      createdBy: "Sarah Taylor",
-      tagColors: tagColors
+      id: 8,
+      name: "Python",
+      description: "Un lenguaje de programación para crear aplicaciones y scripts",
+      tags: [
+        { id: 22, name: "Programming", bgColor: "#4CAF50", borderColor: "#4CAF50" },
+        { id: 23, name: "Development", bgColor: "#FFC107", borderColor: "#FFC107" },
+        { id: 24, name: "Scripting", bgColor: "#8BC34A", borderColor: "#8BC34A" }
+      ],
+      likes: 8,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 8,
+        name: "Sarah",
+        lastname: "Taylor",
+        username: "sarahtaylor",
+        password: "password123",
+        email: "sarahtaylor@me.com"
+      }
     },
     {
-      title: "Java",
-      description:
-        "Un lenguaje de programación para crear aplicaciones y sistemas",
-      tags: ["Programming", "Development", "Enterprise"],
-      createdBy: "Kevin White",
-      tagColors: tagColors
+      id: 9,
+      name: "Java",
+      description: "Un lenguaje de programación para crear aplicaciones y sistemas",
+      tags: [
+        { id: 25, name: "Programming", bgColor: "#F7DC6F", borderColor: "#F7DC6F" },
+        { id: 26, name: "Development", bgColor: "#FFC107", borderColor: "#FFC107" },
+        { id: 27, name: "Enterprise", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 9,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 9,
+        name: "Kevin",
+        lastname: "White",
+        username: "kevinwhite",
+        password: "password123",
+        email: "kevinwhite@me.com"
+      }
     },
     {
-      title: "Ruby",
-      description:
-        "Un lenguaje de programación para crear aplicaciones web y scripts",
-      tags: ["Programming", "Web Development", "Scripting"],
-      createdBy: "Lisa Nguyen",
-      tagColors: tagColors
+      id: 10,
+      name: "Ruby",
+      description: "Un lenguaje de programación para crear aplicaciones web y scripts",
+      tags: [
+        { id: 28, name: "Programming", bgColor: "#F7DC6F", borderColor: "#F7DC6F" },
+        { id: 29, name: "Web Development", bgColor: "#8B9467", borderColor: "#8B9467" },
+        { id: 30, name: "Scripting", bgColor: "#8BC34A", borderColor: "#8BC34A" }
+      ],
+      likes: 10,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 10,
+        name: "Lisa",
+        lastname: "Nguyen",
+        username: "lisanguyen",
+        password: "password123",
+        email: "lisanguyen@me.com"
+      }
     },
     {
-      title: "PHP",
-      description:
-        "Un lenguaje de programación para crear aplicaciones web dinámicas",
-      tags: ["Programming", "Web Development", "Backend"],
-      createdBy: "Michael Brown",
-      tagColors: tagColors
+      id: 11,
+      name: "PHP",
+      description: "Un lenguaje de programación para crear aplicaciones web dinámicas",
+      tags: [
+        { id: 31, name: "Programming", bgColor: "#F7DC6F", borderColor: "#F7DC6F" },
+        { id: 32, name: "Web Development", bgColor: "#8B9467", borderColor: "#8B9467" },
+        { id: 33, name: "Backend", bgColor: "#2E4053", borderColor: "#2E4053" }
+      ],
+      likes: 11,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 11,
+        name: "Paul",
+        lastname: "Martinez",
+        username: "paulmartinez",
+        password: "password123",
+        email: "paulmartinez@me.com"
+      }
     },
     {
-      title: "SQL",
-      description:
-        "Un lenguaje de consulta para interactuar con bases de datos",
-      tags: ["Database", "Query", "Data Management"],
-      createdBy: "James Johnson",
-      tagColors: tagColors
+      id: 12,
+      name: "AWS",
+      description: "Un servicio de nube para almacenar, procesar y almacenar datos",
+      tags: [
+        { id: 34, name: "Cloud", bgColor: "#4CAF50", borderColor: "#4CAF50" },
+        { id: 35, name: "Infrastructure", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 36, name: "Data Storage", bgColor: "#FFC107", borderColor: "#FFC107" }
+      ],
+      likes: 12,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 12,
+        name: "Mark",
+        lastname: "Davis",
+        username: "markdavis",
+        password: "password123",
+        email: "markdavis@me.com"
+      }
     },
     {
-      title: "PostgreSQL",
-      description:
-        "Un sistema de base de datos relacional para almacenar y recuperar datos",
-      tags: ["Database", "Relational", "Data Storage"],
-      createdBy: "Helen Kim",
-      tagColors: tagColors
+      id: 13,
+      name: "Azure",
+      description: "Un servicio de nube para almacenar, procesar y almacenar datos",
+      tags: [
+        { id: 37, name: "Cloud", bgColor: "#4CAF50", borderColor: "#4CAF50" },
+        { id: 38, name: "Infrastructure", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 39, name: "Data Storage", bgColor: "#FFC107", borderColor: "#FFC107" }
+      ],
+      likes: 13,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 13,
+        name: "Jessica",
+        lastname: "Martin",
+        username: "jessicamartin",
+        password: "password123",
+        email: "jessicamartin@me.com"
+      }
     },
     {
-      title: "MySQL",
-      description:
-        "Un sistema de base de datos relacional para almacenar y recuperar datos",
-      tags: ["Database", "Relational", "Data Storage"],
-      createdBy: "Robert Martin",
-      tagColors: tagColors
+      id: 14,
+      name: "Google Cloud",
+      description: "Un servicio de nube para almacenar, procesar y almacenar datos",
+      tags: [
+        { id: 40, name: "Cloud", bgColor: "#4CAF50", borderColor: "#4CAF50" },
+        { id: 41, name: "Infrastructure", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 42, name: "Data Storage", bgColor: "#FFC107", borderColor: "#FFC107" }
+      ],
+      likes: 14,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 14,
+        name: "Ruth",
+        lastname: "Brown",
+        username: "ruthbrown",
+        password: "password123",
+        email: "ruthbrown@me.com"
+      }
     },
     {
-      title: "Redis",
-      description:
-        "Un sistema de base de datos NoSQL para almacenar y recuperar datos",
-      tags: ["Database", "NoSQL", "Data Storage"],
-      createdBy: "Karen Thompson"
+      id: 15,
+      name: "TensorFlow",
+      description: "Un framework de inteligencia artificial para crear modelos de aprendizaje automático",
+      tags: [
+        { id: 43, name: "AI", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 44, name: "Machine Learning", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 45, name: "Deep Learning", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 15,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 15,
+        name: "John",
+        lastname: "Smith",
+        username: "johnsmith",
+        password: "password123",
+        email: "johnsmith@me.com"
+      }
     },
     {
-      title: "Docker",
-      description:
-        "Un sistema de contenedores para ejecutar aplicaciones de manera aislada",
-      tags: ["Containerization", "DevOps", "Cloud"],
-      createdBy: "Brian Hall",
-      tagColors: tagColors
+      id: 16,
+      name: "Keras",
+      description: "Un framework de inteligencia artificial para crear modelos de aprendizaje automático",
+      tags: [
+        { id: 46, name: "AI", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 47, name: "Machine Learning", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 48, name: "Deep Learning", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 16,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 16,
+        name: "Jane",
+        lastname: "Doe",
+        username: "janedoe",
+        password: "password123",
+        email: "janedoe@me.com"
+      }
     },
     {
-      title: "Kubernetes",
-      description:
-        "Un sistema de orquestación de contenedores para gestionar aplicaciones",
-      tags: ["Containerization", "DevOps", "Cloud"],
-      createdBy: "Laura Lee",
-      tagColors: tagColors
+      id: 17,
+      name: "PyTorch",
+      description: "Un framework de inteligencia artificial para crear modelos de aprendizaje automático",
+      tags: [
+        { id: 49, name: "AI", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 50, name: "Machine Learning", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 51, name: "Deep Learning", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 17,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 17,
+        name: "Bob",
+        lastname: "Johnson",
+        username: "bobjohnson",
+        password: "password123",
+        email: "bobjohnson@me.com"
+      }
     },
     {
-      title: "AWS",
-      description:
-        "Un servicio de nube para almacenar, procesar y almacenar datos",
-      tags: ["Cloud", "Infrastructure", "Data Storage"],
-      createdBy: "Mark Davis",
-      tagColors: tagColors
+      id: 18,
+      name: "OpenCV",
+      description: "Un framework de inteligencia artificial para crear aplicaciones de visión computacional",
+      tags: [
+        { id: 52, name: "AI", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 53, name: "Computer Vision", bgColor: "#8BC34A", borderColor: "#8BC34A" },
+        { id: 54, name: "Image Processing", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 18,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 18,
+        name: "Alice",
+        lastname: "Brown",
+        username: "alicebrown",
+        password: "password123",
+        email: "alicebrown@me.com"
+      }
     },
     {
-      title: "Azure",
-      description:
-        "Un servicio de nube para almacenar, procesar y almacenar datos",
-      tags: ["Cloud", "Infrastructure", "Data Storage"],
-      createdBy: "Jessica Martin",
-      tagColors: tagColors
+      id: 19,
+      name: "Tailwind CSS",
+      description: "Un framework de CSS para crear diseños y estilos de interfaz de usuario",
+      tags: [
+        { id: 55, name: "CSS", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 56, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" },
+        { id: 57, name: "Design", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 19,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 19,
+        name: "Sarah",
+        lastname: "Wilson",
+        username: "sarahwilson",
+        password: "password123",
+        email: "sarahwilson@me.com"
+      }
     },
     {
-      title: "Google Cloud",
-      description:
-        "Un servicio de nube para almacenar, procesar y almacenar datos",
-      tags: ["Cloud", "Infrastructure", "Data Storage"],
-      createdBy: "Ruth Brown",
-      tagColors: tagColors
+      id: 20,
+      name: "Bootstrap",
+      description: "Un framework de CSS para crear diseños y estilos de interfaz de usuario",
+      tags: [
+        { id: 58, name: "CSS", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 59, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" },
+        { id: 60, name: "Design", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 20,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 20,
+        name: "David",
+        lastname: "Lee",
+        username: "davidlee",
+        password: "password123",
+        email: "davidlee@me.com"
+      }
     },
     {
-      title: "TensorFlow",
-      description:
-        "Un framework de inteligencia artificial para crear modelos de aprendizaje automático",
-      tags: ["AI", "Machine Learning", "Deep Learning"],
-      createdBy: "John Smith",
-      tagColors: tagColors
-    },
-    {
-      title: "Keras",
-      description:
-        "Un framework de inteligencia artificial para crear modelos de aprendizaje automático",
-      tags: ["AI", "Machine Learning", "Deep Learning"],
-      createdBy: "Jane Doe",
-      tagColors: tagColors
-    },
-    {
-      title: "PyTorch",
-      description:
-        "Un framework de inteligencia artificial para crear modelos de aprendizaje automático",
-      tags: ["AI", "Machine Learning", "Deep Learning"],
-      createdBy: "Bob Johnson",
-      tagColors: tagColors
-    },
-    {
-      title: "OpenCV",
-      description:
-        "Un framework de inteligencia artificial para crear aplicaciones de visión computacional",
-      tags: ["AI", "Computer Vision", "Image Processing"],
-      createdBy: "Alice Brown",
-      tagColors: tagColors
-    },
-    {
-      title: "Tailwind CSS",
-      description:
-        "Un framework de CSS para crear diseños y estilos de interfaz de usuario",
-      tags: ["CSS", "UI", "Design"],
-      createdBy: "Mike Davis",
-      tagColors: tagColors
-    },
-    {
-      title: "Bootstrap",
-      description:
-        "Un framework de CSS para crear diseños y estilos de interfaz de usuario",
-      tags: ["CSS", "UI", "Design"],
-      createdBy: "Emily Chen",
-      tagColors: tagColors
-    },
-    {
-      title: "Materialize",
-      description:
-        "Un framework de CSS para crear diseños y estilos de interfaz de usuario",
-      tags: ["CSS", "UI", "Design"],
-      createdBy: "David Lee",
-      tagColors: tagColors
+      id: 21,
+      name: "Materialize",
+      description: "Un framework de CSS para crear diseños y estilos de interfaz de usuario",
+      tags: [
+        { id: 61, name: "CSS", bgColor: "#2E4053", borderColor: "#2E4053" },
+        { id: 62, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" },
+        { id: 63, name: "Design", bgColor: "#4CAF50", borderColor: "#4CAF50" }
+      ],
+      likes: 21,
+      isActive: true,
+      state: "ACTIVE",
+      createdBy: {
+        id: 21,
+        name: "Emily",
+        lastname: "Kim",
+        username: "emilykim",
+        password: "password123",
+        email: "emilykim@me.com"
+      }
     }
   ]
 
@@ -312,10 +455,7 @@ const HomePage = () => {
         </div>
         <div className="pt-14 flex flex-col gap-5 px-4">
           <h1 className="text-center">SearchBar</h1>
-          <CardsContainer
-            cards={cardsData}
-            tagColors={tagColors}
-          />
+          <CardsContainer cards={cardsData} />
         </div>
       </section>
     </>

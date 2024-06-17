@@ -1,8 +1,15 @@
-import { Tag } from "@/interfaces/Tag"
+
 import { create } from "zustand"
 
+
+interface TagState {
+ id: number
+ name: string
+ selected: boolean
+}
+
 interface State {
-  tags: Tag[] | undefined
+  tags: TagState[] | undefined
 
   activeTag: (tagId: number) => void
   

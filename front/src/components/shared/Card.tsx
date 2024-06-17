@@ -2,15 +2,20 @@ import { Heart, Link } from "lucide-react"
 import { Button } from "../ui/button"
 import { useState } from "react"
 import { NavLink } from "react-router-dom"
+import { Library } from "@/interfaces/Library"
+import { Tag } from "@/interfaces/Tag"
 
-const Card = ({ card, tagColors  }: any) => {
+interface CardProps {
+  card: Library
+}
+const Card = ({ card  }: CardProps) => {
   const [favorite, setFavorite] = useState(false)
 
   return (
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl hover:scale-[1.03] hover:transition-transform duration-500 p-4">
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">
-          {card.title}
+          {card.name}
         </h2>
 
         <p className="text-base">
@@ -18,18 +23,18 @@ const Card = ({ card, tagColors  }: any) => {
         </p>
 
         <div className="flex flex-row flex-wrap gap-2 text-sm">
-          {card.tags.map((tag: any) => {
+          {card.tags?.map((tag: Tag) => {
             // const tagColor = tagColors[tag] || { bgColor: '#ffffff45', borderColor: '#000000' };
-            const tagColor = tagColors[tag] || { bgColor: '#ffffff45' };
+            const tagColor = tag || { bgColor: '#ffffff45' };
             return (
               <h4
-                key={tag}
-                style={{ backgroundColor: tagColor.bgColor }}
+                key={crypto.randomUUID()}
+                style={{ backgroundColor: tagColor?.bgColor }}
                 // style={{ backgroundColor: tagColor.bgColor, borderColor: tagColor.borderColor }}
                 // className="px-2 py-1 rounded-lg border font-extrabold text-dark [text-shadow:_1px_1px_0px_rgb(255_255_255_/_100%)] dark:text-light dark:[text-shadow:_1px_1px_0_rgb(0_0_0_/_100%)]">
                 // border-dark dark:border-light
                 className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light"> 
-                {tag}
+                {tag.name}
               </h4>
             );
           })}
@@ -59,7 +64,7 @@ const Card = ({ card, tagColors  }: any) => {
         </div>
 
         <div className="flex flex-row items-center justify-end gap-2">
-          <small>Suggested by <span className="font-semibold text-main">{card.createdBy}</span></small>
+          <small>Suggested by <span className="font-semibold text-main">{card.createdBy.name}</span></small>
           <small>|</small>
           <small>02-08-1999</small>
         </div>

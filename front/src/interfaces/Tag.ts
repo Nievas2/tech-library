@@ -1,5 +1,6 @@
 export interface Tag {
   id: number
   name: string
-  selected: boolean
+  bgColor: string
+  borderColor: string
 }
