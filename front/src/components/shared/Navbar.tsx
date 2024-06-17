@@ -8,13 +8,15 @@ const Navbar = () => {
   const [isLoged] = useState(false);
 
   return (
-    <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-light dark:bg-dark dark:border-b-light ">
-      <div className="mx-auto max-w-7xl px-1 sm:px-3 lg:px-4">
+    <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
+      {/* bg-light dark:bg-dark */}
+      {/* px-1 sm:px-3 lg:px-4 */}
+      <div className="mx-auto max-w-7xl p-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
             <button
               type="button"
-              className="relative inline-flex items-center justify-center rounded-md p-2 bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="relative inline-flex items-center justify-center rounded-md p-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-light"
               aria-controls="mobile-menu"
               aria-expanded="false"
               onClick={() => setOpen(!open)}
@@ -45,8 +47,8 @@ const Navbar = () => {
               </h1>
             </div>
 
-            <div className={`flex-grow items-center sm:ml-6 flex justify-end `}>
-              <div className="flex items-center gap-3">
+            <div className={`flex-grow items-center flex justify-end `}>
+              <div className="flex items-center justify-center gap-3">
                 {isLoged ? (
                   <section className="flex justify-end mr-8 sm:mr-0">
                     <a
@@ -70,7 +72,7 @@ const Navbar = () => {
                     </div>
                   </section>
                 ) : (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center gap-3">
                     <div>
                       <ItemsNavbar
                         name="LOGIN"
@@ -87,7 +89,7 @@ const Navbar = () => {
                       />
                     </div>
 
-                    <div className="text-black rounded-md px-3 py-2 text-sm font-medium">
+                    <div className="text-black flex rounded-md text-sm font-medium">
                       <ModeToggle />
                     </div>
                   </div>
