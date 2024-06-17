@@ -37,7 +37,7 @@ export default function FormAddLibrary() {
         className="flex flex-col p-2 gap-1"
         onSubmit={formik.handleSubmit}
       >
-        <div className="grid w-full max-w-sm items-center gap-1.5">
+        <div className="grid w-full items-center gap-1.5">
           <Label
             htmlFor="name"
             className=" text-light dark:text-dark"
@@ -53,7 +53,7 @@ export default function FormAddLibrary() {
             className="bg-light"
           />
         </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
+        <div className="grid w-full items-center gap-1.5">
           <Label className="text-light dark:text-dark">Link</Label>
           <Input
             id="link"
@@ -67,7 +67,7 @@ export default function FormAddLibrary() {
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label className="text-light dark:text-dark">Description</Label>
         </div>
-        <div className="flex w-full max-w-sm items-center gap-1.5 mt-8">
+        <div className="flex w-full items-center gap-1.5 mt-8">
           <Input
             id="tag"
             name="tag"
