@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 
 interface ItemsNavbarProps {
@@ -6,11 +7,13 @@ interface ItemsNavbarProps {
 }
 export default function ItemsNavbar({ name, path }: ItemsNavbarProps) {
   return (
-    <Link
-      to={path}
-      className="text-black rounded-md px-3 py-2 text-sm font-medium sm:rounded-md sm: sm:border-[1px] sm:border-main hover:bg-accent hover:text-accent-foreground sm:shadow-lg sm:shadow-tertiary/75"
-    >
-      {name}
-    </Link>
+    <Button variant="authButton">
+      {/* bg-main hover:bg-main/80 px-4 py-2 rounded-md border text-sm font-semibold text-light border-main transition-colors duration-150 */}
+      <Link
+        to={path}
+      >
+        {name}
+      </Link>
+    </Button>
   )
 }

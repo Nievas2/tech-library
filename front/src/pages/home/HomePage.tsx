@@ -306,12 +306,12 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="flex flex-row gap-8">
+      <section className="flex flex-row pt-16">
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div>
-          <h1>search</h1>
+        <div className="pt-14 flex flex-col gap-5 px-4">
+          <h1 className="text-center">SearchBar</h1>
           <CardsContainer
             cards={cardsData}
             tagColors={tagColors}
