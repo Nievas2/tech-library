@@ -26,7 +26,7 @@ const Card = ({ card }: CardProps) => {
       const index = favorites?.findIndex((favorite) => favorite.id == card.id)
       console.log(index)
 
-      if (index >= 0 && index != undefined) deleteFavoriteLibrary(index)
+      if (index != undefined && index >= 0  ) deleteFavoriteLibrary(index)
     }
   }
   useEffect(() => {
