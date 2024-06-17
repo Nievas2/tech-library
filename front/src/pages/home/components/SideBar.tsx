@@ -1,25 +1,25 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
-import ItemsSideBar from "./ItemsSideBar";
-import { useTecnologies } from "@/stores/Tecnologies";
-import { Tecnology } from "@/interfaces/Tecnology";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Icon } from "@iconify/react/dist/iconify.js"
+import ItemsSideBar from "./ItemsSideBar"
+import { useTags } from "@/stores/Tag"
+import { Tag } from "@/interfaces/Tag"
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 
 export default function SideBar() {
-  const [open, setOpen] = useState(window.innerWidth > 768);
-  const tecnologies     = useTecnologies((state) => state.tecnologies);
+  const [open, setOpen] = useState(window.innerWidth > 768)
+  const tags = useTags((state) => state.tags)
 
   useEffect(() => {
     const handleResize = () => {
-      setOpen(window.innerWidth > 768);
-    };
-    
-    window.addEventListener("resize", handleResize);
+      setOpen(window.innerWidth > 768)
+    }
+
+    window.addEventListener("resize", handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   return (
     <section
@@ -31,7 +31,9 @@ export default function SideBar() {
       <div
         className={`w-full h-full relative ${
           // px-4 pt-14 border border-r-dark dark:border-r-light dark:bg-dark
-          open ? "px-4 pt-14 border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light" : "pt-0"
+          open
+            ? "px-4 pt-14 border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light"
+            : "pt-0"
         }`}
       >
         <div
@@ -56,21 +58,22 @@ export default function SideBar() {
         </div>
 
         <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
-          <h2 className="text-xl font-bold">
-            TECNOLOGIES
-          </h2>
+          <h2 className="text-xl font-bold">TECNOLOGIES</h2>
           {/* <ul className={`${open ? "flex flex-col gap-1" : "hidden"}`}> */}
           <ul className="flex flex-col gap-1">
-            {tecnologies?.map((tecnology: Tecnology) => (
-              <ItemsSideBar key={tecnology.name} tecnology={tecnology} />
+            {tags?.map((tag: Tag) => (
+              <ItemsSideBar
+                key={tag.name}
+                tag={tag}
+              />
             ))}
           </ul>
         </div>
       </div>
     </section>
-  );
+  )
 
   function handleSidebar() {
-    setOpen(!open);
+    setOpen(!open)
   }
 }
