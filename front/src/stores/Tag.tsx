@@ -2,7 +2,7 @@
 import { create } from "zustand"
 
 
-interface TagState {
+export interface TagState {
  id: number
  name: string
  selected: boolean

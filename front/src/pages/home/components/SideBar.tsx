@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ItemsSideBar from "./ItemsSideBar"
-import { useTags } from "@/stores/Tag"
-import { Tag } from "@/interfaces/Tag"
+import { TagState, useTags } from "@/stores/Tag"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 
@@ -61,7 +60,7 @@ export default function SideBar() {
           <h2 className="text-xl font-bold">TECNOLOGIES</h2>
           {/* <ul className={`${open ? "flex flex-col gap-1" : "hidden"}`}> */}
           <ul className="flex flex-col gap-1">
-            {tags?.map((tag: Tag) => (
+            {tags?.map((tag: TagState) => (
               <ItemsSideBar
                 key={tag.name}
                 tag={tag}

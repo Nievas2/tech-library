@@ -1,10 +1,9 @@
-import { Tag } from "@/interfaces/Tag"
-import { useTags } from "@/stores/Tag"
+import { TagState, useTags } from "@/stores/Tag"
 import { capitalizeFirstLetter } from "@/utils"
 import { useState } from "react"
 
 interface ItemsSideBarProps {
-  tag: Tag
+  tag: TagState
 }
 export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
   const [active, setActive] = useState(tag.selected)
