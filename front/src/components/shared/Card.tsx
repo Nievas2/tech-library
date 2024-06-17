@@ -24,6 +24,8 @@ const Card = ({ card }: CardProps) => {
     } else {
       setFavoriteActive(!favoriteActive)
       const index = favorites?.findIndex((favorite) => favorite.id == card.id)
+      console.log(index)
+
       if (index >= 0 && index != undefined) deleteFavoriteLibrary(index)
     }
   }
@@ -31,7 +33,7 @@ const Card = ({ card }: CardProps) => {
     favorites?.find((favorite) => favorite.id === card.id)
       ? setFavoriteActive(true)
       : setFavoriteActive(false)
-  }, [])
+  }, [favoriteActive])
   return (
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl hover:scale-[1.03] hover:transition-transform duration-500 p-4">
       <div className="flex flex-col gap-2">
