@@ -22,38 +22,18 @@ import {
  */
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "bigint" })
-  private id!: number;
+  id!: number;
 
   @CreateDateColumn({
     name: "created_at",
     type: "timestamp",
   })
-  private createdAt!: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({
     name: "updated_at",
     type: "timestamp",
   })
-  private updatedAt!: Date;
+  updatedAt!: Date;
 
-  // Getters and Setters start
-  getId(): number {
-    return this.id;
-  }
-  setId(id: number): void {
-    this.id = id;
-  }
-  getCreatedAt(): Date {
-    return this.createdAt;
-  }
-  setCreatedAt(createdAt: Date): void {
-    this.createdAt = createdAt;
-  }
-  getUpdatedAt(): Date {
-    return this.updatedAt;
-  }
-  setUpdatedAt(updatedAt: Date): void {
-    this.updatedAt = updatedAt;
-  }
-  // Getters and Setters end
 }

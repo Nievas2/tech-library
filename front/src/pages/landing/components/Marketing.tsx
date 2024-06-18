@@ -13,10 +13,10 @@ const Marketing = () => {
           <Book className="h-6 w-6 mr-2" />
           No 1 task managment
         </div>
-        <h1 className="font-bold text-3xl mx-1 sm:mx-0 md:text-6xl text-center text-neutral-800 mb-6">
+        <h1 className="font-bold text-3xl mx-1 sm:mx-0 md:text-6xl text-center mb-6">
           TechLibrary helps team move
         </h1>
-        <div className="font-bold text-3xl md:text-6xl bg-gradient-to-r from-main to-tertiary text-white px-6 py-2 rounded-md w-fit text-light dark:text-[#fff]">
+        <div className="font-bold text-3xl md:text-6xl bg-gradient-to-r from-main to-tertiary text-light px-6 py-2 rounded-md w-fit">
           work forward
         </div>
       </div>
@@ -25,7 +25,7 @@ const Marketing = () => {
       )}>
         Collaborate, manage projects and reach new productivity peaks. From high rises to the home office, the work your team works is unique - accomplish it all with TechLibrary
       </div>
-      <Button className="mt-6" size="lg">
+      <Button variant="marketing" className="mt-6" size="lg">
         <Link to="/home">
           EXPLORE TECHLIBRARY
         </Link>

@@ -17,15 +17,19 @@ const buttonVariants = cva(
         secondary:
           "bg-dark text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4  hover:underline",
-        darkSwich: "bg-dark text-primary-foreground  dark:bg-light",
-        directLink: "bg-main text-primary-foreground hover:bg-main/80",
+        link: "text-primary underline-offset-4 hover:underline",
+        marketing: "bg-main hover:bg-main/80 text-light font-bold text-lg",
+        darkSwich: "bg-dark hover:bg-dark/80 dark:bg-light dark:hover:bg-light/90 text-light dark:text-dark",
+        directLink: "bg-main hover:bg-main/80 text-light",
+        authButton: "bg-main hover:bg-main/80 text-light text-base font-bold",
+        sidebarToggle: "bg-dark hover:bg-dark/80 dark:bg-light hover:dark:bg-light/90",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        rounded: "rounded-full"
       },
     },
     defaultVariants: {

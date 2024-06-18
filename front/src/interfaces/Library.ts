@@ -1,3 +1,6 @@
+import { Tag } from "./Tag"
+import { User } from "./User"
+
 export interface Library {
   id: number
   name: string
@@ -5,18 +8,6 @@ export interface Library {
   likes: number
   isActive: boolean
   state: "ACTIVE" | "PENDING" | "INACTIVE"
-  createdBy: UserEntity
-  tags: TagEntity[]
-}
-export interface TagEntity {
-  id: number
-  name: string
-}
-export interface UserEntity {
-  id: number
-  username: string
-  password: string
-  name: string
-  lastname: string
-  email: string
+  createdBy: User
+  tags?: Tag[]
 }

@@ -1,24 +1,26 @@
-import { Tecnology } from "@/interfaces/Tecnology"
-import { useTecnologies } from "@/stores/Tecnologies"
+import { TagState, useTags } from "@/stores/Tag"
+import { capitalizeFirstLetter } from "@/utils"
 import { useState } from "react"
 
 interface ItemsSideBarProps {
-  tecnology: Tecnology
+  tag: TagState
 }
-export default function ItemsSideBar({ tecnology }: ItemsSideBarProps) {
-  const [active, setActive] = useState(tecnology.selected)
-  const activeTecnology = useTecnologies(state => state.activeTecnology)
+export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
+  const [active, setActive] = useState(tag.selected)
+  const activeTag = useTags(state => state.activeTag)
+  
   function handleClick() {
     setActive(!active)
-    activeTecnology(tecnology.id)
+    activeTag(tag.id)
   }
+
   return (
-    <li className="flex border-separate py-1">
+    <li className="flex">
       <button
         className={`${active ? "text-main" : ""}`}
         onClick={handleClick}
       >
-        {tecnology.name}
+        {capitalizeFirstLetter(tag.name)}
       </button>
     </li>
   )

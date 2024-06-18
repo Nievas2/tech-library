@@ -1,13 +1,13 @@
 services:
-  open_library:
-    image: mysql:5.7
+  tech_library:
+    image: mysql:8.4
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     command: ["--init-file", "/docker-entrypoint-initdb.d/init.sql"]
     ports:
       - "3312:3306"
     environment:
-      MYSQL_DATABASE: open_library
+      MYSQL_DATABASE: tech_library
       MYSQL_ROOT_PASSWORD: secret
 networks:
   default:

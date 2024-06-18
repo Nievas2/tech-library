@@ -17,7 +17,6 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 export abstract class ConfigServer {
   constructor() {
     const nodeNameEnv = this.createPathEnv(this.nodeEnv);
-
     dotenv.config({ path: nodeNameEnv });
   }
 
@@ -45,6 +44,7 @@ export abstract class ConfigServer {
   }
 
   public get typeORMConfig(): DataSource {
+    
     return new DataSource({
       type: "mysql",
       host: this.getEnvironment("DB_HOST"),
@@ -58,6 +58,10 @@ export abstract class ConfigServer {
       logging: false,
       namingStrategy: new SnakeNamingStrategy(),
     })
+  }
+
+  async dbConnect(): Promise<DataSource> {
+    return await this.typeORMConfig.initialize();
   }
     
 }

@@ -3,8 +3,6 @@ import morgan from "morgan";
 import cors from "cors";
 import { UserRouter } from "./user/user.router";
 import { ConfigServer } from "./config/config";
-import { DataSource } from "typeorm";
-
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -15,7 +13,6 @@ import { DataSource } from "typeorm";
  * @method constructor - Constructor de la clase ServerBootstrap para inicializar el servidor y registrar las rutas y la base de datos
  * @method listen - Método que se encarga de iniciar el servidor
  * @method routers - Método que se encarga de registrar la lista de las rutas
- * @method dbConnect - Método que se encarga de conectar a la base de datos
  * @method initialize - Método que se encarga de inicializar el servidor
  *
  */
@@ -49,10 +46,6 @@ class ServerBootstrap extends ConfigServer {
 
   routers(): Array<express.Router> {
     return [new UserRouter().router];
-  }
-
-  async dbConnect(): Promise<DataSource> {
-    return await this.typeORMConfig.initialize();
   }
 }
 
