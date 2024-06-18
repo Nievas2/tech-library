@@ -13,30 +13,30 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
+import { useTags } from "@/stores/Tag"
 export default function FormAddLibrary() {
-  const [tags, setTags] = useState<string[]>([])
+  const tags = useTags((state) => state.tags)
+  const [tagsAdded, setTagsAdded] = useState<string[]>([])
   const formik = useFormik({
     initialValues: {
       name: "",
       description: "",
-      link: "",
-      tag: ""
+      link: ""
     },
     validationSchema: librarySchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2))
     }
   })
-  function addTag() {
-    const clonedTags = tags
-    clonedTags.push(formik.values.tag)
-    formik.setFieldValue("tag", "")
-    setTags(clonedTags)
+  function addTag(value: string) {
+    const clonedTags = tagsAdded
+    clonedTags.push(value)
+    setTagsAdded(clonedTags)
   }
   function removeTag(index: number) {
-    const clonedTags = tags
+    const clonedTags = tagsAdded
     clonedTags.splice(index, 1)
-    setTags(clonedTags)
+    setTagsAdded(clonedTags)
   }
   return (
     <section>
@@ -104,7 +104,9 @@ export default function FormAddLibrary() {
           />
           <small
             className={`${
-              formik.touched.description && formik.errors.description ? "text-[#FF0000]" : ""
+              formik.touched.description && formik.errors.description
+                ? "text-[#FF0000]"
+                : ""
             }`}
           >
             {formik.touched.description && formik.errors.description
@@ -112,7 +114,7 @@ export default function FormAddLibrary() {
               : ""}
           </small>
         </div>
-        <div className="flex w-full items-center gap-1.5 mt-8">
+        {/*  <div className="flex w-full items-center gap-1.5 mt-8">
           <Input
             id="tag"
             name="tag"
@@ -128,25 +130,39 @@ export default function FormAddLibrary() {
           >
             Add tag
           </Button>
-
-        </div>
-        <div>
-        <Select>
+        </div> */}
+        <div className="flex w-full items-center gap-1.5 mt-8">
+          <Input
+            id="tag"
+            name="tag"
+            onChange={formik.handleChange}
+            value={formik.values.tag}
+            className="bg-light"
+          />
+          <Select onValueChange={(value) => addTag(value)}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a state" />
+              <SelectValue placeholder="Select a tag" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="all">All</SelectItem>
+                {tags?.map((tag) => (
+                  <SelectItem
+                    key={crypto.randomUUID()}
+                    value={tag.name}
+                  >
+                    {tag.name}
+                  </SelectItem>
+                ))}
+                {/* <SelectItem value="all">All</SelectItem>
                 <SelectItem value="ACTIVE">ACTIVE</SelectItem>
                 <SelectItem value="PENDING">PENDING</SelectItem>
-                <SelectItem value="INACTIVE">INACTIVE</SelectItem>
+                <SelectItem value="INACTIVE">INACTIVE</SelectItem> */}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
         <div className="flex flex-row flex-wrap gap-2 text-sm">
-          {tags.map((tag, index) => (
+          {tagsAdded.map((tag, index) => (
             <div
               key={crypto.randomUUID()}
               className="flex gap-1 px-2 py-1 rounded-lg border font-extrabold text-stroke-dark dark:text-stroke-light "
