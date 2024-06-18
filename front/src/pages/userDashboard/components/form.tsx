@@ -7,7 +7,7 @@ import { useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 
 export default function FormAddLibrary() {
-  const [tags, setTags] = useState<String[]>([])
+  const [tags, setTags] = useState<string[]>([])
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -51,7 +51,17 @@ export default function FormAddLibrary() {
             onChange={formik.handleChange}
             value={formik.values.name}
             className="bg-light"
+            maxLength={20}
           />
+          <small
+            className={`${
+              formik.touched.name && formik.errors.name ? "text-[#FF0000]" : ""
+            }`}
+          >
+            {formik.touched.name && formik.errors.name
+              ? formik.errors.name
+              : ""}
+          </small>
         </div>
         <div className="grid w-full items-center gap-1.5">
           <Label className="text-light dark:text-dark">Link</Label>
@@ -62,10 +72,38 @@ export default function FormAddLibrary() {
             onChange={formik.handleChange}
             value={formik.values.link}
             className="bg-light"
+            maxLength={100}
           />
+          <small
+            className={`${
+              formik.touched.link && formik.errors.link ? "text-[#FF0000]" : ""
+            }`}
+          >
+            {formik.touched.link && formik.errors.link
+              ? formik.errors.link
+              : ""}
+          </small>
         </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
+        <div className="grid w-full items-center gap-1.5">
           <Label className="text-light dark:text-dark">Description</Label>
+          <Input
+            id="description"
+            name="description"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.description}
+            className="bg-light"
+            maxLength={100}
+          />
+          <small
+            className={`${
+              formik.touched.description && formik.errors.description ? "text-[#FF0000]" : ""
+            }`}
+          >
+            {formik.touched.description && formik.errors.description
+              ? formik.errors.description
+              : ""}
+          </small>
         </div>
         <div className="flex w-full items-center gap-1.5 mt-8">
           <Input
