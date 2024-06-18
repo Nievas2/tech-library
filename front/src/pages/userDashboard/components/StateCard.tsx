@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
-import FormAddLibrary from "./Form"
+import FormAddLibrary from "./FormAddLibrary"
 
 const StateCard = ({ card }: { card: Library }) => {
   return (
