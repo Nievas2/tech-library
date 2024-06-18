@@ -41,6 +41,7 @@ const cardDetails: Library[] = [
     likes: 1,
     isActive: true,
     state: "ACTIVE",
+    link: "https://reactjs.org/",
     createdBy: {
       id: 1,
       name: "John",
@@ -73,6 +74,7 @@ const cardDetails: Library[] = [
     likes: 1,
     isActive: true,
     state: "PENDING",
+    link: "https://reactjs.org/",
     createdBy: {
       id: 1,
       name: "John",
@@ -105,6 +107,7 @@ const cardDetails: Library[] = [
     likes: 1,
     isActive: true,
     state: "INACTIVE",
+    link: "https://reactjs.org/",
     createdBy: {
       id: 1,
       name: "John",
@@ -126,7 +129,6 @@ const UserDashboardPage = () => {
   }
   return (
     <div className="flex flex-1 w-screen flex-col relative ">
-      
       <div className="flex p-2">
         <div className="flex-1">
           <Select
@@ -160,11 +162,10 @@ const UserDashboardPage = () => {
                   </strong>
                 </DialogTitle>
               </DialogHeader>
-              <FormAddLibrary />
+              <FormAddLibrary card={undefined} />
             </DialogContent>
           </Dialog>
         </div>
-
       </div>
 
       <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mb-10">

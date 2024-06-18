@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { Library } from "@/interfaces/Library"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import {
@@ -62,7 +61,7 @@ const StateCard = ({ card }: { card: Library }) => {
                   </strong>
                 </DialogTitle>
               </DialogHeader>
-              <FormAddLibrary />
+              <FormAddLibrary card={card} />
             </DialogContent>
           </Dialog>
         </div>

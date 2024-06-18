@@ -3,7 +3,6 @@ import { librarySchema } from "@/utils/schemas/Library"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import {
   Select,
@@ -14,30 +13,47 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { useTags } from "@/stores/Tag"
-export default function FormAddLibrary() {
+import { useState } from "react"
+import { Library } from "@/interfaces/Library"
+interface CardProps {
+  card: Library | undefined
+}
+export default function FormAddLibrary({ card }: CardProps) {
   const tags = useTags((state) => state.tags)
-  const [tagsAdded, setTagsAdded] = useState<string[]>([])
+  const [tagsAdded, setTagsAdded] = useState<string[]>(
+    card?.tags?.map((tag) => tag.name) || []
+  )
+  const [error, setError] = useState(false)
+
   const formik = useFormik({
     initialValues: {
-      name: "",
-      description: "",
-      link: ""
+      name: card?.name || "",
+      description: card?.description || "",
+      link: card?.link || ""
     },
     validationSchema: librarySchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+      if (tagsAdded.length === 0) return setError(true)
+      setError(false)
+      console.log(values, tagsAdded)
     }
   })
+
   function addTag(value: string) {
     const clonedTags = tagsAdded
-    clonedTags.push(value)
-    setTagsAdded(clonedTags)
+    if (clonedTags.includes(value)) return
+    if (!tagsAdded.includes(value)) {
+      setTagsAdded([...tagsAdded, value])
+      if(error) setError(false)
+    }
   }
+
   function removeTag(index: number) {
     const clonedTags = tagsAdded
     clonedTags.splice(index, 1)
     setTagsAdded(clonedTags)
   }
+
   return (
     <section>
       <form
@@ -114,31 +130,7 @@ export default function FormAddLibrary() {
               : ""}
           </small>
         </div>
-        {/*  <div className="flex w-full items-center gap-1.5 mt-8">
-          <Input
-            id="tag"
-            name="tag"
-            onChange={formik.handleChange}
-            value={formik.values.tag}
-            className="bg-light"
-          />
-          <Button
-            onClick={addTag}
-            type="button"
-            className="p-1"
-            variant={"secondary"}
-          >
-            Add tag
-          </Button>
-        </div> */}
         <div className="flex w-full items-center gap-1.5 mt-8">
-          <Input
-            id="tag"
-            name="tag"
-            onChange={formik.handleChange}
-            value={formik.values.tag}
-            className="bg-light"
-          />
           <Select onValueChange={(value) => addTag(value)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a tag" />
@@ -153,33 +145,32 @@ export default function FormAddLibrary() {
                     {tag.name}
                   </SelectItem>
                 ))}
-                {/* <SelectItem value="all">All</SelectItem>
-                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                <SelectItem value="PENDING">PENDING</SelectItem>
-                <SelectItem value="INACTIVE">INACTIVE</SelectItem> */}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-row flex-wrap gap-2 text-sm">
+        <div className="flex flex-row flex-wrap gap-2 text-sm mt-2">
           {tagsAdded.map((tag, index) => (
             <div
               key={crypto.randomUUID()}
               className="flex gap-1 px-2 py-1 rounded-lg border font-extrabold text-stroke-dark dark:text-stroke-light "
             >
               <h4>{tag}</h4>
-              <button onClick={() => removeTag(index)}>
+              <button
+                className="w-[16px]"
+                onClick={() => removeTag(index)}
+              >
                 <Icon
                   icon="material-symbols:close"
                   width="16"
                   height="16"
-                  color="#000"
+                  className="text-dark dark:text-light"
                 />
               </button>
             </div>
           ))}
         </div>
-
+          <small className="text-[#FF0000]">{error ? "Add at least one tag" : ""}</small>
         <Button
           variant={"secondary"}
           className="p-1 mt-4"
@@ -187,7 +178,6 @@ export default function FormAddLibrary() {
         >
           Submit
         </Button>
-        {/* <Card card="test" />  */}
       </form>
     </section>
   )
