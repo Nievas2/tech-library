@@ -157,7 +157,7 @@ const UserDashboardPage = () => {
             <DialogContent className="bg-light dark:bg-dark ">
               <DialogHeader className="">
                 <DialogTitle>
-                  <strong className="text-light dark:text-dark ">
+                  <strong className="text-dark dark:text-light ">
                     Sugerir
                   </strong>
                 </DialogTitle>

@@ -44,7 +44,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     if (clonedTags.includes(value)) return
     if (!tagsAdded.includes(value)) {
       setTagsAdded([...tagsAdded, value])
-      if(error) setError(false)
+      if (error) setError(false)
     }
   }
 
@@ -61,12 +61,7 @@ export default function FormAddLibrary({ card }: CardProps) {
         onSubmit={formik.handleSubmit}
       >
         <div className="grid w-full items-center gap-1.5">
-          <Label
-            htmlFor="name"
-            className=" text-light dark:text-dark"
-          >
-            Name
-          </Label>
+          <Label htmlFor="name">Name</Label>
           <Input
             id="name"
             name="name"
@@ -87,7 +82,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           </small>
         </div>
         <div className="grid w-full items-center gap-1.5">
-          <Label className="text-light dark:text-dark">Link</Label>
+          <Label>Link</Label>
           <Input
             id="link"
             name="link"
@@ -108,7 +103,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           </small>
         </div>
         <div className="grid w-full items-center gap-1.5">
-          <Label className="text-light dark:text-dark">Description</Label>
+          <Label>Description</Label>
           <Input
             id="description"
             name="description"
@@ -170,9 +165,11 @@ export default function FormAddLibrary({ card }: CardProps) {
             </div>
           ))}
         </div>
-          <small className="text-[#FF0000]">{error ? "Add at least one tag" : ""}</small>
+        <small className="text-[#FF0000]">
+          {error ? "Add at least one tag" : ""}
+        </small>
         <Button
-          variant={"secondary"}
+          variant={"marketing"}
           className="p-1 mt-4"
           type="submit"
         >

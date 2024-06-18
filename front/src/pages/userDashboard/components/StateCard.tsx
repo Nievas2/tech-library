@@ -56,9 +56,9 @@ const StateCard = ({ card }: { card: Library }) => {
             <DialogContent className="bg-light dark:bg-dark ">
               <DialogHeader className="">
                 <DialogTitle>
-                  <strong className="text-light dark:text-dark ">
+                  <h2 className="text-dark dark:text-dark ">
                     Sugerir
-                  </strong>
+                  </h2>
                 </DialogTitle>
               </DialogHeader>
               <FormAddLibrary card={card} />
