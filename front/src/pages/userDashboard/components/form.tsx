@@ -5,7 +5,14 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
 export default function FormAddLibrary() {
   const [tags, setTags] = useState<string[]>([])
   const formik = useFormik({
@@ -121,6 +128,22 @@ export default function FormAddLibrary() {
           >
             Add tag
           </Button>
+
+        </div>
+        <div>
+        <Select>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a state" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
+                <SelectItem value="PENDING">PENDING</SelectItem>
+                <SelectItem value="INACTIVE">INACTIVE</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="flex flex-row flex-wrap gap-2 text-sm">
           {tags.map((tag, index) => (
