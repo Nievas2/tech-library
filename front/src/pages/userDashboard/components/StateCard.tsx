@@ -11,7 +11,7 @@ import FormAddLibrary from "./FormAddLibrary"
 
 const StateCard = ({ card }: { card: Library }) => {
   return (
-    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl hover:scale-[1.03] hover:transition-transform duration-500 p-4">
+    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4">
       <div className="flex items-end justify-end">
         <div className="flex items-center gap-2">
           <span
@@ -56,7 +56,7 @@ const StateCard = ({ card }: { card: Library }) => {
             <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
               <DialogHeader className="">
                 <DialogTitle>
-                  <h2 className="text-dark dark:text-dark ">
+                  <h2 className="text-dark dark:text-light ">
                     Sugerir
                   </h2>
                 </DialogTitle>

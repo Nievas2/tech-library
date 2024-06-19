@@ -15,6 +15,7 @@ import {
 import { useTags } from "@/stores/Tag"
 import { useState } from "react"
 import { Library } from "@/interfaces/Library"
+import { Textarea } from "@/components/ui/textarea"
 interface CardProps {
   card: Library | undefined
 }
@@ -66,6 +67,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             id="name"
             name="name"
             type="text"
+            placeholder="React"
             onChange={formik.handleChange}
             value={formik.values.name}
             className="bg-light"
@@ -87,6 +89,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             id="link"
             name="link"
             type="text"
+            placeholder="https://es.react.dev/"
             onChange={formik.handleChange}
             value={formik.values.link}
             className="bg-light"
@@ -104,10 +107,10 @@ export default function FormAddLibrary({ card }: CardProps) {
         </div>
         <div className="grid w-full items-center gap-1.5">
           <Label>Description</Label>
-          <Input
+          <Textarea
             id="description"
             name="description"
-            type="text"
+            placeholder="Description"
             onChange={formik.handleChange}
             value={formik.values.description}
             className="bg-light"
