@@ -12,7 +12,7 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-4 flex flex-col gap-5 px-4 justify-center items-center">
+        <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center">
           <SearchBar />
           {libraries && <CardsContainer cards={libraries} />}
         </div>
