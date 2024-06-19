@@ -29,14 +29,15 @@ export default function SideBar() {
       <div
         className={`w-full h-full relative ${
           open
-            ? "px-4 pt-4 border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light"
+            ? "px-4 pt-[34px] border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light"
             : "pt-0"
         }`}
       >
         <div
           className={`absolute duration-150 ${
             open ? "right-[-18px]" : "right-[-50px] xl:right-[-50px]"
-          } top-[24px]`}
+          } top-[30px]`}
+          // md:top-[28px]
         >
           <Button
             onClick={handleSidebar}
