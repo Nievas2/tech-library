@@ -56,9 +56,8 @@ export default function FormAddLibrary({ card }: CardProps) {
   }
 
   return (
-    <section>
       <form
-        className="flex flex-col p-2 gap-1"
+        className="flex flex-col gap-2 mt-1"
         onSubmit={formik.handleSubmit}
       >
         <div className="grid w-full items-center gap-1.5">
@@ -128,7 +127,7 @@ export default function FormAddLibrary({ card }: CardProps) {
               : ""}
           </small>
         </div>
-        <div className="flex w-full items-center gap-1.5 mt-8">
+        <div className="flex w-full items-center gap-1.5">
           <Select onValueChange={(value) => addTag(value)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a tag" />
@@ -147,7 +146,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-row flex-wrap gap-2 text-sm mt-2">
+        <div className="flex flex-row flex-wrap gap-2 text-sm mt-1">
           {tagsAdded.map((tag, index) => (
             <div
               key={crypto.randomUUID()}
@@ -173,12 +172,11 @@ export default function FormAddLibrary({ card }: CardProps) {
         </small>
         <Button
           variant={"marketing"}
-          className="p-1 mt-4"
+          className="p-1"
           type="submit"
         >
           Submit
         </Button>
       </form>
-    </section>
   )
 }
