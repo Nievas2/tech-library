@@ -53,7 +53,7 @@ const StateCard = ({ card }: { card: Library }) => {
                 height="16"
               />
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
+            <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
               <DialogHeader className="">
                 <DialogTitle>
                   <h2 className="text-dark dark:text-dark ">

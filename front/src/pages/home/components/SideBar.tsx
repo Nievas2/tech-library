@@ -22,29 +22,26 @@ export default function SideBar() {
 
   return (
     <section
-      // bg-light dark:bg-dark
       className={`h-full transition-width duration-300 ease-out fixed z-10 md:static bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
         open ? "w-60" : "w-0"
       } `}
     >
       <div
         className={`w-full h-full relative ${
-          // px-4 pt-14 border border-r-dark dark:border-r-light dark:bg-dark
           open
-            ? "px-4 pt-14 border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light"
+            ? "px-4 pt-4 border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light"
             : "pt-0"
         }`}
       >
         <div
           className={`absolute duration-150 ${
             open ? "right-[-18px]" : "right-[-50px] xl:right-[-50px]"
-          } top-[48px]`}
+          } top-[24px]`}
         >
           <Button
             onClick={handleSidebar}
             variant="sidebarToggle"
             size="rounded"
-            // className="bg-dark dark:bg-light rounded-full"
           >
             <Icon
               icon="mingcute:right-fill"
@@ -58,7 +55,6 @@ export default function SideBar() {
 
         <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
           <h2 className="text-xl font-bold">TECNOLOGIES</h2>
-          {/* <ul className={`${open ? "flex flex-col gap-1" : "hidden"}`}> */}
           <ul className="flex flex-col gap-1">
             {tags?.map((tag: TagState) => (
               <ItemsSideBar

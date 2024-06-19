@@ -154,7 +154,7 @@ const UserDashboardPage = () => {
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
               Sugerir
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
+            <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
               <DialogHeader className="">
                 <DialogTitle>
                   <strong className="text-dark dark:text-light ">

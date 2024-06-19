@@ -148,7 +148,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           {tagsAdded.map((tag, index) => (
             <div
               key={crypto.randomUUID()}
-              className="flex gap-1 px-2 py-1 rounded-lg border font-extrabold text-stroke-dark dark:text-stroke-light "
+              className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
             >
               <h4>{tag}</h4>
               <button

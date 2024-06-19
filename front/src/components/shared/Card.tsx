@@ -52,7 +52,7 @@ const Card = ({ card }: CardProps) => {
                 // style={{ backgroundColor: tagColor.bgColor, borderColor: tagColor.borderColor }}
                 // className="px-2 py-1 rounded-lg border font-extrabold text-dark [text-shadow:_1px_1px_0px_rgb(255_255_255_/_100%)] dark:text-light dark:[text-shadow:_1px_1px_0_rgb(0_0_0_/_100%)]">
                 // border-dark dark:border-light
-                className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light"
+                className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light "
               >
                 {tag.name}
               </h4>
