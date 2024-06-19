@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import { HttpResponse } from "../../shared/response/http.response";
 import { DeleteResult, UpdateResult } from "typeorm";
+import { UserHttpResponse } from "../response/user.http.response";
+import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 
 /**
  * @version 1.0.0
@@ -23,9 +24,10 @@ import { DeleteResult, UpdateResult } from "typeorm";
 export class UserController {
   constructor(
     private readonly service: UserService = new UserService(),
-    private readonly httpResponse: HttpResponse = new HttpResponse(
+    private readonly userHttpResponse: UserHttpResponse = new UserHttpResponse(
       service.lenguaje
-    )
+    ),
+    private readonly globalExceptionHandler: GlobalExceptionHandling = new GlobalExceptionHandling(service.lenguaje)
   ) {}
 
   /**
@@ -37,10 +39,10 @@ export class UserController {
   public async getUsers(_req: Request, res: Response) {
     try {
       const data = await this.service.findAll();
-      if (data.length === 0) return this.httpResponse.NotFound(res, data);
-      return this.httpResponse.Ok(res, data);
+      if (data.length === 0) return this.userHttpResponse.BadRequestUserNotFound(res, data);
+      return this.userHttpResponse.Ok(res, data);
     } catch (error) {
-      console.error(error);
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
   /**
@@ -52,17 +54,17 @@ export class UserController {
   public async getUsersActive(_req: Request, res: Response) {
     try {
       const data = await this.service.findAllActive();
-      if (data.length === 0) return this.httpResponse.NotFound(res, data);
-      return this.httpResponse.Ok(res, data);
+      if (data.length === 0) return this.userHttpResponse.BadRequestUserNotFound(res, data);
+      return this.userHttpResponse.Ok(res, data);
     } catch (error) {
       console.error(error);
-      this.httpResponse.Error(res, error);
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
 
   /**
    * @method getUser - Retorna un usuario
-   * @param id - Id del usuario
+   * @property id - Id del usuario
    * @returns Status 200 con el usuario 
    * @returns Status 404 si el usuario no existe
    * @returns Status 500 si hay un error en el servidor
@@ -71,11 +73,9 @@ export class UserController {
     try {
       const id = Number(req.params.id);
       const data = await this.service.findById(id);
-      if (!data) return this.httpResponse.NotFound(res, data);
-      this.httpResponse.Ok(res, data);
+      this.userHttpResponse.Ok(res, data);
     } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
 
@@ -90,27 +90,27 @@ export class UserController {
     try {
       const id = Number(req.params.id);
       const data = await this.service.findByIdActive(id);
-      if (!data) return this.httpResponse.NotFound(res, data);
-      this.httpResponse.Ok(res, data);
+      this.userHttpResponse.Ok(res, data);
     } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
   /**
    * @method createUser - Crea un nuevo usuario
-   * @returns Status 200 con el usuario creado o un error
    * @param user - DTO del usuario
-   * @returns Status 200 con el usuario creado o un error
+   * @returns Status 200 con el usuario creado
+   * @returns Status 400 si el usuario ya existe
+   * @returns Status 500 si hay un error en el servidor
    */
   public async createUser(req: Request, res: Response) {
     try {
       const data = await this.service.create(req.body);
-      this.httpResponse.Created(res, data);
-    } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      this.userHttpResponse.Created(res, data);
     }
+    catch (e) {
+      if(e instanceof Error) return this.globalExceptionHandler.handleErrors(e, res);
+    }
+
   }
 
   /**
@@ -125,11 +125,10 @@ export class UserController {
     try {
       const id = Number(req.params.id);
       const data: UpdateResult = await this.service.update(id, req.body);
-      if (!data.affected) return this.httpResponse.NotFound(res, data);
-      this.httpResponse.Updated(res, data);
-    } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      if (!data.affected) return this.userHttpResponse.BadRequestUpdatedUser(res, data);
+      this.userHttpResponse.Updated(res, data);
+    } catch (e) {
+      if(e instanceof Error) return this.globalExceptionHandler.handleErrors(e, res);
     }
   }
 
@@ -145,11 +144,10 @@ export class UserController {
     try {
       const id = Number(req.params.id);
       const data: DeleteResult = await this.service.delete(id);
-      if (!data) return this.httpResponse.NotFound(res, data);
-      this.httpResponse.Deleted(res, data);
-    } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      if (!data) return this.userHttpResponse.BadRequestUserNotFound(res, data);
+      this.userHttpResponse.Deleted(res, data);
+    } catch (e) {
+      if(e instanceof Error) return this.globalExceptionHandler.handleErrors(e, res);
     }
   }
 
@@ -167,14 +165,13 @@ export class UserController {
       const id = Number(req.params.id);
       const user = await this.service.findById(id);
 
-      if (!user?.isActive) return this.httpResponse.BadRequest(res, user);
+      if (!user?.isActive) return this.userHttpResponse.BadRequestUserAlreadyDisabled(res, user);
 
       const data: UpdateResult = await this.service.deleteLogic(id);
-      if (!data.affected) return this.httpResponse.NotFound(res, data);
-      this.httpResponse.Deleted(res, data);
-    } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      if (!data.affected) return this.userHttpResponse.BadRequestUpdatedUser(res, data);
+      this.userHttpResponse.Deleted(res, data);
+    } catch (e) {
+      if(e instanceof Error) return this.globalExceptionHandler.handleErrors(e, res);
     }
   }
 
@@ -191,14 +188,13 @@ export class UserController {
       const id = Number(req.params.id);
       const user = await this.service.findById(id);
 
-      if (user?.isActive) return this.httpResponse.BadRequest(res, user);
+      if (user?.isActive) return this.userHttpResponse.BadRequestUserAlreadyActive(res, user);
 
       const data: UpdateResult = await this.service.restore(id);
-      if (!data.affected) return this.httpResponse.NotFound(res, data);
-      this.httpResponse.Updated(res, data);
-    } catch (error) {
-      console.error(error);
-      this.httpResponse.Error(res, error);
+      if (!data.affected) return this.userHttpResponse.BadRequestUpdatedUser(res, data);
+      this.userHttpResponse.Updated(res, data);
+    } catch (e) {
+      if(e instanceof Error) return this.globalExceptionHandler.handleErrors(e, res);
     }
   }
 }

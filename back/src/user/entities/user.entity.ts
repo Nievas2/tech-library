@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany, Unique } from "typeorm";
 import { BaseEntity } from "../../config/base.entity";
 import { LibraryEntity } from "../../library/entities/library.entity";
 import { Exclude } from "class-transformer";
+import { LikeEntity } from "../../like/entities/like.entity";
 
 /**
  * @version 1.0.0
@@ -20,8 +21,9 @@ import { Exclude } from "class-transformer";
  *
  */
 @Entity({ name: "users" })
+@Unique(["username", "email"])
 export class UserEntity extends BaseEntity {
-  @Column({ unique: true, type: "varchar", length: 50, nullable: false })
+  @Column({ type: "varchar", length: 50, nullable: false })
   username!: string;
   @Column({ type: "varchar", nullable: false })
   @Exclude() 
@@ -37,6 +39,9 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => LibraryEntity, (library) => library.createdBy)
   libraries!: Promise<LibraryEntity[]>;
+    
+  @OneToMany(() => LikeEntity, (like) => like.user)
+  likes!: LikeEntity[];
 
   constructor(
     username: string,

@@ -15,6 +15,10 @@ export class TagRouter extends BaseRouter<TagController> {
     }
 
     public routes(): void {
-        this.router.get('/tag', (req, res) => this.controller.getTags( req, res));
+        this.router.get('/tag/all', (req, res) => this.controller.getTags( req, res))
+        this.router.get('/tag/:id', (req, res) => this.controller.getTag( req, res))
+        this.router.post('/tag/create', (req, res) => this.controller.createTag( req, res))
+        this.router.put('/tag/update/:id', (req, res) => this.controller.updateTag( req, res))
+        this.router.delete('/tag/delete/:id', (req, res) => this.controller.deleteTag( req, res));
     }
 }

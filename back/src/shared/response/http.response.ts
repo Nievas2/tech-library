@@ -24,7 +24,7 @@ export enum HttpStatus {
  *  @method Forbidden - Método que se encarga de retornar una respuesta forbidden  403
  *  @method Error - Método que se encarga de retornar una respuesta error 500
  */
-export class HttpResponse extends BaseMessage {
+export abstract class BaseHttpResponse extends BaseMessage {
   constructor(lenguage: string | undefined) {
     super(lenguage);
   }
@@ -37,18 +37,18 @@ export class HttpResponse extends BaseMessage {
       data: data,
     });
   }
-  NotFound(res: Response, data?: any): Response {
+  NotFound(res: Response, _data?: any): Response {
     let message = "";
     const msg: string | undefined = this.hasLenguaje()
-      ? this.getEnvironment("UPDATE_ERROR")
-      : "Updated error";
-    message = msg === undefined ? "Updated error" : msg;
+      ? this.getEnvironment("NOT_FOUND")
+      : "Not Found";
+    message = msg === undefined ? "Not Found" : msg;
     return res.status(HttpStatus.NOT_FOUND).json({
       status: HttpStatus.NOT_FOUND,
       statusMessage: message,
     });
   }
-  Unauthorized(res: Response, data?: any): Response {
+  Unauthorized(res: Response, _data?: any): Response {
     const message = this.hasLenguaje()
       ? this.getEnvironment("UNAUTHORIZED")
       : "Unauthorized";
@@ -57,7 +57,7 @@ export class HttpResponse extends BaseMessage {
       statusMessage: message,
     });
   }
-  Forbidden(res: Response, data?: any): Response {
+  Forbidden(res: Response, _data?: any): Response {
     const message = this.hasLenguaje()
       ? this.getEnvironment("FORBIDDEN")
       : "Forbidden";
@@ -67,7 +67,7 @@ export class HttpResponse extends BaseMessage {
     });
   }
 
-  Error(res: Response, data?: any): Response {
+  Error(res: Response, _data?: any): Response {
     const message = this.hasLenguaje()
       ? this.getEnvironment("ERROR")
       : "Internal Server Error";
@@ -99,7 +99,7 @@ export class HttpResponse extends BaseMessage {
     });
   }
 
-  Deleted(res: Response, data?: any): Response {
+  Deleted(res: Response, _data?: any): Response {
     const message = this.hasLenguaje()
       ? this.getEnvironment("DELETED")
       : "Deleted";
@@ -109,9 +109,9 @@ export class HttpResponse extends BaseMessage {
     });
   }
 
-  BadRequest(res: Response, data?: any): Response {
+  BadRequest(res: Response, env: string , _data?: any): Response {
     const message = this.hasLenguaje()
-      ? this.getEnvironment("BAD_REQUEST")
+      ? this.getEnvironment(env)
       : "Bad Request";
     return res.status(HttpStatus.BAD_REQUEST).json({
       status: HttpStatus.BAD_REQUEST,

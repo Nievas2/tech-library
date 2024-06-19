@@ -31,7 +31,7 @@ export class BaseService<T extends BaseEntity> extends ConfigServer {
      */
     async initRepository(e: EntityTarget<T>): Promise<Repository<T>> {
         try {
-            const getConnection = await this.dbConnect();
+            const getConnection = await this.initConnect;
             return getConnection.getRepository(e);
         } catch (error) {
             console.error("Error initializing repository:", error);
