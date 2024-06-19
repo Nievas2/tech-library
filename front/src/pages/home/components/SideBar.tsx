@@ -23,7 +23,7 @@ export default function SideBar() {
   return (
     <section
       // bg-light dark:bg-dark
-      className={`h-full transition-width duration-300 ease-out fixed md:static bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
+      className={`h-full transition-width duration-300 ease-out fixed z-10 md:static bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
         open ? "w-60" : "w-0"
       } `}
     >
