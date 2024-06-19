@@ -43,7 +43,8 @@ export const useLibraries = create<State>()(
               username: "johndoe",
               password: "password123",
               email: "johndoe@me.com"
-            }
+            },
+            link: "https://example.com/react"
           },
           {
             id: 2,
@@ -80,7 +81,8 @@ export const useLibraries = create<State>()(
               username: "janesmith",
               password: "password123",
               email: "janesmith@me.com"
-            }
+            },
+            link: "https://example.com/nodejs"
           },
           {
             id: 3,
@@ -116,7 +118,8 @@ export const useLibraries = create<State>()(
               username: "bobjohnson",
               password: "password123",
               email: "bobjohnson@me.com"
-            }
+            },
+            link: "https://example.com/git"
           },
           {
             id: 4,
@@ -152,7 +155,8 @@ export const useLibraries = create<State>()(
               username: "alicebrown",
               password: "password123",
               email: "alicebrown@me.com"
-            }
+            },
+            link: "https://example.com/expressjs"
           },
           {
             id: 5,
@@ -189,7 +193,8 @@ export const useLibraries = create<State>()(
               username: "mikedavis",
               password: "password123",
               email: "mikedavis@me.com"
-            }
+            },
+            link: "https://example.com/mongodb"
           },
           {
             id: 6,
@@ -221,7 +226,8 @@ export const useLibraries = create<State>()(
               username: "emilychen",
               password: "password123",
               email: "emilychen@me.com"
-            }
+            },
+            link: "https://example.com/htmlcss"
           },
           {
             id: 7,
@@ -258,7 +264,8 @@ export const useLibraries = create<State>()(
               username: "davidlee",
               password: "password123",
               email: "davidlee@me.com"
-            }
+            },
+            link: "https://example.com/javascript"
           },
           {
             id: 8,
@@ -295,7 +302,8 @@ export const useLibraries = create<State>()(
               username: "sarahtaylor",
               password: "password123",
               email: "sarahtaylor@me.com"
-            }
+            },
+            link: "https://example.com/python"
           },
           {
             id: 9,
@@ -332,7 +340,8 @@ export const useLibraries = create<State>()(
               username: "kevinwhite",
               password: "password123",
               email: "kevinwhite@me.com"
-            }
+            },
+            link: "https://example.com/java"
           },
           {
             id: 10,
@@ -364,12 +373,13 @@ export const useLibraries = create<State>()(
             state: "ACTIVE",
             createdBy: {
               id: 10,
-              name: "Lisa",
-              lastname: "Nguyen",
-              username: "lisanguyen",
+              name: "Anna",
+              lastname: "Green",
+              username: "annagreen",
               password: "password123",
-              email: "lisanguyen@me.com"
-            }
+              email: "annagreen@me.com"
+            },
+            link: "https://example.com/ruby"
           },
           {
             id: 11,
@@ -406,7 +416,8 @@ export const useLibraries = create<State>()(
               username: "paulmartinez",
               password: "password123",
               email: "paulmartinez@me.com"
-            }
+            },
+            link: "https://example.com/php"
           },
           {
             id: 12,
@@ -443,7 +454,8 @@ export const useLibraries = create<State>()(
               username: "markdavis",
               password: "password123",
               email: "markdavis@me.com"
-            }
+            },
+            link: "https://example.com/aws"
           },
           {
             id: 13,
@@ -480,7 +492,8 @@ export const useLibraries = create<State>()(
               username: "jessicamartin",
               password: "password123",
               email: "jessicamartin@me.com"
-            }
+            },
+            link: "https://example.com/azure"
           },
           {
             id: 14,
@@ -517,7 +530,8 @@ export const useLibraries = create<State>()(
               username: "ruthbrown",
               password: "password123",
               email: "ruthbrown@me.com"
-            }
+            },
+            link: "https://example.com/googlecloud"
           },
           {
             id: 15,
@@ -554,7 +568,8 @@ export const useLibraries = create<State>()(
               username: "johnsmith",
               password: "password123",
               email: "johnsmith@me.com"
-            }
+            },
+            link: "https://example.com/tensorflow"
           },
           {
             id: 16,
@@ -591,7 +606,8 @@ export const useLibraries = create<State>()(
               username: "janedoe",
               password: "password123",
               email: "janedoe@me.com"
-            }
+            },
+            link: "https://example.com/keras"
           },
           {
             id: 17,
@@ -628,7 +644,8 @@ export const useLibraries = create<State>()(
               username: "bobjohnson",
               password: "password123",
               email: "bobjohnson@me.com"
-            }
+            },
+            link: "https://example.com/pytorch"
           },
           {
             id: 18,
@@ -665,7 +682,8 @@ export const useLibraries = create<State>()(
               username: "alicebrown",
               password: "password123",
               email: "alicebrown@me.com"
-            }
+            },
+            link: "https://example.com/opencv"
           },
           {
             id: 19,
@@ -702,7 +720,8 @@ export const useLibraries = create<State>()(
               username: "sarahwilson",
               password: "password123",
               email: "sarahwilson@me.com"
-            }
+            },
+            link: "https://example.com/tailwindcss"
           },
           {
             id: 20,
@@ -739,7 +758,8 @@ export const useLibraries = create<State>()(
               username: "davidlee",
               password: "password123",
               email: "davidlee@me.com"
-            }
+            },
+            link: "https://example.com/bootstrap"
           },
           {
             id: 21,
@@ -776,7 +796,8 @@ export const useLibraries = create<State>()(
               username: "emilykim",
               password: "password123",
               email: "emilykim@me.com"
-            }
+            },
+            link: "https://example.com/materialize"
           }
         ],
         favorites: [
@@ -810,13 +831,17 @@ export const useLibraries = create<State>()(
               username: "johndoe",
               password: "password123",
               email: "johndoe@me.com"
-            }
+            },
+            link: "https://example.com/react"
           }
         ],
         addFavoriteLibrary: (library: Library) => {
           const { favorites } = get()
           let newLibraryFavorites = structuredClone(favorites)
-          if (newLibraryFavorites?.length === 0 || newLibraryFavorites === undefined) {
+          if (
+            newLibraryFavorites?.length === 0 ||
+            newLibraryFavorites === undefined
+          ) {
             newLibraryFavorites = [library]
             set({ favorites: newLibraryFavorites })
             return

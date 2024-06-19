@@ -3,6 +3,8 @@ import morgan from "morgan";
 import cors from "cors";
 import { UserRouter } from "./user/user.router";
 import { ConfigServer } from "./config/config";
+import { TagRouter } from "./tag/tag.router";
+import { DataSource } from "typeorm";
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -28,11 +30,7 @@ class ServerBootstrap extends ConfigServer {
     this.app.use(morgan("dev"));
     this.app.use(cors());
 
-    try {
-      this.dbConnect();
-    } catch (error) {
-      console.error("Error al conectar a la base de datos:", error);
-    }
+    this.dbConnect();
 
     this.app.use("/api", this.routers());
     this.listen();
@@ -44,8 +42,16 @@ class ServerBootstrap extends ConfigServer {
     });
   }
 
+  async dbConnect(): Promise<DataSource | void> {
+    return this.initConnect.then(() => {
+      console.log("Connect to database successfully");
+    }).catch((error) => {
+      console.error("Error connecting to database:", error);
+    });
+  }
+
   routers(): Array<express.Router> {
-    return [new UserRouter().router];
+    return [new UserRouter().router, new TagRouter().router];
   }
 }
 

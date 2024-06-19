@@ -1,8 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { BaseEntity } from "../../config/base.entity";
 import { State } from "../statate.enum";
 import { UserEntity } from "../../user/entities/user.entity";
 import { TagEntity } from "../../tag/entities/tag.entity";
+import { LikeEntity } from "../../like/entities/like.entity";
 
 /**
  * @version 1.0.0
@@ -17,20 +18,6 @@ import { TagEntity } from "../../tag/entities/tag.entity";
  * @property {UserEntity} createdBy - Creador de la libreria
  * @property {TagEntity} tags - Etiquetas de la libreria
  * @method constructor - Constructor de la clase
- * @method getName - Obtiene el nombre de la libreria
- * @method setName - Establece el nombre de la libreria
- * @method getDescription - Obtiene la descripción de la libreria
- * @method setDescription - Establece la descripción de la libreria
- * @method getLikes - Obtiene la cantidad de likes de la libreria
- * @method setLikes - Establece la cantidad de likes de la libreria
- * @method getIsActive - Obtiene el estado de la libreria
- * @method setIsActive - Establece el estado de la libreria
- * @method getState - Obtiene el estado de la libreria
- * @method setState - Establece el estado de la libreria
- * @method getCreatedBy - Obtiene el creador de la libreria
- * @method setCreatedBy - Establece el creador de la libreria
- * @method getTags - Obtiene las etiquetas de la libreria
- * @method setTags - Establece las etiquetas de la libreria
  * @method upLikes - Incrementa la cantidad de likes de la libreria
  * @method downLikes - Decrementa la cantidad de likes de la libreria
  * @method activeState - Activa la libreria
@@ -47,22 +34,22 @@ export class LibraryEntity extends BaseEntity {
 
   @Column({ type: "varchar", length: 255, nullable: false })
   description!: string;
-
-  @Column({ type: "bigint", default: 0, nullable: false })
-  likes!: number;
-
+  
   @Column({ type: "boolean", default: true, nullable: false })
   isActive!: boolean;
-
+  
   @Column({ type: "enum", enum: State, default: State.PENDING })
   state!: State;
-
+  
   @ManyToOne(() => UserEntity, (user) => user.libraries, {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "CASCADE",
   })
   createdBy!: UserEntity;
+
+  @OneToMany(() => LikeEntity, (like) => like.library)
+  likes!: LikeEntity[];
 
   @ManyToMany(() => TagEntity, (tag) => tag.libraries)
   @JoinTable({
@@ -81,30 +68,18 @@ export class LibraryEntity extends BaseEntity {
   constructor(
     name: string,
     description: string,
-    likes: number,
-    isActive: boolean,
-    state: State,
     createdBy: UserEntity,
-    tags: TagEntity[]
+
   ) {
     super();
     this.name = name;
     this.description = description;
-    this.likes = likes;
-    this.isActive = isActive;
-    this.state = state;
+    this.isActive = true;
+    this.state = State.PENDING;
     this.createdBy = createdBy;
-    this.tags = tags;
   }
 
   //Methods start
-  public upLikes(): void {
-    this.likes++;
-  }
-
-  public downLikes(): void {
-    this.likes--;
-  }
 
   public activeState(): void {
     this.state = State.ACTIVE;
@@ -127,5 +102,4 @@ export class LibraryEntity extends BaseEntity {
   }
 
   //Methods end
-
 }

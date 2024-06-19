@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany } from "typeorm";
+import { Column, Entity, ManyToMany, Unique } from "typeorm";
 import { BaseEntity } from "../../config/base.entity";
 import { LibraryEntity } from "../../library/entities/library.entity";
 
@@ -16,6 +16,7 @@ import { LibraryEntity } from "../../library/entities/library.entity";
  * @method setLibraries - Establece las librerias asociadas a la etiqueta
  */
 @Entity({ name: "tags" })
+@Unique(["name"])
 export class TagEntity extends BaseEntity {
 
     @Column({ type: "varchar", length: 15, unique: true, nullable: false })

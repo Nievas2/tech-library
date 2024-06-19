@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { DataSource } from "typeorm";
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { AppDataSource } from "./data.source";
 
 /**
  * @version 1.0.0
@@ -43,25 +43,8 @@ export abstract class ConfigServer {
     return "." + arrEnv.join(".");
   }
 
-  public get typeORMConfig(): DataSource {
-    
-    return new DataSource({
-      type: "mysql",
-      host: this.getEnvironment("DB_HOST"),
-      port: this.getNumberEnvironment("DB_PORT"),
-      username: this.getEnvironment("DB_USER"),
-      password: this.getEnvironment("DB_PASSWORD"),
-      database: this.getEnvironment("DB_DATABASE"),
-      entities: [__dirname + "/../**/*.entity{.ts,.js}"],
-      migrations: [__dirname + "/../../migrations/*{.ts,.js}"],
-      synchronize: true,
-      logging: false,
-      namingStrategy: new SnakeNamingStrategy(),
-    })
-  }
-
-  async dbConnect(): Promise<DataSource> {
-    return await this.typeORMConfig.initialize();
+  get initConnect(): Promise<DataSource> {
+    return AppDataSource.initialize();
   }
     
 }

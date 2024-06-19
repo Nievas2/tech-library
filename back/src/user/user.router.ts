@@ -22,10 +22,10 @@ export class UserRouter extends BaseRouter<UserController> {
  */
   public routes(): void {
 
-    this.router.get("/users/all", (req, res) =>
+    this.router.get("/user/all", (req, res) =>
       this.controller.getUsers(req, res)
     );
-    this.router.get("/users/all/active", (req, res) =>
+    this.router.get("/user/all/active", (req, res) =>
       this.controller.getUsersActive(req, res)
     );
     this.router.get("/user/:id", (req, res) =>

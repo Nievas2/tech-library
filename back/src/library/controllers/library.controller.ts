@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+// import { Request, Response } from "express";
+// import { UserService } from "../../user/services/user.service";
 
 /**
  * @version 1.0.0
@@ -9,7 +10,20 @@ import { Request, Response } from "express";
  */
 export class LibraryController {
 
-    public getLibrary(_req: Request, res: Response) {
-        res.status(200).json({ library: "test" });
-    }
+    constructor(
+        // private readonly service: UserService = new UserService(),
+        // private readonly httpResponse: HttpResponse = new HttpResponse(
+        //   service.lenguaje
+        // )
+      ) {}
+
+      // public async getLibrarys(_req: Request, _res: Response) {
+      //   try {
+      //     const data = await this.service.findAll();
+      //     // if (data.length === 0) return this.httpResponse.NotFound(res, data);
+      //      return this.httpResponse.Ok(res, data);
+      //   } catch (error) {
+      //     console.error(error);
+      //   }
+      // }
 }

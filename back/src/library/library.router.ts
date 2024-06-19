@@ -16,6 +16,6 @@ export class LibraryRouter extends BaseRouter<LibraryController> {
     }
 
     public routes() : void{
-        this.router.get('/library', (req, res) => this.controller.getLibrary( req, res));
+        // this.router.get('/library', (req, res) => this.controller.getLibrary( req, res));
     }
 }
