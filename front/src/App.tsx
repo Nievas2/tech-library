@@ -19,7 +19,7 @@ function App() {
       <section className="w-full font-poppins flex flex-col justify-center items-center min-h-screen">
         <Navbar />
 
-        <div className={`flex flex-col justify-start items-center gap-7 flex-1 max-w-7xl ${!noPadding ? 'pt-[120px]' : ''}`}>
+        <div className={`flex flex-col justify-start items-center gap-7 flex-1 max-w-7xl ${!noPadding ? 'pt-[120px]' : 'pt-24'}`}>
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/home' element={<HomePage />} />
@@ -35,11 +35,11 @@ function App() {
             <Route path="/*" element={ <Navigate to="/404" replace />} />
           </Routes>
         </div>
-        
+
         <Footer />
       </section>
     </main>
-      
+
   )
 }
 
