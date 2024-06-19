@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="flex flex-row pt-16">
+      <section className="flex flex-row">
         <div className="flex flex-1">
           <SideBar />
         </div>
