@@ -6,6 +6,8 @@ import {
 } from "./map.exception";
 import { UserHttpResponse } from "../../user/response/user.http.response";
 import { TagHttpResponse } from "../../tag/response/tag.http.response";
+import { LibraryHttpResponse } from "../../library/response/library.http.response";
+import { LikeHttpResponse } from "../../like/response/like.http.response";
 
 /**
  * @version 1.0.0
@@ -21,14 +23,21 @@ export class GlobalExceptionHandling {
   >;
   private userHttpResponse!: UserHttpResponse;
   private tagHttpResponse!: TagHttpResponse;
+  private libraryResponse!: LibraryHttpResponse;
+  private likeHttpResponse!: LikeHttpResponse;
 
   constructor(lenguaje: string | undefined) {
     this.userHttpResponse = new UserHttpResponse(lenguaje);
     this.tagHttpResponse = new TagHttpResponse(lenguaje);
+    this.libraryResponse = new LibraryHttpResponse(lenguaje);
+    this.likeHttpResponse = new LikeHttpResponse(lenguaje);
+
 
     this.errorHandlerMap = createErrorHandlerMap(
       this.userHttpResponse,
-      this.tagHttpResponse
+      this.tagHttpResponse,
+      this.libraryResponse,
+      this.likeHttpResponse
     );
   }
 
@@ -37,6 +46,8 @@ export class GlobalExceptionHandling {
       error.constructor as ExceptionConstructor<Error>
     );
 
+    console.log(error);
+    
     if (errorHandler) {
       return errorHandler(res);
     }

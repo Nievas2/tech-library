@@ -54,7 +54,9 @@ export class LibraryEntity extends BaseEntity {
   @OneToMany(() => LikeEntity, (like) => like.library)
   likes!: LikeEntity[];
 
-  @ManyToMany(() => TagEntity, (tag) => tag.libraries)
+  @ManyToMany(() => TagEntity, (tag) => tag.libraries, {
+    eager: true,
+  })
   @JoinTable({
     name: "library_tags",
     joinColumn: {

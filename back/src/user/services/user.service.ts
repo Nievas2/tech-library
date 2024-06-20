@@ -56,9 +56,9 @@ export class UserService extends BaseService<UserEntity> {
    * @param id - Id del usuario
    * @returns Promise<UserEntity | null>
    */
-  async findById(id: number): Promise<UserEntity | null> {
-    await this.existsById(id);
-    return (await this.execRepository).findOneBy({ id: id });
+  async findById(iduser: number): Promise<UserEntity | null> {
+    await this.existsById(iduser);
+    return (await this.execRepository).findOneBy({ id: iduser });
   }
 
   /**

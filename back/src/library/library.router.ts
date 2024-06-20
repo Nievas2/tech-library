@@ -16,6 +16,23 @@ export class LibraryRouter extends BaseRouter<LibraryController> {
     }
 
     public routes() : void{
-        // this.router.get('/library/all', (req, res) => this.controller.getLibrary( req, res));
+        this.router.get('/library/all', (req, res) => this.controller.getLibrarys( req, res));
+        this.router.get('/library/all/active/:userid', (req, res) => this.controller.getLibrarysActive( req, res));
+        this.router.get('/library/all/user/:userid', (req, res) => this.controller.getLibrarysByUser( req, res));
+        this.router.get('/library/all/status/active', (req, res) => this.controller.getLibrarysStatusActive( req, res));
+        this.router.get('/library/all/status/pending', (req, res) => this.controller.getLibrarysStatusPending( req, res));
+        this.router.get('/library/all/status/inactive', (req, res) => this.controller.getLibrarysStatusInactive( req, res));
+        this.router.get('/library/:id', (req, res) => this.controller.findById( req, res));
+
+        this.router.post('/library/create/:id', (req, res) => this.controller.createLibrary( req, res));
+
+        this.router.put('/library/update/:id', (req, res) => this.controller.updateLibrary( req, res));
+        this.router.put('/library/status/active/:id', (req, res) => this.controller.setStatusActive( req, res));
+        this.router.put('/library/status/pending/:id', (req, res) => this.controller.setStatusPending( req, res));
+        this.router.put('/library/status/inactive/:id', (req, res) => this.controller.setStatusInactive( req, res));
+        this.router.put('/library/status/restore/:id', (req, res) => this.controller.restoreLogic( req, res));
+
+        this.router.delete('/library/delete/definitive/:id', (req, res) => this.controller.deleteLibrary( req, res));
+        this.router.delete('/library/delete/temporal/:id', (req, res) => this.controller.deleteLogicLibrary( req, res));
     }
 }

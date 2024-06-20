@@ -9,6 +9,11 @@ import { UserHttpResponse } from "../../user/response/user.http.response";
 import { TagHttpResponse } from "../../tag/response/tag.http.response";
 import { TagNotFoundException } from "../../tag/exceptions/tag.notfound.exception";
 import { TagAlreadyExistException } from "../../tag/exceptions/tag.alreadyexist.exception";
+import { LibraryNotFoundException } from "../../library/exception/library.notfound";
+import { LibraryHttpResponse } from "../../library/response/library.http.response";
+import { LibraryAlreadyExistException } from "../../library/exception/library.already.exist";
+import { LikeHttpResponse } from "../../like/response/like.http.response";
+import { LikeErrorException } from "../../like/exception/like.error";
 
 /**
  * @description Tipado de la respuesta de las excepciones de respuesta HTTP
@@ -31,7 +36,9 @@ export interface ExceptionConstructor<T extends Error> {
  */
 export const createErrorHandlerMap = (
   user: UserHttpResponse,
-  tag: TagHttpResponse
+  tag: TagHttpResponse,
+  library: LibraryHttpResponse,
+  like: LikeHttpResponse
 ): Map<ExceptionConstructor<Error>, ErrorResponseHandler> => {
   return new Map<ExceptionConstructor<Error>, ErrorResponseHandler>([
     [
@@ -56,5 +63,17 @@ export const createErrorHandlerMap = (
       TagAlreadyExistException,
       (res: Response) => tag.BadRequestTagAlreadyExist(res),
     ],
+    [
+      LibraryNotFoundException,
+      (res: Response) => library.BadRequestLibraryNotFound(res),
+    ],
+    [
+      LibraryAlreadyExistException,
+      (res: Response) => library.BadRequestLibraryAlreadyExist(res),
+    ],
+    [
+      LikeErrorException,
+      (res: Response) => like.BadRequestLikeNotFound(res),
+    ]
   ]);
 };
