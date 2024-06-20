@@ -15,6 +15,7 @@ import {
 import { useTags } from "@/stores/Tag"
 import { useState } from "react"
 import { Library } from "@/interfaces/Library"
+import { Textarea } from "@/components/ui/textarea"
 interface CardProps {
   card: Library | undefined
 }
@@ -55,9 +56,8 @@ export default function FormAddLibrary({ card }: CardProps) {
   }
 
   return (
-    <section>
       <form
-        className="flex flex-col p-2 gap-1"
+        className="flex flex-col gap-2 mt-1"
         onSubmit={formik.handleSubmit}
       >
         <div className="grid w-full items-center gap-1.5">
@@ -66,6 +66,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             id="name"
             name="name"
             type="text"
+            placeholder="React"
             onChange={formik.handleChange}
             value={formik.values.name}
             className="bg-light"
@@ -87,6 +88,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             id="link"
             name="link"
             type="text"
+            placeholder="https://es.react.dev/"
             onChange={formik.handleChange}
             value={formik.values.link}
             className="bg-light"
@@ -104,10 +106,10 @@ export default function FormAddLibrary({ card }: CardProps) {
         </div>
         <div className="grid w-full items-center gap-1.5">
           <Label>Description</Label>
-          <Input
+          <Textarea
             id="description"
             name="description"
-            type="text"
+            placeholder="Description"
             onChange={formik.handleChange}
             value={formik.values.description}
             className="bg-light"
@@ -125,7 +127,7 @@ export default function FormAddLibrary({ card }: CardProps) {
               : ""}
           </small>
         </div>
-        <div className="flex w-full items-center gap-1.5 mt-8">
+        <div className="flex w-full items-center gap-1.5">
           <Select onValueChange={(value) => addTag(value)}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a tag" />
@@ -144,11 +146,11 @@ export default function FormAddLibrary({ card }: CardProps) {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-row flex-wrap gap-2 text-sm mt-2">
+        <div className="flex flex-row flex-wrap gap-2 text-sm mt-1">
           {tagsAdded.map((tag, index) => (
             <div
               key={crypto.randomUUID()}
-              className="flex gap-1 px-2 py-1 rounded-lg border font-extrabold text-stroke-dark dark:text-stroke-light "
+              className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
             >
               <h4>{tag}</h4>
               <button
@@ -170,12 +172,11 @@ export default function FormAddLibrary({ card }: CardProps) {
         </small>
         <Button
           variant={"marketing"}
-          className="p-1 mt-4"
+          className="p-1"
           type="submit"
         >
           Submit
         </Button>
       </form>
-    </section>
   )
 }

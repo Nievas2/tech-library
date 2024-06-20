@@ -34,6 +34,9 @@ export class LibraryEntity extends BaseEntity {
 
   @Column({ type: "varchar", length: 255, nullable: false })
   description!: string;
+
+  @Column({ type: "varchar", length: 300, nullable: false })
+  link: string;
   
   @Column({ type: "boolean", default: true, nullable: false })
   isActive!: boolean;
@@ -65,9 +68,12 @@ export class LibraryEntity extends BaseEntity {
   })
   tags!: TagEntity[];
 
+
   constructor(
     name: string,
     description: string,
+    link: string,
+    tags: TagEntity[],
     createdBy: UserEntity,
 
   ) {
@@ -77,6 +83,8 @@ export class LibraryEntity extends BaseEntity {
     this.isActive = true;
     this.state = State.PENDING;
     this.createdBy = createdBy;
+    this.tags = tags;
+    this.link = link;
   }
 
   //Methods start

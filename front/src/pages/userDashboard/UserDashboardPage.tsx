@@ -128,8 +128,8 @@ const UserDashboardPage = () => {
     setList(result)
   }
   return (
-    <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
-      <div className="flex py-2 gap-1">
+    <div className="flex flex-1 mx-auto max-w-[1240px] w-screen flex-col relative gap-6 pt-0 p-4 md:pt-0 sm:p-4 sm:pt-0 xl:p-0">
+      <div className="flex">
         <div className="flex-1">
           <Select
             defaultValue="ALL"
@@ -154,7 +154,7 @@ const UserDashboardPage = () => {
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
               Sugerir
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
+            <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
               <DialogHeader className="">
                 <DialogTitle>
                   <strong className="text-dark dark:text-light ">
@@ -168,7 +168,7 @@ const UserDashboardPage = () => {
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mb-10">
+      <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
         {list.map((card) => (
           <StateCard
             key={crypto.randomUUID()}

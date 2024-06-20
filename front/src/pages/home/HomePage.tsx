@@ -1,6 +1,7 @@
 import CardsContainer from "@/components/shared/CardsContainer"
 import SideBar from "./components/SideBar"
 import { useLibraries } from "@/stores/Library"
+import SearchBar from "./components/SearchBar"
 
 const HomePage = () => {
   const libraries = useLibraries((state) => state.libraries)
@@ -11,11 +12,9 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-14 flex flex-col gap-5 px-4">
-          <h1 className="text-center">SearchBar</h1>
-          { libraries &&
-            <CardsContainer cards={libraries} />
-          }
+        <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center">
+          <SearchBar />
+          {libraries && <CardsContainer cards={libraries} />}
         </div>
       </section>
     </>

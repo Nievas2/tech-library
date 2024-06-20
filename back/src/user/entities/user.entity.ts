@@ -25,15 +25,20 @@ import { LikeEntity } from "../../like/entities/like.entity";
 export class UserEntity extends BaseEntity {
   @Column({ type: "varchar", length: 50, nullable: false })
   username!: string;
+
   @Column({ type: "varchar", nullable: false })
   @Exclude() 
   password!: string;
+
   @Column({ type: "varchar", length: 50, nullable: false })
   name!: string;
+
   @Column({ type: "varchar", length: 50, nullable: false })
   lastname!: string;
+
   @Column({ type: "varchar", length: 50, nullable: false })
   email!: string;
+  
   @Column({ type: "boolean", default: true, nullable: false })
   isActive!: boolean;
 
