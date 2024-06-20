@@ -128,8 +128,8 @@ const UserDashboardPage = () => {
     setList(result)
   }
   return (
-    <div className="flex flex-1 w-screen flex-col relative ">
-      <div className="flex p-2">
+    <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
+      <div className="flex py-2 gap-1">
         <div className="flex-1">
           <Select
             defaultValue="ALL"
