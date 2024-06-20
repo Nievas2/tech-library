@@ -18,6 +18,7 @@ import { useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import AddTag from "./components/AddTag"
 import StateCardAdmin from "./components/StateCardAdmin"
+import FormAddLibrary from "../userDashboard/components/FormAddLibrary"
 const AdminDashboardPage = () => {
   const cardDetails: Library[] = [
     {
@@ -142,7 +143,6 @@ const AdminDashboardPage = () => {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="ALL">All</SelectItem>
-                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
                 <SelectItem value="PENDING">PENDING</SelectItem>
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
@@ -173,17 +173,17 @@ const AdminDashboardPage = () => {
         <div className="flex justify-end">
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
-              Sugerir
+            Add Library
             </DialogTrigger>
             <DialogContent className="bg-light dark:bg-dark ">
               <DialogHeader className="">
                 <DialogTitle>
                   <strong className="text-dark dark:text-light ">
-                    Sugerir
+                    Add Library
                   </strong>
                 </DialogTitle>
               </DialogHeader>
-              {/* <FormAddLibrary card={undefined} /> */}
+              <FormAddLibrary card={undefined} />
             </DialogContent>
           </Dialog>
         </div>
