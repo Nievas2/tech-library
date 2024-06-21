@@ -1,6 +1,6 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, Unique } from "typeorm";
 import { BaseEntity } from "../../config/base.entity";
-import { State } from "../statate.enum";
+import { State } from "../state.enum";
 import { UserEntity } from "../../user/entities/user.entity";
 import { TagEntity } from "../../tag/entities/tag.entity";
 import { LikeEntity } from "../../like/entities/like.entity";
@@ -28,8 +28,9 @@ import { LikeEntity } from "../../like/entities/like.entity";
  *
  */
 @Entity({ name: "librarys" })
+@Unique(["name"])
 export class LibraryEntity extends BaseEntity {
-  @Column({ type: "varchar", unique: true, length: 25, nullable: false })
+  @Column({ type: "varchar", length: 25, nullable: false })
   name!: string;
 
   @Column({ type: "varchar", length: 255, nullable: false })

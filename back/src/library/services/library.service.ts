@@ -9,7 +9,7 @@ import {
 } from "../entities/library.dto";
 import { LibraryEntity } from "../entities/library.entity";
 import { UserEntity } from "../../user/entities/user.entity";
-import { State } from "../statate.enum";
+import { State } from "../state.enum";
 import { TagEntity } from "../../tag/entities/tag.entity";
 import { TagService } from "../../tag/services/tag.service";
 import { TagNotFoundException } from "../../tag/exceptions/tag.notfound.exception";
