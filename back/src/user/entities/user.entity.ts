@@ -3,6 +3,7 @@ import { BaseEntity } from "../../config/base.entity";
 import { LibraryEntity } from "../../library/entities/library.entity";
 import { Exclude } from "class-transformer";
 import { LikeEntity } from "../../like/entities/like.entity";
+import { RoleType } from "./role";
 
 /**
  * @version 1.0.0
@@ -31,13 +32,10 @@ export class UserEntity extends BaseEntity {
   password!: string;
 
   @Column({ type: "varchar", length: 50, nullable: false })
-  name!: string;
-
-  @Column({ type: "varchar", length: 50, nullable: false })
-  lastname!: string;
-
-  @Column({ type: "varchar", length: 50, nullable: false })
   email!: string;
+
+  @Column({ type: "enum", enum: RoleType, default: RoleType.USER, nullable: false })
+  role!: RoleType;
   
   @Column({ type: "boolean", default: true, nullable: false })
   isActive!: boolean;
@@ -51,15 +49,11 @@ export class UserEntity extends BaseEntity {
   constructor(
     username: string,
     password: string,
-    name: string,
-    lastname: string,
     email: string
   ) {
     super();
     this.username = username;
     this.password = password;
-    this.name = name;
-    this.lastname = lastname;
     this.email = email;
     this.isActive = true;
   }

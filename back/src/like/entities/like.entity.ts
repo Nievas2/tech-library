@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { BaseEntity } from "../../config/base.entity";
 import { UserEntity } from "../../user/entities/user.entity";
 import { LibraryEntity } from "../../library/entities/library.entity";
@@ -20,5 +20,15 @@ export class LikeEntity extends BaseEntity{
 
     @ManyToOne(() => LibraryEntity, library => library.likes)
     library!: LibraryEntity
+
+    @Column({default: false})
+    liked!: boolean
+
+    constructor(user: UserEntity, library: LibraryEntity){
+        super();
+        this.user = user;
+        this.library = library;
+        this.liked = true;
+    }
 
 }

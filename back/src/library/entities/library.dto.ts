@@ -1,33 +1,71 @@
-import { IsNotEmpty, Length } from "class-validator";
+import { IsNotEmpty, IsOptional, Length } from "class-validator";
 import { BaseDTO } from "../../config/base.dto";
+import { LibraryEntity } from "./library.entity";
+import { UserResponseDTO } from "../../user/entities/user.dto";
+import { TagDto } from "../../tag/entities/tag.dto";
 
-export class LibraryCreateDTO extends BaseDTO{
-    @IsNotEmpty()
-    @Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
-    name!: string;
+export class LibraryCreateDTO extends BaseDTO {
+  @IsNotEmpty()
+  @Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
+  name!: string;
 
-    @IsNotEmpty()
-    @Length(4, 255, { message: "Description must be between 4 and 255 characters" })
-    description!: string;
+  @IsNotEmpty()
+  @Length(4, 255, {
+    message: "Description must be between 4 and 255 characters",
+  })
+  description!: string;
 
-    @IsNotEmpty()
-    tags!: number[];
+  @IsNotEmpty()
+  tags!: number[];
 
-    @IsNotEmpty()
-    link!: string;
+  @IsNotEmpty()
+  link!: string;
 }
 
-export class LibraryUpdateDTO extends BaseDTO{
-    @IsNotEmpty()
-    @Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
-    name!: string;
-    @IsNotEmpty()
-    @Length(4, 255, { message: "Description must be between 4 and 255 characters" })
-    description!: string;
+export class LibraryUpdateDTO extends BaseDTO {
+  @IsNotEmpty()
+  @Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
+  @IsOptional()
+  name!: string;
+  @IsNotEmpty()
+  @IsOptional()
+  @Length(4, 255, {
+    message: "Description must be between 4 and 255 characters",
+  })
+  description!: string;
 
-    @IsNotEmpty()
-    tags!: number[];
+  @IsNotEmpty()
+  @IsOptional()
+  tags!: number[];
 
-    @IsNotEmpty()
-    link!: string;
+  @IsNotEmpty()
+  @IsOptional()
+  link!: string;
+}
+
+export class LibraryResponseDTO extends BaseDTO {
+  name!: string;
+  description!: string;
+  link!: string;
+  tags!: TagDto[];
+  liked!: boolean;
+  createdBy!: UserResponseDTO;
+  createdAt!: Date;
+  state!: string;
+
+  constructor(library: LibraryEntity, createdBy: UserResponseDTO) {
+    super();
+    this.name = library.name;
+    this.description = library.description;
+    this.link = library.link;
+    this.tags = library.tags.map((tag) => {
+      const dto : TagDto = new TagDto();
+      dto.name = tag.name;
+      dto.color = tag.color;
+      return dto;
+    });
+    this.createdBy = createdBy;
+    this.createdAt = library.createdAt;
+    this.state = library.state;
+  }
 }

@@ -19,7 +19,7 @@ import { LibraryEntity } from "../../library/entities/library.entity";
 @Unique(["name"])
 export class TagEntity extends BaseEntity {
 
-    @Column({ type: "varchar", length: 15, unique: true, nullable: false })
+    @Column({ type: "varchar", length: 15, nullable: false })
     name!: string
 
     @Column({ type: "varchar", length: 7, nullable: false })

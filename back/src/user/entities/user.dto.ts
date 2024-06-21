@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, Length, Matches } from "class-validator";
 import { BaseDTO } from "../../config/base.dto";
+import { UserEntity } from "./user.entity";
 
 export class UserDTO extends BaseDTO {
 @IsNotEmpty()
@@ -12,17 +13,20 @@ message: "Password must be at least 8 characters long and contain at least one u
 @IsNotEmpty({ message: "Password cannot be empty" })
 password!: string;
 
-@Length(4, 20, { message: "Name must be between 4 and 20 characters" })
-@IsNotEmpty({ message: "Name cannot be empty" })
-name!: string;
-
-@Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
-@IsNotEmpty({ message: "Lastname cannot be empty" })
-lastname!: string;
-
 @IsNotEmpty({ message: "Email cannot be empty" })
 @IsEmail()
 email!: string;
+}
+
+export class UserResponseDTO extends BaseDTO{
+    username!: string;
+    email!: string;
+
+    constructor(user: UserEntity) {
+        super();
+        this.username = user.username;
+        this.email = user.email;
+    }
 }
 
 
