@@ -12,18 +12,18 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { useTags } from "@/stores/Tag"
 import { useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
+import { useTagStore } from "@/stores"
+
 interface CardProps {
-  card: Library | undefined
+  card : Library | undefined
 }
+
 export default function FormAddLibrary({ card }: CardProps) {
-  const tags = useTags((state) => state.tags)
-  const [tagsAdded, setTagsAdded] = useState<string[]>(
-    card?.tags?.map((tag) => tag.name) || []
-  )
+  const tags = useTagStore(state => state.tags)
+  const [tagsAdded, setTagsAdded] = useState<string[]>(card?.tags?.map((tag) => tag.name) || [])
   const [error, setError] = useState(false)
 
   const formik = useFormik({
@@ -40,17 +40,14 @@ export default function FormAddLibrary({ card }: CardProps) {
     }
   })
 
-  function addTag(value: string) {
-    const clonedTags = tagsAdded
-    if (clonedTags.includes(value)) return
-    if (!tagsAdded.includes(value)) {
-      setTagsAdded([...tagsAdded, value])
-      if (error) setError(false)
-    }
+  const addTag = (value: string) => {
+    if (tagsAdded.includes(value)) return;
+    setTagsAdded([...tagsAdded, value]);
+    if (error) setError(false);
   }
 
-  function removeTag(index: number) {
-    const clonedTags = tagsAdded
+  const removeTag = (index: number) => {
+    const clonedTags = [...tagsAdded];
     clonedTags.splice(index, 1)
     setTagsAdded(clonedTags)
   }
