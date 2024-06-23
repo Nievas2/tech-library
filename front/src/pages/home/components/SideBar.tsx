@@ -1,12 +1,12 @@
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ItemsSideBar from "./ItemsSideBar"
-import { TagState, useTags } from "@/stores/Tag"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { Tag, useTagStore } from "@/stores"
 
 export default function SideBar() {
   const [open, setOpen] = useState(window.innerWidth > 768)
-  const tags = useTags((state) => state.tags)
+  const tags = useTagStore(state => state.tags)
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,6 +19,10 @@ export default function SideBar() {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  const handleSidebar = () => {
+    setOpen(!open)
+  };
 
   return (
     <section
@@ -37,7 +41,6 @@ export default function SideBar() {
           className={`absolute duration-150 ${
             open ? "right-[-18px]" : "right-[-50px] xl:right-[-50px]"
           } top-[30px]`}
-          // md:top-[28px]
         >
           <Button
             onClick={handleSidebar}
@@ -57,7 +60,7 @@ export default function SideBar() {
         <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
           <h2 className="text-xl font-bold">TECNOLOGIES</h2>
           <ul className="flex flex-col gap-1">
-            {tags?.map((tag: TagState) => (
+            {tags?.map((tag: Tag) => (
               <ItemsSideBar
                 key={tag.name}
                 tag={tag}
@@ -68,8 +71,4 @@ export default function SideBar() {
       </div>
     </section>
   )
-
-  function handleSidebar() {
-    setOpen(!open)
-  }
 }

@@ -1,10 +1,10 @@
 import CardsContainer from "@/components/shared/CardsContainer"
 import SideBar from "./components/SideBar"
-import { useLibraries } from "@/stores/Library"
 import SearchBar from "./components/SearchBar"
+import { useLibraryStore } from "@/stores"
 
 const HomePage = () => {
-  const libraries = useLibraries((state) => state.libraries)
+  const libraries = useLibraryStore((state) => state.libraries)
 
   return (
     <>
