@@ -31,15 +31,13 @@ const AdminDashboardPage = () => {
           id: 1,
           name: "JavaScript",
           bgColor: "#F7DC6F",
-          borderColor: "#F7DC6F"
         },
         {
           id: 2,
           name: "Frontend",
           bgColor: "#3498DB",
-          borderColor: "#3498DB"
         },
-        { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+        { id: 3, name: "UI", bgColor: "#9B59B6" }
       ],
       likes: 1,
       isActive: true,
@@ -63,16 +61,14 @@ const AdminDashboardPage = () => {
         {
           id: 1,
           name: "JavaScript",
-          bgColor: "#F7DC6F",
-          borderColor: "#F7DC6F"
+          bgColor: "#F7DC6F"
         },
         {
           id: 2,
           name: "Frontend",
-          bgColor: "#3498DB",
-          borderColor: "#3498DB"
+          bgColor: "#3498DB"
         },
-        { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+        { id: 3, name: "UI", bgColor: "#9B59B6" }
       ],
       likes: 1,
       isActive: true,
@@ -97,15 +93,13 @@ const AdminDashboardPage = () => {
           id: 1,
           name: "JavaScript",
           bgColor: "#F7DC6F",
-          borderColor: "#F7DC6F"
         },
         {
           id: 2,
           name: "Frontend",
           bgColor: "#3498DB",
-          borderColor: "#3498DB"
         },
-        { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+        { id: 3, name: "UI", bgColor: "#9B59B6"}
       ],
       likes: 1,
       isActive: true,

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { postTag } from "@/services/TagService"
 import { tagSchema } from "@/utils/schemas/Tag"
 import { Label } from "@radix-ui/react-label"
 import { useFormik } from "formik"
@@ -12,7 +13,8 @@ const AddTag = () => {
     },
     validationSchema: tagSchema,
     onSubmit: (values) => {
-      console.log(values)
+      postTag(values)
+      
     }
   })
   return (
