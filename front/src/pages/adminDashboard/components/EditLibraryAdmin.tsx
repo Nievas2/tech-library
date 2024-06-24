@@ -30,7 +30,8 @@ export default function EditLibraryAdmin({ card }: CardProps) {
     initialValues: {
       name: card?.name || "",
       description: card?.description || "",
-      link: card?.link || ""
+      link: card?.link || "",
+      state: card?.state || "",
     },
     validationSchema: librarySchema,
     onSubmit: (values) => {
@@ -44,6 +45,9 @@ export default function EditLibraryAdmin({ card }: CardProps) {
     if (tagsAdded.includes(value)) return;
     setTagsAdded([...tagsAdded, value]);
     if (error) setError(false);
+  }
+  const editState = (value: string) => {
+    formik.setFieldValue("state", value)
   }
 
   const removeTag = (index: number) => {
@@ -139,6 +143,18 @@ export default function EditLibraryAdmin({ card }: CardProps) {
                     {tag.name}
                   </SelectItem>
                 ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select onValueChange={(value) => editState(value)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a State" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
