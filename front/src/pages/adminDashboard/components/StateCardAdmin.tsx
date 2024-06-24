@@ -7,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
+import EditLibraryAdmin from "./EditLibraryAdmin"
 /* import FormAddLibrary from "./FormAddLibrary"
  */
 const StateCardAdmin = ({ card }: { card: Library }) => {
@@ -61,7 +62,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
                   </h2>
                 </DialogTitle>
               </DialogHeader>
-              {/* <FormAddLibrary card={card} /> */}
+              <EditLibraryAdmin card={card} />
             </DialogContent>
           </Dialog>
         </div>
