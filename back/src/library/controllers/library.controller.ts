@@ -34,12 +34,12 @@ export class LibraryController {
     }
   }
 
-  public async getLibrarysActive(req: Request, res: Response) {
+  public async getLibrarysStatusActiveWhithUserLike(req: Request, res: Response) {
     try {
       const idUsuario = Number(req.params.userid);
       console.log(idUsuario);
       
-      const data = await this.service.findAllActive(idUsuario);
+      const data = await this.service.findAllStatusActiveWithLike(idUsuario);
       if (data.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
@@ -112,7 +112,7 @@ export class LibraryController {
   //--------------------POST--------------------
   public async createLibrary(req: Request, res: Response) {
     try {
-      const idUsuario = Number(req.params.id);
+      const idUsuario = Number(req.params.userid);
       const data = await this.service.create(req.body, idUsuario);
       return this.libraryHttpResponse.Created(res, data);
     } catch (error) {
@@ -125,24 +125,14 @@ export class LibraryController {
   public async updateLibrary(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const data = await this.service.update(id, req.body);
+      const urlApi = req.originalUrl;
+      const data = await this.service.update(id, req.body, urlApi);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
       if (error instanceof Error)
         return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
-
-  public async setStatusActive(req: Request, res: Response) {
-    try {
-      const id = Number(req.params.id);
-      const data = await this.service.setStateActive(id);
-      return this.libraryHttpResponse.Ok(res, data);
-    } catch (error) {
-      if (error instanceof Error)
-        return this.globalExceptionHandler.handleErrors(error, res);
-    }
-  };
 
   public async restoreLogic(req: Request, res: Response) {
     try {
@@ -155,27 +145,6 @@ export class LibraryController {
     }
   };
 
-  public async setStatusPending(req: Request, res: Response) {
-    try {
-      const id = Number(req.params.id);
-      const data = await this.service.setStatePending(id);
-      return this.libraryHttpResponse.Ok(res, data);
-    } catch (error) {
-      if (error instanceof Error)
-        return this.globalExceptionHandler.handleErrors(error, res);
-    }
-  };
-
-  public async setStatusInactive(req: Request, res: Response) {
-    try {
-      const id = Number(req.params.id);
-      const data = await this.service.setStateInactive(id);
-      return this.libraryHttpResponse.Ok(res, data);
-    } catch (error) {
-      if (error instanceof Error)
-        return this.globalExceptionHandler.handleErrors(error, res);
-    }
-  };
 
   //--------------------DELETE--------------------
   public async deleteLibrary(req: Request, res: Response) {
