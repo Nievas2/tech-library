@@ -71,7 +71,6 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (set) => ({
     await axios
       .get("http://localhost:8000/api/tag/all")
       .then((response) => {
-        console.log(response)
         const data = response.data.data
         set((state) => {
           state.tags = data

@@ -45,12 +45,13 @@ export default function FormAddLibrary({ card }: CardProps) {
     onSubmit: (values) => {
       if (tagsAdded?.length === 0) return setError(true)
       setError(false)
+    const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
       if (tagsAdded) {
         const valuesDate: LibraryDtoCreate = {
           name: values.name,
           description: values.description,
           link: values.link,
-          tags: tagsAdded
+          tags: tagsId
         }
         console.log(valuesDate)
         postLibrary(valuesDate, 1)
