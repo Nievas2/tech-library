@@ -16,7 +16,7 @@ import { TagNotFoundException } from "../../tag/exceptions/tag.notfound.exceptio
 import { LibraryNotFoundException } from "../exception/library.notfound";
 import { LibraryAlreadyExistException } from "../exception/library.already.exist";
 import { LikeService } from "../../like/service/like.service";
-import { UserResponseDTO } from "../../user/entities/user.dto";
+import { LibraryAlreadyDisabledException, LibraryAlreadyEnabledException } from "../exception/library.soft.delete.exceptions";
 
 /**
  * @version 1.0.0
@@ -50,63 +50,54 @@ export class LibraryService extends BaseService<LibraryEntity> {
 
   /**
    * @method findAll - Retorna todas las librerias
-   * @returns Promise<LibraryEntity[]>
+   * @returns Promise<LibraryResponseDTO[]>
    */
-  async findAll(): Promise<LibraryEntity[]> {
+  async findAll(): Promise<LibraryResponseDTO[]> {
     const data = await (await this.execRepository).find();
-    return data;
+    return this.createResponseDTO(data);
   }
 
   /**
-   * @method findAllActive - Retorna todos las librerias activas y si el usuario le ha dado me gusta a cada una
+   * @method findAllActive - Retorna todos las librerias activas y si el usuario le ha dado me gusta a cada una, independientemente si el usuario creo la libreria o no
    * @returns Promise<LibraryResponseDTO[]>
    * @param idUsuario - Id del usuario
+   * @throws {UserNotFoundException}
    */
-  async findAllActive(idUsuario: number): Promise<LibraryResponseDTO[]> {
+  async findAllStatusActiveWithLike(idUsuario: number): Promise<LibraryResponseDTO[]> {
+    if (idUsuario != 0) this.existsUser(idUsuario);
+
      const data = await (await this.execRepository).find({
       where: {
         isActive: true,
+        state: State.ACTIVE,
       },
     });
-    const user: UserEntity = await this.findUserById(idUsuario);
 
-    return await this.createResponseDTO(data, user);
+    return await this.createResponseDTOWithLike(data, idUsuario);
   }
 
   /**
    * @method findAllStatusActive - Retorna todos las librerias con estado activo
-   * @returns Promise<LibraryEntity[]>
+   * @returns Promise<LibraryResponseDTO[]>
    */
-  async findAllStatusActive(): Promise<LibraryEntity[]> {
-    return (await this.execRepository).find({
-      where: {
-        state: State.ACTIVE,
-      },
-    });
+  async findAllStatusActive(): Promise<LibraryResponseDTO[]> {
+    return this.findAllByState(State.ACTIVE);
   }
 
   /**
    * @method findAllStatusPending - Retorna todos las librerias con estado pendiente
-   * @returns Promise<LibraryEntity[]>
+   * @returns Promise<LibraryResponseDTO[]>
    */
-  async findAllStatusPending(): Promise<LibraryEntity[]> {
-    return (await this.execRepository).find({
-      where: {
-        state: State.PENDING,
-      },
-    });
+  async findAllStatusPending(): Promise<LibraryResponseDTO[]> {
+    return this.findAllByState(State.PENDING);
   }
 
   /**
    * @method findAllStatusInactive - Retorna todos las librerias con estado inactivo
-   * @returns Promise<LibraryEntity[]>
+   * @returns Promise<LibraryResponseDTO[]>
    */
-  async findAllStatusInactive(): Promise<LibraryEntity[]> {
-    return (await this.execRepository).find({
-      where: {
-        state: State.INACTIVE,
-      },
-    });
+  async findAllStatusInactive(): Promise<LibraryResponseDTO[]> {
+    return this.findAllByState(State.INACTIVE);
   }
 
   /**
@@ -122,37 +113,42 @@ export class LibraryService extends BaseService<LibraryEntity> {
         createdBy: {
           id: user.id,
         },
+        isActive: true,
       },
     });
 
-    return await this.createResponseDTO(data, user);
+    return await this.createResponseDTOWithLike(data, id);
   }
 
   /**
    * @method findById - Retorna una libreria por su id
-   * @returns Promise<LibraryEntity | null>
+   * @returns Promise<LibraryResponseDTO>
    * @param id
+   * @throws {LibraryNotFoundException}
    */
-  async findById(id: number): Promise<LibraryEntity | null> {
-    await this.exists(id);
-    return (await this.execRepository).findOneBy({ id: id });
+  async findById(id: number): Promise<LibraryResponseDTO> {
+    const data = await (await this.execRepository).findOneBy({ id: id });
+    if (data === null) throw new LibraryNotFoundException("Library not found");
+    return new LibraryResponseDTO(data);
   }
 
   /**
    * @method findByIdActive - Retorna una libreria por su id activa
-   * @returns Promise<LibraryEntity | null>
+   * @returns Promise<LibraryResponseDTO>
    * @param id
+   * @throws {LibraryNotFoundException}
    */
-  async findByIdActive(id: number): Promise<LibraryEntity | null> {
-    await this.exists(id);
-    return (await this.execRepository).findOneBy({ id: id, isActive: true });
+  async findByIdActive(id: number): Promise<LibraryResponseDTO> {
+    const data = await (await this.execRepository).findOneBy({ id: id, isActive: true });
+    if (data === null) throw new LibraryNotFoundException("Library not found");
+    return new LibraryResponseDTO(data);
   }
 
   //--------------------------CREATE METHOD-----------------------------
 
   /**
    * @method create - Crea una libreria
-   * @returns Promise<LibraryEntity>
+   * @returns Promise<LibraryResponseDTO>
    * @param libraryDto
    * @param idUsuario
    * @throws {UserNotFoundException}
@@ -162,12 +158,10 @@ export class LibraryService extends BaseService<LibraryEntity> {
   async create(
     libraryDto: LibraryCreateDTO,
     idUsuario: number
-  ): Promise<LibraryEntity> {
+  ): Promise<LibraryResponseDTO> {
     const user = await this.findUserById(idUsuario);
-
-    const tags = await this.getTags(libraryDto.tags);
-
     await this.existsByName(libraryDto.name);
+    const tags = await this.getTags(libraryDto.tags);
 
     const library = new LibraryEntity(
       libraryDto.name,
@@ -177,14 +171,16 @@ export class LibraryService extends BaseService<LibraryEntity> {
       user
     );
 
-    return (await this.execRepository).save(library);
+    await (await this.execRepository).save(library);
+
+    return new LibraryResponseDTO(library);
   }
 
   //--------------------------UPDATE METHODS-----------------------------
 
   /**
    * @method update - Actualiza una libreria
-   * @returns Promise<UpdateResult>
+   * @returns Promise<LibraryResponseDTO>
    * @param id
    * @param library
    * @throws {LibraryNotFoundException}
@@ -192,25 +188,35 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @throws {LibraryAlreadyExistsException}
    * @throws {UserNotFoundException}
    */
-  async update(id: number, library: LibraryUpdateDTO): Promise<UpdateResult> {
-    const tags = await this.getTags(library.tags);
-
-    const libraryUpdate = await (
-      await this.execRepository
-    ).findOneBy({ id: id });
-
+  async update(id: number, library: LibraryUpdateDTO, url: string): Promise<LibraryResponseDTO> {
     await this.existsByName(library.name);
+    
+    const libraryUpdate = await (await this.execRepository).findOneBy({ id: id });
+    if (libraryUpdate == null) throw new LibraryNotFoundException("Library not found");
 
-    if (libraryUpdate != null) {
-      if (library.name != null) libraryUpdate.name = library.name;
-      if (library.description != null)
-        libraryUpdate.description = library.description;
-      if (library.link != null) libraryUpdate.link = library.link;
-      if (library.tags != null) libraryUpdate.tags = tags;
-      return (await this.execRepository).update(id, libraryUpdate);
+    let tags: TagEntity[] = [];
+    if (library.tags) tags = await this.getTags(library.tags);
+
+    if (library.name) libraryUpdate.name = library.name;
+    if (library.description) libraryUpdate.description = library.description;
+    if (library.link) libraryUpdate.link = library.link;
+    if (url.includes("admin")) {
+        if (library.state) libraryUpdate.state = library.state;
+    } else {
+        libraryUpdate.state = State.PENDING;
     }
-    throw new LibraryNotFoundException("Library not found");
-  }
+
+    await (await this.execRepository).save(libraryUpdate);
+
+    // Update tags 
+    if (tags.length > 0 && url.includes("admin")) {
+        libraryUpdate.tags = tags;
+        await (await this.execRepository).save(libraryUpdate);
+    }
+
+    return new LibraryResponseDTO(libraryUpdate);
+}
+
 
   /**
    * @method restoreLogic - Restaura una libreria logicamente
@@ -219,38 +225,11 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @throws {LibraryNotFoundException}
    */
   async restoreLogic(id: number): Promise<UpdateResult> {
-    await this.exists(id);
+    const library = await (await this.execRepository).findOneBy({ id: id });
+    if (library == null) throw new LibraryNotFoundException("Library not found");
+
+    if (library.isActive) throw new LibraryAlreadyEnabledException("Library already enabled");
     return (await this.execRepository).update(id, { isActive: true });
-  }
-
-  /**
-   * @method setStateActive - Actualiza el estado de una libreria activa
-   * @returns Promise<UpdateResult>
-   * @param id - Id de la libreria
-   */
-  async setStateActive(id: number): Promise<UpdateResult> {
-    await this.exists(id);
-    return (await this.execRepository).update(id, { state: State.ACTIVE });
-  }
-
-  /**
-   * @method setStatePending - Actualiza el estado de una libreria pendiente
-   * @returns Promise<UpdateResult>
-   * @param id - Id de la libreria
-   */
-  async setStatePending(id: number): Promise<UpdateResult> {
-    await this.exists(id);
-    return (await this.execRepository).update(id, { state: State.PENDING });
-  }
-
-  /**
-   * @method setStateInactive - Actualiza el estado de una libreria inactiva
-   * @returns Promise<UpdateResult>
-   * @param id - Id de la libreria
-   */
-  async setStateInactive(id: number): Promise<UpdateResult> {
-    await this.exists(id);
-    return (await this.execRepository).update(id, { state: State.INACTIVE });
   }
 
   //--------------------------DELETE METHODS-----------------------------
@@ -262,7 +241,10 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @throws {LibraryNotFoundException}
    */
   async deleteLogic(id: number): Promise<UpdateResult> {
-    await this.exists(id);
+    const library = await (await this.execRepository).findOneBy({ id: id });
+    if (library == null) throw new LibraryNotFoundException("Library not found");
+
+    if (!library.isActive) throw new LibraryAlreadyDisabledException("Library already disabled");
     return (await this.execRepository).update(id, { isActive: false });
   }
 
@@ -311,13 +293,11 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @returns Promise<LibraryResponseDTO[]>
    */
 
-  private async createResponseDTO(data: LibraryEntity[], user: UserEntity) : Promise<LibraryResponseDTO[]> {
-
-    const userDto: UserResponseDTO = new UserResponseDTO(user);
+  private async createResponseDTOWithLike(data: LibraryEntity[], userId: number) : Promise<LibraryResponseDTO[]> {
     const dataResponse = await Promise.all(
       data.map(async (library) => {
-        const response: LibraryResponseDTO = new LibraryResponseDTO(library, userDto);
-        if (await this.likeService.userLikeThisLibrary(user.id, library.id)) {
+        const response: LibraryResponseDTO = new LibraryResponseDTO(library);
+        if (await this.likeService.userLikeThisLibrary(userId, library.id)) {
           response.liked = true;
           return response;
         }
@@ -326,9 +306,27 @@ export class LibraryService extends BaseService<LibraryEntity> {
         return response;
       })
     );
-
     return dataResponse;
+  }
 
+  /**
+   * @description Retorna todas las librerias de un estado
+   * @param state - Estado
+   * @returns Promise<LibraryEntity[]>
+   * @throws {LibraryNotFoundException}
+   */
+  private async findAllByState(state: State): Promise<LibraryResponseDTO[]> {
+    const data = await (await this.execRepository).find({ where: { state: state, isActive: true } })
+    return this.createResponseDTO(data);
+  }
+
+  /**
+   * @description Crea una lista de el DTO de respuesta de la libreria
+   * @param data - Lista de librerias
+   * @returns Promise<LibraryResponseDTO[]>
+   */
+  private async createResponseDTO(data: LibraryEntity[]): Promise<LibraryResponseDTO[]> {
+    return data.map((library) => new LibraryResponseDTO(library));
   }
 
   //--------------------------HELPERs METHODS USERs-----------------------------
@@ -342,6 +340,16 @@ export class LibraryService extends BaseService<LibraryEntity> {
     const user = await this.userService.findById(id);
     if (user !== null) return user;
     throw new UserNotFoundException("User not found");
+  }
+
+  /**
+   * @description Comprueba si el usuario existe
+   * @param id - Id del usuario
+   * @throws {UserNotFoundException}
+   */
+  private async existsUser(id: number): Promise<void> {
+    const exist = await (await this.execRepository).existsBy({ id: id });
+    if (!exist) throw new UserNotFoundException("User not found");
   }
 
   //--------------------------HELPERs METHODS TAGS-----------------------------

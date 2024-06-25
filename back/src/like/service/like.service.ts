@@ -4,6 +4,17 @@ import { UserEntity } from "../../user/entities/user.entity";
 import { LikeEntity } from "../entities/like.entity";
 import { LikeErrorException } from "../exception/like.error";
 
+/**
+ * @version 1.0.0
+ * @author Emiliano Gonzalez
+ * @class LikeService
+ * @description Clase que se encarga de dar y quitar like a una libreria
+ * @method likeLibrary - Método que se encarga de dar like a una libreria
+ * @method unLikeLibrary - Método que se encarga de quitar like a una libreria
+ * @method userLikeThisLibrary - Método que se encarga de verificar si un usuario ha dado like a una libreria
+ * @method searchLikeUserInLibrary - Método que se encarga de buscar un like de un usuario en una libreria
+ *
+ */
 export class LikeService extends BaseService<LikeEntity> {
   constructor() {
     super(LikeEntity);
@@ -13,6 +24,8 @@ export class LikeService extends BaseService<LikeEntity> {
     userId: number,
     libraryId: number
   ): Promise<boolean> {
+    if (userId == 0) return false;
+
     const like = await (await this.execRepository)
       .createQueryBuilder("like")
       .where("like.user = :userId", { userId: userId })
@@ -28,8 +41,8 @@ export class LikeService extends BaseService<LikeEntity> {
   ): Promise<void> {
     const like = await this.searchLikeUserInLibrary(user.id, library.id);
     if (like == null) {
-        const newLike : LikeEntity = new LikeEntity(user, library);
-        await (await this.execRepository).save(newLike);
+      const newLike: LikeEntity = new LikeEntity(user, library);
+      await (await this.execRepository).save(newLike);
     }
 
     if (like != null) {
@@ -50,9 +63,8 @@ export class LikeService extends BaseService<LikeEntity> {
     }
 
     if (isLiked == null) {
-        throw new LikeErrorException("User not liked this library");
+      throw new LikeErrorException("User not liked this library");
     }
-    
   }
 
   private async searchLikeUserInLibrary(

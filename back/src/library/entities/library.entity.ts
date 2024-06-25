@@ -49,6 +49,7 @@ export class LibraryEntity extends BaseEntity {
     nullable: false,
     onDelete: "RESTRICT",
     onUpdate: "CASCADE",
+    eager: true,
   })
   createdBy!: UserEntity;
 

@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsOptional, Length } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, Length } from "class-validator";
 import { BaseDTO } from "../../config/base.dto";
 import { LibraryEntity } from "./library.entity";
 import { UserResponseDTO } from "../../user/entities/user.dto";
 import { TagDto } from "../../tag/entities/tag.dto";
+import { State } from "../state.enum";
 
 export class LibraryCreateDTO extends BaseDTO {
   @IsNotEmpty()
@@ -16,6 +17,7 @@ export class LibraryCreateDTO extends BaseDTO {
   description!: string;
 
   @IsNotEmpty()
+  @IsArray( { message: "Tags must be an array" } )
   tags!: number[];
 
   @IsNotEmpty()
@@ -41,9 +43,15 @@ export class LibraryUpdateDTO extends BaseDTO {
   @IsNotEmpty()
   @IsOptional()
   link!: string;
+
+  @IsNotEmpty( { message: "State must be defined" } )
+  @IsOptional()
+  @IsEnum( State, { message: "State must be one of: ACTIVE, PENDING, INACTIVE" } )
+  state!: State
 }
 
 export class LibraryResponseDTO extends BaseDTO {
+  id!: number;
   name!: string;
   description!: string;
   link!: string;
@@ -53,7 +61,7 @@ export class LibraryResponseDTO extends BaseDTO {
   createdAt!: Date;
   state!: string;
 
-  constructor(library: LibraryEntity, createdBy: UserResponseDTO) {
+  constructor(library: LibraryEntity) {
     super();
     this.name = library.name;
     this.description = library.description;
@@ -62,10 +70,12 @@ export class LibraryResponseDTO extends BaseDTO {
       const dto : TagDto = new TagDto();
       dto.name = tag.name;
       dto.color = tag.color;
+      dto.id = tag.id;
       return dto;
     });
-    this.createdBy = createdBy;
+    this.createdBy = new UserResponseDTO(library.createdBy);
     this.createdAt = library.createdAt;
     this.state = library.state;
+    this.id = library.id;
   }
 }
