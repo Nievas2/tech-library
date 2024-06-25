@@ -11,7 +11,7 @@ export interface LibraryDtoUpdate {
     name: string
     description: string
     link: string
-    tags: string[]
+    tags: Tag[]
     state: "ACTIVE" | "PENDING" | "INACTIVE"
   }
 export function getLibraries(userId: number) {
@@ -45,6 +45,21 @@ export function postLibrary(library: LibraryDtoCreate, userId: number) {
       description: library.description,
       link: library.link,
       tags: library.tags
+    })
+    .then((response) => {
+      console.log(response)
+
+      return response.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+export function putLibraryState(library: LibraryDtoUpdate, libraryId: number) {
+  axios
+    .post(`http://localhost:8000/api/library/update/${libraryId}`, {
+      library
     })
     .then((response) => {
       console.log(response)

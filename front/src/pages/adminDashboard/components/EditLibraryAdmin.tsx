@@ -16,16 +16,17 @@ import { useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
 import { useTagStore } from "@/stores"
-import { LibraryDtoUpdate, postLibrary } from "@/services/LibraryService"
+import { LibraryDtoUpdate, putLibraryState } from "@/services/LibraryService"
+import { Tag } from "@/interfaces/Tag"
 
 interface CardProps {
-  card: Library | undefined
+  card: Library
 }
 
 export default function EditLibraryAdmin({ card }: CardProps) {
   const tags = useTagStore((state) => state.tags)
-  const [tagsAdded, setTagsAdded] = useState<string[]>(
-    card?.tags?.map((tag) => tag.name) || []
+  const [tagsAdded, setTagsAdded] = useState<Tag[]>(
+    card?.tags?.map((tag) => tag) || []
   )
   const [error, setError] = useState(false)
 
@@ -40,35 +41,39 @@ export default function EditLibraryAdmin({ card }: CardProps) {
     onSubmit: (values) => {
       if (tagsAdded.length === 0) return setError(true)
       setError(false)
-      const stateValue =
-        values.state === "Active"
-          ? "ACTIVE"
-          : values.state === "Pending"
-          ? "PENDING"
-          : "INACTIVE"
       const valuesDate: LibraryDtoUpdate = {
         name: values.name,
         description: values.description,
         link: values.link,
-        state: stateValue,
+        state: values.state,
         tags: tagsAdded
       }
       console.log(valuesDate)
-      postLibrary(valuesDate, 0)
+      putLibraryState(valuesDate, card.id)
     }
   })
 
-  const addTag = (value: string) => {
-    if (tagsAdded.includes(value)) return
-    setTagsAdded([...tagsAdded, value])
-    if (error) setError(false)
-  }
   const editState = (value: string) => {
     formik.setFieldValue("state", value)
   }
+  const addTag = (value: string) => {
+    if (tagsAdded?.find((tag) => tag.name === value)) return
+    const tagSelected = tags.find((tag) => tag.name === value)
+    if (!tagSelected) return
+    console.log(tagSelected)
+
+    const tagSelectedFormat = {
+      id: tagSelected.id,
+      name: tagSelected.name,
+      color: tagSelected.color
+    }
+    setTagsAdded([...tagsAdded, tagSelectedFormat])
+    if (error) setError(false)
+  }
 
   const removeTag = (index: number) => {
-    const clonedTags = [...tagsAdded]
+    const clonedTags = [...(tagsAdded || [])]
+
     clonedTags.splice(index, 1)
     setTagsAdded(clonedTags)
   }
@@ -165,9 +170,9 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
+              <SelectItem value="ACTIVE">Active</SelectItem>
+              <SelectItem value="PENDING">Pending</SelectItem>
+              <SelectItem value="INACTIVE">Inactive</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -178,7 +183,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
             key={crypto.randomUUID()}
             className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
           >
-            <h4>{tag}</h4>
+            <h4>{tag.name}</h4>
             <button
               className="w-[16px]"
               onClick={() => removeTag(index)}

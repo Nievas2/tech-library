@@ -1,3 +1,4 @@
+import axios from "axios"
 import { StateCreator, create } from "zustand"
 import { persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
@@ -12,10 +13,11 @@ export interface Tag {
 interface TagState {
   tags: Tag[]
   activeTag: (tagId: number) => void
+  getTags: () => void
 }
 
 const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (set) => ({
-  tags: [
+  tags: [/* 
     {
       id: 1,
       name: "javascript",
@@ -29,13 +31,13 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (set) => ({
       color: "#3178c6"
     },
     {
-      id: 3,
+      id: 4,
       name: "react",
       selected: false,
       color: "#61dafb"
     },
     {
-      id: 4,
+      id: 3,
       name: "nextjs",
       selected: false,
       color: "#000000"
@@ -63,9 +65,22 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (set) => ({
       name: "tailwindui",
       selected: false,
       color: "#38b2ac"
-    }
+    } */
   ],
-
+  getTags: async () => {
+    await axios
+      .get("http://localhost:8000/api/tag/all")
+      .then((response) => {
+        console.log(response)
+        const data = response.data.data
+        set((state) => {
+          state.tags = data
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
   activeTag: (tagId: number) => {
     set((state) => {
       const tag = state.tags.find((tag) => tag.id === tagId)
