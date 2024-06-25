@@ -20,7 +20,7 @@ export function postTag(tag: Tag) {
   axios
     .post("http://localhost:8000/api/tag/create", {
         "name": tag.name,
-        "color" : tag.bgColor
+        "color" : tag.color
   
     })
     .then((response) => {

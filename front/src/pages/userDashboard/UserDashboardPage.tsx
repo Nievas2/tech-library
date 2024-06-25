@@ -27,14 +27,14 @@ const cardDetails: Library[] = [
       {
         id: 1,
         name: "JavaScript",
-        bgColor: "#F7DC6F"
+        color: "#F7DC6F"
       },
       {
         id: 2,
         name: "Frontend",
-        bgColor: "#3498DB"
+        color: "#3498DB"
       },
-      { id: 3, name: "UI", bgColor: "#9B59B6" }
+      { id: 3, name: "UI", color: "#9B59B6" }
     ],
     likes: 1,
     isActive: true,
@@ -58,14 +58,14 @@ const cardDetails: Library[] = [
       {
         id: 1,
         name: "JavaScript",
-        bgColor: "#F7DC6F"
+        color: "#F7DC6F"
       },
       {
         id: 2,
         name: "Frontend",
-        bgColor: "#3498DB"
+        color: "#3498DB"
       },
-      { id: 3, name: "UI", bgColor: "#9B59B6" }
+      { id: 3, name: "UI", color: "#9B59B6" }
     ],
     likes: 1,
     isActive: true,
@@ -89,14 +89,14 @@ const cardDetails: Library[] = [
       {
         id: 1,
         name: "JavaScript",
-        bgColor: "#F7DC6F"
+        color: "#F7DC6F"
       },
       {
         id: 2,
         name: "Frontend",
-        bgColor: "#3498DB"
+        color: "#3498DB"
       },
-      { id: 3, name: "UI", bgColor: "#9B59B6" }
+      { id: 3, name: "UI", color: "#9B59B6" }
     ],
     likes: 1,
     isActive: true,

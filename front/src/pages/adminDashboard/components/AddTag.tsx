@@ -9,7 +9,7 @@ const AddTag = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      bgColor: "#FF0000",
+      color: "#FF0000",
     },
     validationSchema: tagSchema,
     onSubmit: (values) => {
@@ -37,7 +37,7 @@ const AddTag = () => {
           <input
             type="color"
             className="bg-dark dark:bg-light"
-            {...formik.getFieldProps("bgColor")}
+            {...formik.getFieldProps("color")}
           />
         </div>
         <div>
@@ -47,9 +47,9 @@ const AddTag = () => {
               className={`px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light`}
               style={{
                 backgroundColor:
-                  formik.values.bgColor == ""
+                  formik.values.color == ""
                     ? "#FF0000"
-                    : formik.values.bgColor
+                    : formik.values.color
               }}
             >
               {formik.values.name == "" ? "Javascript" : formik.values.name}
