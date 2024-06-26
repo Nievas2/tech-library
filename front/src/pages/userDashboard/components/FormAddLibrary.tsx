@@ -58,7 +58,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             tags: filteredTagsId as number[]
           }
           console.log(valuesDate)
-          //postLibrary(valuesDate, 1)
+          postLibrary(valuesDate, 1)
         }
       } else {
         setError(false)
