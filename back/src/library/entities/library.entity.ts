@@ -54,7 +54,6 @@ export class LibraryEntity extends BaseEntity {
   createdBy!: UserEntity;
 
   @OneToMany(() => LikeEntity, (like) => like.library, {
-    eager: true,
   })
   likes!: LikeEntity[];
 

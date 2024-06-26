@@ -12,7 +12,6 @@ import { UserEntity } from "../../user/entities/user.entity";
 import { State } from "../state.enum";
 import { TagEntity } from "../../tag/entities/tag.entity";
 import { TagService } from "../../tag/services/tag.service";
-import { TagNotFoundException } from "../../tag/exceptions/tag.notfound.exception";
 import { LibraryNotFoundException } from "../exception/library.notfound";
 import { LibraryAlreadyExistException } from "../exception/library.already.exist";
 import { LikeService } from "../../like/service/like.service";
@@ -141,15 +140,15 @@ export class LibraryService extends BaseService<LibraryEntity> {
     currentPage: number,
     pageSize: number,
     tags?: number[],
-    query?: string
+    query?: string,
+    orderMostLiked?: string
   ) {
     const queryBuilder = (await this.execRepository)
       .createQueryBuilder("library")
       .andWhere("library.isActive = :isActive", { isActive: true })
-      // .andWhere("library.state = :state", { state: State.ACTIVE })
+      .andWhere("library.state = :state", { state: State.ACTIVE })
       .leftJoinAndSelect("library.tags", "tag")
       .leftJoinAndSelect("library.createdBy", "user")
-      .orderBy("library.name", "ASC")
       .take(pageSize)
       .skip((currentPage - 1) * pageSize);
 
@@ -160,6 +159,14 @@ export class LibraryService extends BaseService<LibraryEntity> {
     if (tags && tags.length > 0) {
       const tagsEntity: TagEntity[] = await this.getTags(tags);
       queryBuilder.andWhere("tag.id IN (:...tags)", { tags: tagsEntity.map(tag => tag.id) });
+    }
+
+    if (orderMostLiked) {
+      if (orderMostLiked == "asc") queryBuilder.orderBy("library.likesCount", "ASC");
+      if (orderMostLiked == "desc") queryBuilder.orderBy("library.likesCount", "DESC");
+    }
+    else {
+      queryBuilder.orderBy("library.name", "ASC");
     }
 
     const [data, total] = await queryBuilder.getManyAndCount();
@@ -563,24 +570,13 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @returns {TagEntity[]}
    */
   private async getTags(tags: number[]): Promise<TagEntity[]> {
-    const tagList: TagEntity[] = await Promise.all(
+    const tagList: (TagEntity | null | undefined)[] = await Promise.all(
       tags.map(async (tag) => {
-        return await this.getTag(tag);
+        const tagEntity = await (await this.tagService.execRepository).findOneBy({ id: tag, isActive: true });
+        if (tagEntity !== null && tagEntity !== undefined) return tagEntity;
       })
     );
-
-    return tagList;
+    return tagList.filter((tag): tag is TagEntity => tag !== null && tag !== undefined);
   }
-
-  /**
-   * @description Comprueba si el tag existe y lo retorna
-   * @param id - Id del tag
-   * @throws {TagNotFoundException}
-   */
-
-  private async getTag(id: number): Promise<TagEntity> {
-    const tag = await this.tagService.findById(id);
-    if (tag !== null) return tag;
-    throw new TagNotFoundException("Tag not found");
-  }
+  
 }

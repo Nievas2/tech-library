@@ -28,8 +28,13 @@ export class TagEntity extends BaseEntity {
     @ManyToMany(() => LibraryEntity, (library) => library.tags)
     libraries!: Promise<LibraryEntity[]>
 
-    constructor(name: string) {
+    @Column({ type: "boolean", default: true })
+    isActive!: boolean
+
+    constructor(name: string, color: string) {
         super();
         this.name = name
+        this.color = color
+        this.isActive = true
     }
 }

@@ -3,6 +3,7 @@ import { TagService } from "../services/tag.service";
 import { DeleteResult, QueryFailedError, UpdateResult } from "typeorm";
 import { TagHttpResponse } from "../response/tag.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
+import { TagResponseDto } from "../entities/tag.dto";
 
 /**
  * @version 1.0.0
@@ -111,7 +112,7 @@ export class TagController {
   public async deleteTag(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const data: DeleteResult = await this.service.delete(id);
+      const data: TagResponseDto = await this.service.delete(id);
       if (!data) return this.tagHttpResponse.BadRequestTagNotFound(res, data);
       this.tagHttpResponse.Deleted(res, data);
     } catch (error) {

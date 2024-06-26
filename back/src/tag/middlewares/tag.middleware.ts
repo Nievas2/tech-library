@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { BaseMiddleware } from "../../shared/middlewares/base.middleware";
-import { TagDto } from "../entities/tag.dto";
+import { TagDto, TagUpdateDto } from "../entities/tag.dto";
 
 /**
  * @version 1.0.0
@@ -29,7 +29,7 @@ export class TagMiddleware extends BaseMiddleware<TagDto | TagDto> {
   public tagUpdateValidator(req: Request, res: Response, next: NextFunction) {
     const { name, color } = req.body;
 
-    const post = new TagDto();
+    const post = new TagUpdateDto();
 
     if (name) post.name = name;
     if (color) post.color = color;

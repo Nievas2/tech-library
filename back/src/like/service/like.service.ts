@@ -32,12 +32,11 @@ export class LikeService extends BaseService<LikeEntity> {
     libraryId: number
   ): Promise<boolean> {
     if (userId == 0) return false;
-
-    const like = await (await this.execRepository)
-      .createQueryBuilder("like")
-      .where("like.user = :userId", { userId: userId })
-      .andWhere("like.library = :libraryId", { libraryId: libraryId })
-      .getOne();
+    const like = await (
+      await this.execRepository
+    ).findOne({
+      where: { user: { id: userId }, library: { id: libraryId } },
+    });
 
     return like != null ? like.liked : false;
   }
@@ -54,7 +53,6 @@ export class LikeService extends BaseService<LikeEntity> {
   ): Promise<LibraryEntity> {
     try {
       const like = await this.searchLikeUserInLibrary(user.id, library.id);
-      console.log(like.liked);
       if (like.liked) {
         throw new LikeAlreadyExistsException("User already liked this library");
       }
@@ -64,13 +62,9 @@ export class LikeService extends BaseService<LikeEntity> {
       return library;
     } catch (error) {
       if (error instanceof LikeErrorException) {
-        console.log(error);
-
         const newLike: LikeEntity = new LikeEntity(user, library);
         await (await this.execRepository).save(newLike);
-
         library.likesCount++;
-
         return library;
       }
 
@@ -125,8 +119,7 @@ export class LikeService extends BaseService<LikeEntity> {
       .andWhere("like.library = :libraryId", { libraryId: libraryId })
       .getOne();
 
-    if (like == null)
-      throw new LikeErrorException("User like does not exist");
+    if (like == null) throw new LikeErrorException("User like does not exist");
     return like;
   }
 }

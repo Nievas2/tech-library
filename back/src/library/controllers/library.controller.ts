@@ -154,6 +154,7 @@ export class LibraryController {
       const { currentPage, pageSize } = this.getParams(req);
       const idUsuario = Number(req.params.userid);
       const query = req.query.q as string;
+      const orderLike = req.query.like as string;
       const tagList = req.body.tags as number[];
 
       let tagListParse: number[] = [];
@@ -172,7 +173,8 @@ export class LibraryController {
         currentPage,
         pageSize,
         tagListParse,
-        query
+        query,
+        orderLike
       );
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
