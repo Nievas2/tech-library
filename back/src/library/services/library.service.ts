@@ -127,6 +127,49 @@ export class LibraryService extends BaseService<LibraryEntity> {
   }
 
   /**
+   * @method findAllSearchQueryCustom - Retorna todas las librerias y si el usuario le ha dado me gusta a cada una, independientemente si el usuario creo la libreria o no, filtra por query el nombre de la libreria y por tags asociados, en un formato paginado
+   * @returns Promise<LibraryPagesDto>
+   * @param idUsuario - Id del usuario
+   * @param currentPage - Pagina actual
+   * @param pageSize - Cantidad de elementos por pagina
+   * @param tags - Id de los tags
+   * @param query - Query
+   * @throws {UserNotFoundException}
+   */
+  async findAllSearchQueryCustom(
+    idUsuario: number,
+    currentPage: number,
+    pageSize: number,
+    tags?: number[],
+    query?: string
+  ) {
+    const queryBuilder = (await this.execRepository)
+      .createQueryBuilder("library")
+      .andWhere("library.isActive = :isActive", { isActive: true })
+      // .andWhere("library.state = :state", { state: State.ACTIVE })
+      .leftJoinAndSelect("library.tags", "tag")
+      .leftJoinAndSelect("library.createdBy", "user")
+      .orderBy("library.name", "ASC")
+      .take(pageSize)
+      .skip((currentPage - 1) * pageSize);
+
+    if ( query && query.trim() != "" && query.length > 1) {
+      queryBuilder.andWhere("library.name like :query", { query: `%${query}%` });
+    }
+
+    if (tags && tags.length > 0) {
+      const tagsEntity: TagEntity[] = await this.getTags(tags);
+      queryBuilder.andWhere("tag.id IN (:...tags)", { tags: tagsEntity.map(tag => tag.id) });
+    }
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    const dataWithLike = await this.createResponseDTOWithLike(data, idUsuario);
+
+    return new LibraryPagesDto(currentPage, pageSize, total, dataWithLike);
+  }
+
+  /**
    * @method findAllStatusActive - Retorna todos las librerias con estado activo
    * @param currentPage - Pagina actual
    * @param pageSize - Cantidad de elementos por pagina
@@ -478,7 +521,11 @@ export class LibraryService extends BaseService<LibraryEntity> {
   ): Promise<LibraryPagesDto> {
     const [data, total] = await (
       await this.execRepository
-    ).findAndCount({ where: { state: state, isActive: true }, take: pageSize, skip: (currentPage - 1) * pageSize });
+    ).findAndCount({
+      where: { state: state, isActive: true },
+      take: pageSize,
+      skip: (currentPage - 1) * pageSize,
+    });
 
     const dataDto: LibraryResponseDTO[] = await this.createResponseDTO(data);
     return new LibraryPagesDto(currentPage, pageSize, total, dataDto);

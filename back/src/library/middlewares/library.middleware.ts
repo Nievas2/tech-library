@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { BaseMiddleware } from "../../shared/middlewares/base.middleware";
-import { LibraryCreateDTO, LibraryUpdateDTO } from "../entities/library.dto";
+import { LibraryCreateDTO, LibraryCustomQueryDTO, LibraryUpdateDTO } from "../entities/library.dto";
 
 /**
  * @version 1.0.0
@@ -11,7 +11,7 @@ import { LibraryCreateDTO, LibraryUpdateDTO } from "../entities/library.dto";
  * @method libraryUpdateValidator - Método que se encarga de validar los datos para actualizar una librería
  */
 export class LibraryMiddleware extends BaseMiddleware<
-  LibraryCreateDTO | LibraryUpdateDTO
+  LibraryCreateDTO | LibraryUpdateDTO | LibraryCustomQueryDTO
 > {
   constructor() {
     super();
@@ -57,6 +57,16 @@ export class LibraryMiddleware extends BaseMiddleware<
     if (description) post.description = description;
     if (tags) post.tags = tags;
     if (link) post.link = link;
+
+    this.validator(post, res, next);
+  }
+
+  public libaryCustomQueryValidator( req: Request, res: Response, next: NextFunction ){
+    const {tags} = req.query as unknown as LibraryCustomQueryDTO;
+
+    const post = new LibraryCustomQueryDTO();
+
+    if (tags) post.tags = tags;
 
     this.validator(post, res, next);
   }

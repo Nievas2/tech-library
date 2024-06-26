@@ -25,6 +25,8 @@ export class LibraryRouter extends BaseRouter<LibraryController, LibraryMiddlewa
         this.router.get('/library/all/status/active', (req, res) => this.controller.getLibrarysStatusActive( req, res));
         this.router.get('/library/all/status/pending', (req, res) => this.controller.getLibrarysStatusPending( req, res));
         this.router.get('/library/all/status/inactive', (req, res) => this.controller.getLibrarysStatusInactive( req, res));
+
+        this.router.get('/library/all/search/:userid', (req, res, next) => [this.middleware.libaryCustomQueryValidator( req, res, next)] , (req, res) => this.controller.getLibrarysSearch( req, res));
         
         this.router.get('/library/:id', (req, res) => this.controller.findById( req, res));
 

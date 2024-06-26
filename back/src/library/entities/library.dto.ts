@@ -7,7 +7,7 @@ import { State } from "../state.enum";
 
 export class LibraryCreateDTO extends BaseDTO {
   @IsNotEmpty()
-  @Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
+  @Length(3, 20, { message: "Name must be between 3 and 20 characters" })
   name!: string;
 
   @IsNotEmpty()
@@ -80,4 +80,10 @@ export class LibraryResponseDTO extends BaseDTO {
     this.id = library.id;
     this.likesCount = library.likesCount;
   }
+}
+
+export class LibraryCustomQueryDTO extends BaseDTO {
+  @IsOptional()
+  @IsArray( { message: "Tags must be an array" } )
+  tags!: number[];
 }
