@@ -101,7 +101,7 @@ export class LibraryController {
   public async findById(_req: Request, res: Response) {
     try {
       const id = Number(_req.params.id);
-      const data = await this.service.findById(id);
+      const data = await this.service.findByIdDTO(id);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
       if (error instanceof Error)
@@ -118,6 +118,17 @@ export class LibraryController {
     } catch (error) {
       if (error instanceof Error)
         return this.globalExceptionHandler.handleErrors(error, res);
+    }
+  }
+
+  public async likeLibrary(req: Request, res: Response) {
+    try {
+      const idUsuario = Number(req.params.userid);
+      const idLibrary = Number(req.params.libraryid);
+      const data = await this.service.addLikeInLibrary(idUsuario, idLibrary);
+      return this.libraryHttpResponse.Ok(res, data);
+    } catch (error) {
+      if (error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
 
@@ -169,5 +180,16 @@ export class LibraryController {
     }
   }
 
+  public async unlikeLibrary(req: Request, res: Response) {
+    try {
+      const idUsuario = Number(req.params.userid);
+      const idLibrary = Number(req.params.libraryid);
+      const data = await this.service.removeLikeInLibrary(idUsuario, idLibrary);
+      return this.libraryHttpResponse.Ok(res, data);
+    }
+    catch (error) {
+      if (error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+    }
+  }
 
 }

@@ -126,10 +126,22 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @param id
    * @throws {LibraryNotFoundException}
    */
-  async findById(id: number): Promise<LibraryResponseDTO> {
+  async findByIdDTO(id: number): Promise<LibraryResponseDTO> {
     const data = await (await this.execRepository).findOneBy({ id: id });
     if (data === null) throw new LibraryNotFoundException("Library not found");
     return new LibraryResponseDTO(data);
+  }
+
+  /**
+   * @method findById - Retorna una libreria por su id
+   * @returns Promise<LibraryEntity>
+   * @param id
+   * @throws {LibraryNotFoundException}
+   */
+  async findById(id: number): Promise<LibraryEntity> {
+    const data = await (await this.execRepository).findOneBy({ id: id });
+    if (data === null) throw new LibraryNotFoundException("Library not found");
+    return data;
   }
 
   /**
@@ -174,6 +186,22 @@ export class LibraryService extends BaseService<LibraryEntity> {
     await (await this.execRepository).save(library);
 
     return new LibraryResponseDTO(library);
+  }
+
+  /**
+   * @method addLikeInLibrary - Agrega un like a una libreria
+   * @returns Promise<LibraryResponseDTO>
+   * @param idUsuario
+   * @param idLibrary
+   * @throws {UserNotFoundException}
+   * @throws {LibraryNotFoundException}
+   * @throws {}
+   */
+  async addLikeInLibrary(idUsuario: number, idLibrary: number): Promise<LibraryResponseDTO> {
+    const user: UserEntity = await this.findUserById(idUsuario);
+    const library: LibraryEntity = await this.likeService.likeLibrary(user, await this.findById(idLibrary));
+    const data : LibraryEntity = await (await this.execRepository).save(library);
+    return new LibraryResponseDTO(data);
   }
 
   //--------------------------UPDATE METHODS-----------------------------
@@ -256,6 +284,22 @@ export class LibraryService extends BaseService<LibraryEntity> {
   async delete(id: number): Promise<DeleteResult> {
     await this.exists(id);
     return (await this.execRepository).delete(id);
+  }
+
+  /**
+   * @method removeLikeInLibrary - Quita un like a una libreria
+   * @returns Promise<LibraryResponseDTO>
+   * @param idUsuario
+   * @param idLibrary
+   * @throws {UserNotFoundException}
+   * @throws {LibraryNotFoundException}
+   * @throws {LikeErrorException}
+   */
+  async removeLikeInLibrary(idUsuario: number, idLibrary: number): Promise<LibraryResponseDTO> {
+    const user: UserEntity = await this.findUserById(idUsuario);
+    const library: LibraryEntity = await this.likeService.unLikeLibrary(user, await this.findById(idLibrary));
+    const data : LibraryEntity = await (await this.execRepository).save(library);
+    return new LibraryResponseDTO(data);
   }
 
   //--------------------------HELPERs METHODS-----------------------------

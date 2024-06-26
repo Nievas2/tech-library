@@ -60,6 +60,7 @@ export class LibraryResponseDTO extends BaseDTO {
   createdBy!: UserResponseDTO;
   createdAt!: Date;
   state!: string;
+  likesCount!: number;
 
   constructor(library: LibraryEntity) {
     super();
@@ -77,5 +78,6 @@ export class LibraryResponseDTO extends BaseDTO {
     this.createdAt = library.createdAt;
     this.state = library.state;
     this.id = library.id;
+    this.likesCount = library.likesCount;
   }
 }

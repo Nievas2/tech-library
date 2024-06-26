@@ -1,6 +1,6 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../../config/base.service";
-import { UserDTO } from "../entities/user.dto";
+import { UserDTO, UserResponseDTO } from "../entities/user.dto";
 import { UserEntity } from "../entities/user.entity";
 import { UserNotFoundException } from "../exceptions/user.notfound.exception";
 import {
@@ -33,41 +33,66 @@ export class UserService extends BaseService<UserEntity> {
 
   /**
    * @method findAll - Retorna todos los usuarios
-   * @returns Promise<UserEntity[]>
+   * @returns Promise<UserResponseDTO[]>
    */
-  async findAll(): Promise<UserEntity[]> {
-    return (await this.execRepository).find();
+  async findAll(): Promise<UserResponseDTO[]> {
+    const data = await (await this.execRepository).find();
+    return data.map(user => new UserResponseDTO(user));
   }
 
   /**
    * @method findAllActive - Retorna todos los usuarios activos
-   * @returns Promise<UserEntity[]>
+   * @returns Promise<UserResponseDTO[]>
    */
-  async findAllActive(): Promise<UserEntity[]> {
-    return (await this.execRepository).find({
+  async findAllActive(): Promise<UserResponseDTO[]> {
+    const data = await (await this.execRepository).find({
       where: {
         isActive: true,
       },
-    });
+    })
+    return data.map(user => new UserResponseDTO(user));
   }
 
   /**
    * @method findById - Retorna un usuario por su id
    * @param id - Id del usuario
-   * @returns Promise<UserEntity | null>
+   * @returns Promise<UserResponseDTO>
    */
-  async findById(iduser: number): Promise<UserEntity | null> {
-    await this.existsById(iduser);
-    return (await this.execRepository).findOneBy({ id: iduser });
+  async findById(iduser: number): Promise<UserEntity> {
+    const data = await (await this.execRepository).findOneBy({ id: iduser });
+    if (data === null) throw new UserNotFoundException("User not found");
+    return data;
+  }
+  /**
+   * @method findById - Retorna un usuario por su id
+   * @param id - Id del usuario
+   * @returns Promise<UserResponseDTO>
+   */
+  async findByIdDTO(iduser: number): Promise<UserResponseDTO> {
+    const data = await this.findById(iduser);
+    return new UserResponseDTO(data);
   }
 
   /**
    * @method findByIdActive - Retorna un usuario activo por su id
    * @param id - Id del usuario
-   * @returns Promise<UserEntity | null>
+   * @returns Promise<UserResponseDTO>
    */
-  async findByIdActive(id: number): Promise<UserEntity | null> {
-    return (await this.execRepository).findOneBy({ id: id, isActive: true });
+  async findByIdActive(id: number): Promise<UserEntity> {
+    const data = await (await this.execRepository).findOneBy({ id: id, isActive: true });
+    if (data === null) throw new UserNotFoundException("User not found");
+    return data;
+  }
+
+  
+  /**
+   * @method findByIdActiveDto - Retorna un DTO del usuario activo por su id
+   * @param id - Id del usuario
+   * @returns Promise<UserResponseDTO>
+   */
+  async findByIdActiveDto(id: number): Promise<UserResponseDTO> {
+   const data = await this.findByIdActive(id);
+    return new UserResponseDTO(data);
   }
 
   //-----------------CREATE METHODS-----------------
@@ -75,11 +100,16 @@ export class UserService extends BaseService<UserEntity> {
   /**
    * @method create - Crea un usuario
    * @param user - DTO del usuario
-   * @returns Promise<UserEntity>
+   * @returns Promise<UserResponseDTO>
+   * @throws {UserAlreadyExistException} - Error si el usuario ya existe
+   * @throws {UserAlreadyExistByEmailException} - Error si el usuario ya existe con el mismo email
+   * @throws {UserAlreadyExistByUsernameException} - Error si el usuario ya existe con el mismo username
    */
-  async create(user: UserDTO): Promise<UserEntity> {
+  async create(user: UserDTO): Promise<UserResponseDTO> {
     await this.existsByEmailAndUsername(user.username, user.email);
-    return (await this.execRepository).save(user);
+    const userEntity = new UserEntity(user.username, user.password, user.email);
+    await (await this.execRepository).save(userEntity);
+    return new UserResponseDTO(userEntity);
   }
 
   //-----------------UPDATE METHODS-----------------

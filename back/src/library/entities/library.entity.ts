@@ -72,6 +72,9 @@ export class LibraryEntity extends BaseEntity {
   })
   tags!: TagEntity[];
 
+  @Column({ type: "int", default: 0 })
+  likesCount!: number;
+
 
   constructor(
     name: string,
@@ -89,6 +92,7 @@ export class LibraryEntity extends BaseEntity {
     this.createdBy = createdBy;
     this.tags = tags;
     this.link = link;
+    this.likesCount = 0;
   }
 
   //Methods start
