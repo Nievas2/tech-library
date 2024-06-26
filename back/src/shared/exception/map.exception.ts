@@ -15,6 +15,8 @@ import { LibraryAlreadyExistException } from "../../library/exception/library.al
 import { LikeHttpResponse } from "../../like/response/like.http.response";
 import { LikeErrorException } from "../../like/exception/like.error";
 import { LibraryAlreadyDisabledException, LibraryAlreadyEnabledException } from "../../library/exception/library.soft.delete.exceptions";
+import { LikeAlreadyExistsException } from "../../like/exception/like.already.exists";
+import { TagIdInvalidException } from "../../tag/exceptions/tag.id.invalid";
 
 /**
  * @description Tipado de la respuesta de las excepciones de respuesta HTTP
@@ -83,6 +85,13 @@ export const createErrorHandlerMap = (
     [
       LibraryAlreadyEnabledException,
       (res: Response) => library.BadRequestLibraryAlreadyEnabled(res),
+    ],
+    [
+      LikeAlreadyExistsException,
+      (res: Response) => like.BadRequestLikeAlreadyExists(res),
+    ],[
+      TagIdInvalidException,
+      (res: Response) => tag.BadRequestTagIdInvalid(res),
     ]
   ]);
 };

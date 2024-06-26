@@ -25,10 +25,16 @@ export class LibraryRouter extends BaseRouter<LibraryController, LibraryMiddlewa
         this.router.get('/library/all/status/active', (req, res) => this.controller.getLibrarysStatusActive( req, res));
         this.router.get('/library/all/status/pending', (req, res) => this.controller.getLibrarysStatusPending( req, res));
         this.router.get('/library/all/status/inactive', (req, res) => this.controller.getLibrarysStatusInactive( req, res));
+
+        this.router.get('/library/all/search/:userid', (req, res, next) => [this.middleware.libaryCustomQueryValidator( req, res, next)] , (req, res) => this.controller.getLibrarysSearch( req, res));
         
         this.router.get('/library/:id', (req, res) => this.controller.findById( req, res));
 
+        //--------------------POST--------------------
+
         this.router.post('/library/create/:userid', (req, res, next) => [this.middleware.libraryCreateValidator( req, res, next)] , (req, res) => this.controller.createLibrary( req, res));
+
+        this.router.post('/library/like/:userid/:libraryid', (req, res) => this.controller.likeLibrary( req, res));
 
         //--------------------PUT--------------------
         this.router.put('/library/admin/update/:id',(req, res, next) => [this.middleware.libraryUpdateAdminValidator( req, res, next)] , (req, res) => this.controller.updateLibrary( req, res));
@@ -40,5 +46,7 @@ export class LibraryRouter extends BaseRouter<LibraryController, LibraryMiddlewa
         this.router.delete('/library/delete/definitive/:id', (req, res) => this.controller.deleteLibrary( req, res));
         //por si se hace delete logico
         this.router.delete('/library/delete/temporal/:id', (req, res) => this.controller.deleteLogicLibrary( req, res));
+
+        this.router.delete('/library/unlike/:userid/:libraryid', (req, res) => this.controller.unlikeLibrary( req, res));
     }
 }
