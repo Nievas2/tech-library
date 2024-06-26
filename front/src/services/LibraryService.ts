@@ -10,7 +10,7 @@ export interface LibraryDtoAdmin {
   name: string
   description: string
   link: string
-  tags: number[]
+  tags: number[]  
   state: "ACTIVE" | "PENDING" | "INACTIVE"
 }
 export function getLibraries(userId: number) {
@@ -39,8 +39,6 @@ export async function getLibrariesUserDashboard(userId: number) {
 export async function getAllLibraries() {
   try {
     const response = await axios.get(`http://localhost:8000/api/library/all`)
-    console.log(response)
-
     return response.data.data.results
   } catch (error) {
     console.log(error)

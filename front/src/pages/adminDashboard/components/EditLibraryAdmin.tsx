@@ -42,19 +42,14 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       setError(false)
 
       const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
-      const tagsIdCard = card.tags
-        ?.filter((tag) => tag.id)
-        .map((tag) => tag.id)
-      tagsIdCard?.forEach((tag) => {
-        tagsId.push(tag)
-      })
+      const filteredTagsId = tagsId.filter((tag) => tag !== undefined)
       if (tagsId === undefined) return
       if (tagsAdded) {
         const valuesDate: LibraryDtoAdmin = {
           name: values.name,
           description: values.description,
           link: values.link,
-          tags: tagsId,
+          tags: filteredTagsId as number[],
           state: values.state
         }
         console.log(valuesDate)

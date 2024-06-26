@@ -34,7 +34,8 @@ const AdminDashboardPage = () => {
   useEffect(() => {
     getLibraries()
     getTags()
-  }, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) 
   function handleChangeSelect(value: string) {
     const cloneList = [...(list || [])]
     if (value === "ALL") return setList(cloneList)

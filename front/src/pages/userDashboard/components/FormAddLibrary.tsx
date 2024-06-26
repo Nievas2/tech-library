@@ -48,16 +48,17 @@ export default function FormAddLibrary({ card }: CardProps) {
         if (tagsAdded?.length === 0) return setError(true)
         setError(false)
         const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
-        if (tagsId === undefined) return
+        const filteredTagsId = tagsId.filter((tag) => tag !== undefined)
+
         if (tagsAdded) {
           const valuesDate: LibraryDtoUser = {
             name: values.name,
             description: values.description,
             link: values.link,
-            tags: tagsId
+            tags: filteredTagsId as number[]
           }
           console.log(valuesDate)
-          postLibrary(valuesDate, 1)
+          //postLibrary(valuesDate, 1)
         }
       } else {
         setError(false)
@@ -69,13 +70,14 @@ export default function FormAddLibrary({ card }: CardProps) {
         tagsIdCard?.forEach((tag) => {
           tagsId.push(tag)
         })
-        if (tagsId === undefined) return
+        const filteredTagsId = tagsId.filter((tag) => tag !== undefined)
+
         if (tagsAdded) {
           const valuesDate: LibraryDtoUser = {
             name: values.name,
             description: values.description,
             link: values.link,
-            tags: tagsId
+            tags: filteredTagsId as number[]
           }
           console.log(valuesDate)
           putLibraryUser(valuesDate, card.id)
