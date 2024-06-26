@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { LibraryHttpResponse } from "../response/library.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { LibraryService } from "../services/library.service";
+import { getValidNumber } from "../../shared/utils/utils";
 
 /**
  * @version 1.0.0
@@ -22,10 +23,11 @@ export class LibraryController {
   ) {}
 
   //--------------------GET--------------------
-  public async getLibrarys(_req: Request, res: Response) {
+  public async getLibrarys(req: Request, res: Response) {
     try {
-      const data = await this.service.findAll();
-      if (data.length === 0)
+      const { currentPage, pageSize } = this.getParams(req);
+      const data = await this.service.findAll(currentPage, pageSize);
+      if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -34,13 +36,21 @@ export class LibraryController {
     }
   }
 
-  public async getLibrarysStatusActiveWhithUserLike(req: Request, res: Response) {
+  public async getLibrarysStatusActiveWhithUserLike(
+    req: Request,
+    res: Response
+  ) {
     try {
       const idUsuario = Number(req.params.userid);
-      console.log(idUsuario);
-      
-      const data = await this.service.findAllStatusActiveWithLike(idUsuario);
-      if (data.length === 0)
+      const { currentPage, pageSize } = this.getParams(req);
+
+      const data = await this.service.findAllStatusActiveWithLike(
+        idUsuario,
+        currentPage,
+        pageSize
+      );
+
+      if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -49,10 +59,11 @@ export class LibraryController {
     }
   }
 
-  public async getLibrarysStatusActive(_req: Request, res: Response) {
+  public async getLibrarysStatusActive(req: Request, res: Response) {
     try {
-      const data = await this.service.findAllStatusActive();
-      if (data.length === 0)
+      const { currentPage, pageSize } = this.getParams(req);
+      const data = await this.service.findAllStatusActive(currentPage, pageSize);
+      if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -61,10 +72,11 @@ export class LibraryController {
     }
   }
 
-  public async getLibrarysStatusPending(_req: Request, res: Response) {
+  public async getLibrarysStatusPending(req: Request, res: Response) {
     try {
-      const data = await this.service.findAllStatusPending();
-      if (data.length === 0)
+      const { currentPage, pageSize } = this.getParams(req);
+      const data = await this.service.findAllStatusPending(currentPage, pageSize);
+      if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -73,10 +85,11 @@ export class LibraryController {
     }
   }
 
-  public async getLibrarysStatusInactive(_req: Request, res: Response) {
+  public async getLibrarysStatusInactive(req: Request, res: Response) {
     try {
-      const data = await this.service.findAllStatusInactive();
-      if (data.length === 0)
+      const { currentPage, pageSize } = this.getParams(req);
+      const data = await this.service.findAllStatusInactive(currentPage, pageSize);
+      if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -88,8 +101,14 @@ export class LibraryController {
   public async getLibrarysByUser(req: Request, res: Response) {
     try {
       const id = Number(req.params.userid);
-      const data = await this.service.findyAllByUserId(id);
-      if (data.length === 0)
+      const { currentPage, pageSize } = this.getParams(req);
+
+      const data = await this.service.findyAllByUserId(
+        id,
+        currentPage,
+        pageSize
+      );
+      if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -128,7 +147,8 @@ export class LibraryController {
       const data = await this.service.addLikeInLibrary(idUsuario, idLibrary);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
-      if (error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+      if (error instanceof Error)
+        return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
 
@@ -154,8 +174,7 @@ export class LibraryController {
       if (error instanceof Error)
         return this.globalExceptionHandler.handleErrors(error, res);
     }
-  };
-
+  }
 
   //--------------------DELETE--------------------
   public async deleteLibrary(req: Request, res: Response) {
@@ -167,7 +186,7 @@ export class LibraryController {
       if (error instanceof Error)
         return this.globalExceptionHandler.handleErrors(error, res);
     }
-  };
+  }
 
   public async deleteLogicLibrary(req: Request, res: Response) {
     try {
@@ -186,10 +205,24 @@ export class LibraryController {
       const idLibrary = Number(req.params.libraryid);
       const data = await this.service.removeLikeInLibrary(idUsuario, idLibrary);
       return this.libraryHttpResponse.Ok(res, data);
-    }
-    catch (error) {
-      if (error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+    } catch (error) {
+      if (error instanceof Error)
+        return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
 
+  private getParams(req: Request) {
+    const defaultPageSize =
+      this.service.getNumberEnvironment("DEFAULT_PAGE_SIZE");
+    const currentPage = getValidNumber(req.query.page, 1);
+    const pageSize = getValidNumber(
+      req.query.size,
+      getValidNumber(defaultPageSize, 9)
+    );
+
+    return {
+      currentPage,
+      pageSize,
+    };
+  }
 }
