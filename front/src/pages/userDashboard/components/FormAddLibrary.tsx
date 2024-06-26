@@ -16,7 +16,11 @@ import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
 import { useTagStore } from "@/stores"
-import { LibraryDtoCreate, postLibrary } from "@/services/LibraryService"
+import {
+  LibraryDtoUser,
+  postLibrary,
+  putLibraryUser
+} from "@/services/LibraryService"
 import { Tag } from "@/interfaces/Tag"
 
 interface CardProps {
@@ -25,16 +29,16 @@ interface CardProps {
 
 export default function FormAddLibrary({ card }: CardProps) {
   const tags = useTagStore((state) => state.tags)
-  const getTags = useTagStore((state)=> state.getTags)
+  const getTags = useTagStore((state) => state.getTags)
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
     card?.tags?.map((tag) => tag) || []
-  );
+  )
 
   const [error, setError] = useState(false)
 
   useEffect(() => {
     getTags()
-  },[])
+  }, [])
   const formik = useFormik({
     initialValues: {
       name: card?.name || "",
@@ -43,18 +47,42 @@ export default function FormAddLibrary({ card }: CardProps) {
     },
     validationSchema: librarySchema,
     onSubmit: (values) => {
-      if (tagsAdded?.length === 0) return setError(true)
-      setError(false)
-    const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
-      if (tagsAdded) {
-        const valuesDate: LibraryDtoCreate = {
-          name: values.name,
-          description: values.description,
-          link: values.link,
-          tags: tagsId
+      if (card === undefined) {
+        if (tagsAdded?.length === 0) return setError(true)
+        setError(false)
+        const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
+        if (tagsId === undefined) return
+        if (tagsAdded) {
+          const valuesDate: LibraryDtoUser = {
+            name: values.name,
+            description: values.description,
+            link: values.link,
+            tags: tagsId
+          }
+          console.log(valuesDate)
+          postLibrary(valuesDate, 1)
         }
-        console.log(valuesDate)
-        postLibrary(valuesDate, 1)
+      } else {
+        setError(false)
+
+        const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
+        const tagsIdCard = card.tags
+          ?.filter((tag) => tag.id)
+          .map((tag) => tag.id)
+        tagsIdCard?.forEach((tag) => {
+          tagsId.push(tag)
+        })
+        if (tagsId === undefined) return
+        if (tagsAdded) {
+          const valuesDate: LibraryDtoUser = {
+            name: values.name,
+            description: values.description,
+            link: values.link,
+            tags: tagsId
+          }
+          console.log(valuesDate)
+          putLibraryUser(valuesDate, card.id)
+        }
       }
     }
   })
@@ -63,8 +91,8 @@ export default function FormAddLibrary({ card }: CardProps) {
     if (tagsAdded?.find((tag) => tag.name === value)) return
     const tagSelected = tags.find((tag) => tag.name === value)
     if (!tagSelected) return
-    console.log(tagSelected);
-    
+    console.log(tagSelected)
+
     const tagSelectedFormat = {
       id: tagSelected.id,
       name: tagSelected.name,
@@ -75,7 +103,7 @@ export default function FormAddLibrary({ card }: CardProps) {
   }
 
   const removeTag = (index: number) => {
-    const clonedTags = [...(tagsAdded || [])];
+    const clonedTags = [...(tagsAdded || [])]
 
     clonedTags.splice(index, 1)
     setTagsAdded(clonedTags)
@@ -116,7 +144,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           onChange={formik.handleChange}
           value={formik.values.link}
           className="bg-light"
-          maxLength={100}
+          maxLength={200}
         />
         <small
           className={`${
@@ -135,7 +163,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           onChange={formik.handleChange}
           value={formik.values.description}
           className="bg-light"
-          maxLength={100}
+          maxLength={200}
         />
         <small
           className={`${
@@ -156,15 +184,15 @@ export default function FormAddLibrary({ card }: CardProps) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              { tags &&
-              tags?.map((tag) => (
-                <SelectItem
-                  key={crypto.randomUUID()}
-                  value={tag.name}
-                >
-                  {tag.name}
-                </SelectItem>
-              ))}
+              {tags &&
+                tags?.map((tag) => (
+                  <SelectItem
+                    key={crypto.randomUUID()}
+                    value={tag.name}
+                  >
+                    {tag.name}
+                  </SelectItem>
+                ))}
             </SelectGroup>
           </SelectContent>
         </Select>

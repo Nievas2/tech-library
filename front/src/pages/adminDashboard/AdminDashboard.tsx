@@ -14,111 +14,23 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { Library } from "@/interfaces/Library"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import AddTag from "./components/AddTag"
 import StateCardAdmin from "./components/StateCardAdmin"
 import FormAddLibrary from "../userDashboard/components/FormAddLibrary"
+import { getAllLibraries } from "@/services/LibraryService"
 const AdminDashboardPage = () => {
-  const cardDetails: Library[] = [
-    {
-      id: 1,
-      name: "React",
-      description:
-        "Un framework de JavaScript para construir interfaces de usuario",
-      tags: [
-        {
-          id: 1,
-          name: "JavaScript",
-          color: "#F7DC6F",
-        },
-        {
-          id: 2,
-          name: "Frontend",
-          color: "#3498DB",
-        },
-        { id: 3, name: "UI", color: "#9B59B6" }
-      ],
-      likes: 1,
-      isActive: true,
-      state: "ACTIVE",
-      link: "https://reactjs.org/",
-      createdBy: {
-        id: 1,
-        name: "John",
-        lastname: "Doe",
-        username: "johndoe",
-        password: "password123",
-        email: "johndoe@me.com"
-      }
-    },
-    {
-      id: 1,
-      name: "React",
-      description:
-        "Un framework de JavaScript para construir interfaces de usuario",
-      tags: [
-        {
-          id: 1,
-          name: "JavaScript",
-          color: "#F7DC6F"
-        },
-        {
-          id: 2,
-          name: "Frontend",
-          color: "#3498DB"
-        },
-        { id: 3, name: "UI", color: "#9B59B6" }
-      ],
-      likes: 1,
-      isActive: true,
-      state: "PENDING",
-      link: "https://reactjs.org/",
-      createdBy: {
-        id: 1,
-        name: "John",
-        lastname: "Doe",
-        username: "johndoe",
-        password: "password123",
-        email: "johndoe@me.com"
-      }
-    },
-    {
-      id: 1,
-      name: "React",
-      description:
-        "Un framework de JavaScript para construir interfaces de usuario",
-      tags: [
-        {
-          id: 1,
-          name: "JavaScript",
-          color: "#F7DC6F",
-        },
-        {
-          id: 2,
-          name: "Frontend",
-          color: "#3498DB",
-        },
-        { id: 3, name: "UI", color: "#9B59B6"}
-      ],
-      likes: 1,
-      isActive: true,
-      state: "INACTIVE",
-      link: "https://reactjs.org/",
-      createdBy: {
-        id: 1,
-        name: "John",
-        lastname: "Doe",
-        username: "johndoe",
-        password: "password123",
-        email: "johndoe@me.com"
-      }
-    }
-  ]
-  const [list, setList] = useState(cardDetails)
-
+  const [list, setList] = useState<Library[]>()
+  async function getLibraries() {
+    const response = await getAllLibraries()
+    setList(response)
+  }
+  useEffect(() => {
+    getLibraries()
+  }, [])
   function handleChangeSelect(value: string) {
-    const cloneList = cardDetails
+    const cloneList = [...(list || [])]
     if (value === "ALL") return setList(cloneList)
     const result = cloneList.filter((item) => item.state === value)
     setList(result)
@@ -167,7 +79,7 @@ const AdminDashboardPage = () => {
         <div className="flex justify-end">
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
-            Add Library
+              Add Library
             </DialogTrigger>
             <DialogContent className="bg-light dark:bg-dark ">
               <DialogHeader className="">
@@ -184,7 +96,7 @@ const AdminDashboardPage = () => {
       </div>
 
       <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
-        {list.map((card) => (
+        {list?.map((card) => (
           <StateCardAdmin
             key={crypto.randomUUID()}
             card={card}

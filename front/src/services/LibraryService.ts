@@ -1,19 +1,18 @@
-import { Tag } from "@/interfaces/Tag"
 import axios from "axios"
 
-export interface LibraryDtoCreate {
+export interface LibraryDtoUser {
   name: string
   description: string
   link: string
-  tags: Tag[]
+  tags: number[]
 }
-export interface LibraryDtoUpdate {
-    name: string
-    description: string
-    link: string
-    tags: Tag[]
-    state: "ACTIVE" | "PENDING" | "INACTIVE"
-  }
+export interface LibraryDtoAdmin {
+  name: string
+  description: string
+  link: string
+  tags: number[]
+  state: "ACTIVE" | "PENDING" | "INACTIVE"
+}
 export function getLibraries(userId: number) {
   axios
     .get(`http://localhost:8000/api/library/all/active/${userId}`)
@@ -26,19 +25,29 @@ export function getLibraries(userId: number) {
       console.log(error)
     })
 }
-export function getAllLibraries() {
-  axios
-    .get(`http://localhost:8000/api/library/all`)
-    .then((response) => {
-      console.log(response)
-
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+export async function getLibrariesUserDashboard(userId: number) {
+  try {
+    const response = await axios.get(
+      `http://localhost:8000/api/library/all/user/${userId}`
+    )
+    return response.data.data.results
+  } catch (error) {
+    console.log(error)
+    return null
+  }
 }
-export function postLibrary(library: LibraryDtoCreate, userId: number) {
+export async function getAllLibraries() {
+  try {
+    const response = await axios.get(`http://localhost:8000/api/library/all`)
+    console.log(response);
+    
+    return response.data.data.results
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+export function postLibrary(library: LibraryDtoUser, userId: number) {
   axios
     .post(`http://localhost:8000/api/library/create/${userId}`, {
       name: library.name,
@@ -56,9 +65,23 @@ export function postLibrary(library: LibraryDtoCreate, userId: number) {
     })
 }
 
-export function putLibraryState(library: LibraryDtoUpdate, libraryId: number) {
+export function putLibraryUser(library: LibraryDtoUser, libraryId: number) {
   axios
-    .post(`http://localhost:8000/api/library/update/${libraryId}`, {
+    .put(`http://localhost:8000/api/library/update/${libraryId}`, {
+      library
+    })
+    .then((response) => {
+      console.log(response)
+
+      return response.data
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {
+  axios
+    .put(`http://localhost:8000/api/library/admin/update/${libraryId}`, {
       library
     })
     .then((response) => {

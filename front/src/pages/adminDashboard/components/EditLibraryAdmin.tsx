@@ -16,7 +16,7 @@ import { useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
 import { useTagStore } from "@/stores"
-import { LibraryDtoUpdate, putLibraryState } from "@/services/LibraryService"
+import { LibraryDtoAdmin, putLibraryAdmin } from "@/services/LibraryService"
 import { Tag } from "@/interfaces/Tag"
 
 interface CardProps {
@@ -39,17 +39,27 @@ export default function EditLibraryAdmin({ card }: CardProps) {
     },
     validationSchema: librarySchema,
     onSubmit: (values) => {
-      if (tagsAdded.length === 0) return setError(true)
       setError(false)
-      const valuesDate: LibraryDtoUpdate = {
-        name: values.name,
-        description: values.description,
-        link: values.link,
-        state: values.state,
-        tags: tagsAdded
+
+      const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
+      const tagsIdCard = card.tags
+        ?.filter((tag) => tag.id)
+        .map((tag) => tag.id)
+      tagsIdCard?.forEach((tag) => {
+        tagsId.push(tag)
+      })
+      if (tagsId === undefined) return
+      if (tagsAdded) {
+        const valuesDate: LibraryDtoAdmin = {
+          name: values.name,
+          description: values.description,
+          link: values.link,
+          tags: tagsId,
+          state: values.state
+        }
+        console.log(valuesDate)
+        putLibraryAdmin(valuesDate, card.id)
       }
-      console.log(valuesDate)
-      putLibraryState(valuesDate, card.id)
     }
   })
 
@@ -113,7 +123,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           onChange={formik.handleChange}
           value={formik.values.link}
           className="bg-light"
-          maxLength={100}
+          maxLength={200}
         />
         <small
           className={`${
@@ -132,7 +142,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           onChange={formik.handleChange}
           value={formik.values.description}
           className="bg-light"
-          maxLength={100}
+          maxLength={200}
         />
         <small
           className={`${
