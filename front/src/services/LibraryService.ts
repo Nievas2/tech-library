@@ -30,7 +30,7 @@ export async function getLibrariesUserDashboard(userId: number) {
     const response = await axios.get(
       `http://localhost:8000/api/library/all/user/${userId}`
     )
-    return response.data.data.results
+    return response.data.data
   } catch (error) {
     console.log(error)
     return null
@@ -39,8 +39,8 @@ export async function getLibrariesUserDashboard(userId: number) {
 export async function getAllLibraries() {
   try {
     const response = await axios.get(`http://localhost:8000/api/library/all`)
-    console.log(response);
-    
+    console.log(response)
+
     return response.data.data.results
   } catch (error) {
     console.log(error)

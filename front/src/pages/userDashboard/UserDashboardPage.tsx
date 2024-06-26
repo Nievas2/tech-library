@@ -18,9 +18,10 @@ import StateCard from "./components/StateCard"
 import { useEffect, useState } from "react"
 import { getLibrariesUserDashboard } from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
+import { useTagStore } from "@/stores"
 const UserDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
-
+  const getTags = useTagStore((state) => state.getTags)
   async function getLibrary() {
     const response = await getLibrariesUserDashboard(1)
     console.log(response)
@@ -29,6 +30,7 @@ const UserDashboardPage = () => {
   }
   useEffect(() => {
     getLibrary()
+    getTags()
   }, [])
 
   function handleChangeSelect(value: string) {

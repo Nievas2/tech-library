@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
 import { useTagStore } from "@/stores"
@@ -29,16 +29,13 @@ interface CardProps {
 
 export default function FormAddLibrary({ card }: CardProps) {
   const tags = useTagStore((state) => state.tags)
-  const getTags = useTagStore((state) => state.getTags)
+
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
     card?.tags?.map((tag) => tag) || []
   )
 
   const [error, setError] = useState(false)
 
-  useEffect(() => {
-    getTags()
-  }, [])
   const formik = useFormik({
     initialValues: {
       name: card?.name || "",

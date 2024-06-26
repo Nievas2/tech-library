@@ -16,18 +16,24 @@ import {
 import { Library } from "@/interfaces/Library"
 import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
-import AddTag from "./components/AddTag"
+import ChangeTag from "./components/ChangeTag"
 import StateCardAdmin from "./components/StateCardAdmin"
 import FormAddLibrary from "../userDashboard/components/FormAddLibrary"
 import { getAllLibraries } from "@/services/LibraryService"
+import { useTagStore } from "@/stores"
+import { Button } from "@/components/ui/button"
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
+  const [showTags, setShowTags] = useState(true)
+  const tags = useTagStore((state) => state.tags)
+  const getTags = useTagStore((state) => state.getTags)
   async function getLibraries() {
     const response = await getAllLibraries()
     setList(response)
   }
   useEffect(() => {
     getLibraries()
+    getTags()
   }, [])
   function handleChangeSelect(value: string) {
     const cloneList = [...(list || [])]
@@ -38,7 +44,7 @@ const AdminDashboardPage = () => {
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
       <div className="flex flex-wrap py-2 gap-1">
-        <div className="flex flex-1 gap-4">
+        <div className="flex flex-1 gap-4 flex-wrap">
           <Select
             defaultValue="ALL"
             onValueChange={(value) => handleChangeSelect(value)}
@@ -71,9 +77,20 @@ const AdminDashboardPage = () => {
                   </strong>
                 </DialogTitle>
               </DialogHeader>
-              <AddTag />
+              <ChangeTag tag={undefined} />
             </DialogContent>
           </Dialog>
+          <Button
+            className={`${showTags ? "bg-main dark:text-white" : ""} `}
+            onClick={() => setShowTags(!showTags)}
+          >
+            <Icon
+              icon="mdi:tag-outline"
+              width="20"
+              height="20"
+              color={`${showTags ? "white" : ""} `}
+            />
+          </Button>
         </div>
 
         <div className="flex justify-end">
@@ -103,6 +120,27 @@ const AdminDashboardPage = () => {
           />
         ))}
       </section>
+      {showTags && (
+        <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1">
+          {tags?.map((tag) => (
+            <Dialog key={crypto.randomUUID()}>
+              <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
+                {tag.name}
+              </DialogTrigger>
+              <DialogContent className="bg-light dark:bg-dark ">
+                <DialogHeader className="">
+                  <DialogTitle>
+                    <strong className="text-dark dark:text-light ">
+                      Update Tag
+                    </strong>
+                  </DialogTitle>
+                </DialogHeader>
+                <ChangeTag tag={tag} />
+              </DialogContent>
+            </Dialog>
+          ))}
+        </section>
+      )}
     </div>
   )
 }

@@ -8,8 +8,6 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog"
 import EditLibraryAdmin from "./EditLibraryAdmin"
-/* import FormAddLibrary from "./FormAddLibrary"
- */
 const StateCardAdmin = ({ card }: { card: Library }) => {
   return (
     <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4">
