@@ -40,7 +40,7 @@ const Card = ({ card }: CardProps) => {
           {card.tags?.map((tag: Tag) => (
             <h4
               key={tag.id}
-              style={{ backgroundColor: tag.bgColor }}
+              style={{ backgroundColor: tag.color }}
               className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light"
             >
               {tag.name}

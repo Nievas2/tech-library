@@ -21,16 +21,16 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 1,
           name: "JavaScript",
-          bgColor: "#F7DC6F",
+          color: "#F7DC6F",
           borderColor: "#F7DC6F"
         },
         {
           id: 2,
           name: "Frontend",
-          bgColor: "#3498DB",
+          color: "#3498DB",
           borderColor: "#3498DB"
         },
-        { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+        { id: 3, name: "UI", color: "#9B59B6", borderColor: "#9B59B6" }
       ],
       likes: 1,
       isActive: true,
@@ -54,19 +54,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 4,
           name: "JavaScript",
-          bgColor: "#F7DC6F",
+          color: "#F7DC6F",
           borderColor: "#F7DC6F"
         },
         {
           id: 5,
           name: "Backend",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 6,
           name: "Server",
-          bgColor: "#8B9467",
+          color: "#8B9467",
           borderColor: "#8B9467"
         }
       ],
@@ -91,19 +91,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 7,
           name: "Version Control",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         },
         {
           id: 8,
           name: "Collaboration",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 9,
           name: "Development",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         }
       ],
@@ -128,19 +128,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 10,
           name: "Node.js",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 11,
           name: "Web Development",
-          bgColor: "#8B9467",
+          color: "#8B9467",
           borderColor: "#8B9467"
         },
         {
           id: 12,
           name: "API",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -166,19 +166,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 13,
           name: "Database",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         },
         {
           id: 14,
           name: "NoSQL",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 15,
           name: "Data Storage",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         }
       ],
@@ -204,16 +204,16 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 16,
           name: "Web Development",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 17,
           name: "Frontend",
-          bgColor: "#3498DB",
+          color: "#3498DB",
           borderColor: "#3498DB"
         },
-        { id: 18, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
+        { id: 18, name: "UI", color: "#9B59B6", borderColor: "#9B59B6" }
       ],
       likes: 6,
       isActive: true,
@@ -237,19 +237,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 19,
           name: "Programming",
-          bgColor: "#F7DC6F",
+          color: "#F7DC6F",
           borderColor: "#F7DC6F"
         },
         {
           id: 20,
           name: "Web Development",
-          bgColor: "#8B9467",
+          color: "#8B9467",
           borderColor: "#8B9467"
         },
         {
           id: 21,
           name: "Frontend",
-          bgColor: "#3498DB",
+          color: "#3498DB",
           borderColor: "#3498DB"
         }
       ],
@@ -275,19 +275,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 22,
           name: "Programming",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         },
         {
           id: 23,
           name: "Development",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         },
         {
           id: 24,
           name: "Scripting",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         }
       ],
@@ -313,19 +313,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 25,
           name: "Programming",
-          bgColor: "#F7DC6F",
+          color: "#F7DC6F",
           borderColor: "#F7DC6F"
         },
         {
           id: 26,
           name: "Development",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         },
         {
           id: 27,
           name: "Enterprise",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -351,19 +351,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 28,
           name: "Programming",
-          bgColor: "#F7DC6F",
+          color: "#F7DC6F",
           borderColor: "#F7DC6F"
         },
         {
           id: 29,
           name: "Web Development",
-          bgColor: "#8B9467",
+          color: "#8B9467",
           borderColor: "#8B9467"
         },
         {
           id: 30,
           name: "Scripting",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         }
       ],
@@ -389,19 +389,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 31,
           name: "Programming",
-          bgColor: "#F7DC6F",
+          color: "#F7DC6F",
           borderColor: "#F7DC6F"
         },
         {
           id: 32,
           name: "Web Development",
-          bgColor: "#8B9467",
+          color: "#8B9467",
           borderColor: "#8B9467"
         },
         {
           id: 33,
           name: "Backend",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         }
       ],
@@ -427,19 +427,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 34,
           name: "Cloud",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         },
         {
           id: 35,
           name: "Infrastructure",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 36,
           name: "Data Storage",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         }
       ],
@@ -465,19 +465,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 37,
           name: "Cloud",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         },
         {
           id: 38,
           name: "Infrastructure",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 39,
           name: "Data Storage",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         }
       ],
@@ -503,19 +503,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 40,
           name: "Cloud",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         },
         {
           id: 41,
           name: "Infrastructure",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 42,
           name: "Data Storage",
-          bgColor: "#FFC107",
+          color: "#FFC107",
           borderColor: "#FFC107"
         }
       ],
@@ -541,19 +541,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 43,
           name: "AI",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 44,
           name: "Machine Learning",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 45,
           name: "Deep Learning",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -579,19 +579,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 46,
           name: "AI",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 47,
           name: "Machine Learning",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 48,
           name: "Deep Learning",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -617,19 +617,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 49,
           name: "AI",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 50,
           name: "Machine Learning",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 51,
           name: "Deep Learning",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -655,19 +655,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 52,
           name: "AI",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 53,
           name: "Computer Vision",
-          bgColor: "#8BC34A",
+          color: "#8BC34A",
           borderColor: "#8BC34A"
         },
         {
           id: 54,
           name: "Image Processing",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -693,19 +693,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 55,
           name: "CSS",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 56,
           name: "UI",
-          bgColor: "#9B59B6",
+          color: "#9B59B6",
           borderColor: "#9B59B6"
         },
         {
           id: 57,
           name: "Design",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -731,19 +731,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 58,
           name: "CSS",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 59,
           name: "UI",
-          bgColor: "#9B59B6",
+          color: "#9B59B6",
           borderColor: "#9B59B6"
         },
         {
           id: 60,
           name: "Design",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
@@ -769,19 +769,19 @@ const storeApi: StateCreator<LibraryState, [["zustand/immer", never]]> = (set) =
         {
           id: 61,
           name: "CSS",
-          bgColor: "#2E4053",
+          color: "#2E4053",
           borderColor: "#2E4053"
         },
         {
           id: 62,
           name: "UI",
-          bgColor: "#9B59B6",
+          color: "#9B59B6",
           borderColor: "#9B59B6"
         },
         {
           id: 63,
           name: "Design",
-          bgColor: "#4CAF50",
+          color: "#4CAF50",
           borderColor: "#4CAF50"
         }
       ],
