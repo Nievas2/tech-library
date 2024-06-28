@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsOptional, Matches } from "class-validator";
 import { BaseDTO } from "../../config/base.dto";
+import { TagEntity } from "./tag.entity";
 
 /**
  * DTO para la creacion de un tag
@@ -14,7 +15,6 @@ export class TagDto extends BaseDTO {
   @IsNotEmpty()
   @Matches(/#[A-Fa-f0-9]{6}/)
   color!: string;
-
   
 }
 
@@ -33,4 +33,17 @@ export class TagUpdateDto extends BaseDTO {
   @IsNotEmpty()
   @Matches(/#[A-Fa-f0-9]{6}/)
   color!: string;
+}
+
+export class TagResponseDto extends BaseDTO {
+  name!: string;
+  color!: string;
+  id!: number;
+
+  constructor(tag: TagEntity) {
+    super();
+    this.name = tag.name;
+    this.color = tag.color;
+    this.id = tag.id;
+  }
 }

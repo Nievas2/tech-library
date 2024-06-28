@@ -1,6 +1,6 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../../config/base.service";
-import { TagDto } from "../entities/tag.dto";
+import { TagDto, TagResponseDto } from "../entities/tag.dto";
 import { TagEntity } from "../entities/tag.entity";
 import { TagNotFoundException } from "../exceptions/tag.notfound.exception";
 import { TagAlreadyExistException } from "../exceptions/tag.alreadyexist.exception";
@@ -14,7 +14,8 @@ import { TagAlreadyExistException } from "../exceptions/tag.alreadyexist.excepti
  * @method findById - Retorna una etiqueta por su id
  * @method create - Crea una etiqueta
  * @method update - Actualiza una etiqueta
- * @method delete - Elimina una etiqueta definitivamente
+ * @method delete - Elimina una etiqueta logicamente
+ * @method restore - Restaura una etiqueta eliminada logicamente
  */
 export class TagService extends BaseService<TagEntity> {
   constructor() {
@@ -22,12 +23,13 @@ export class TagService extends BaseService<TagEntity> {
   }
 
   async findAll(): Promise<TagEntity[]> {
-    return (await this.execRepository).find();
+    return (await this.execRepository).find( { where: { isActive: true } } );
   }
 
-  async findById(id: number): Promise<TagEntity | null> {
-    await this.existsById(id);
-    return (await this.execRepository).findOneBy({ id: id });
+  async findById(id: number): Promise<TagEntity> {
+    const data = await (await this.execRepository).findOneBy({ id: id, isActive: true });
+    if (data === null) throw new TagNotFoundException("Tag not found");
+    return data;
   }
 
   async create(tag: TagDto): Promise<TagEntity> {
@@ -41,9 +43,19 @@ export class TagService extends BaseService<TagEntity> {
     return (await this.execRepository).update(id, tag);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
-    await this.existsById(id);
-    return (await this.execRepository).delete(id);
+  async restore(id: number): Promise<UpdateResult> {
+    const data = await this.findById(id);
+    if (data === null) throw new TagNotFoundException("Tag not found");
+    data.isActive = true;
+    return (await this.execRepository).update(id, data);
+  }
+
+  async delete(id: number): Promise<TagResponseDto> {
+    const data = await this.findById(id);
+    if (data === null) throw new TagNotFoundException("Tag not found");
+    data.isActive = false;
+    await (await this.execRepository).update(id, data);
+    return new TagResponseDto(data);
   }
 
   //----------------------Helpers-----------------------------
@@ -54,7 +66,7 @@ export class TagService extends BaseService<TagEntity> {
   }
 
   private async existsByName(name: string): Promise<void> {
-    const exist = await (await this.execRepository).createQueryBuilder("tag").where("tag.name like :name", { name: `%${name}%` }).getExists();
+    const exist = await (await this.execRepository).createQueryBuilder("tag").where("LOWER(tag.name) = LOWER(:name)", { name }).andWhere("tag.isActive = true").getExists();
     if (exist) throw new TagAlreadyExistException("Tag not found");
   }
 

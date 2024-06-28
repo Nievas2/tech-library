@@ -1,8 +1,14 @@
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, Length } from "class-validator";
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  Length,
+} from "class-validator";
 import { BaseDTO } from "../../config/base.dto";
 import { LibraryEntity } from "./library.entity";
 import { UserResponseDTO } from "../../user/entities/user.dto";
-import { TagDto } from "../../tag/entities/tag.dto";
+import { TagDto, TagResponseDto } from "../../tag/entities/tag.dto";
 import { State } from "../state.enum";
 
 export class LibraryCreateDTO extends BaseDTO {
@@ -17,7 +23,7 @@ export class LibraryCreateDTO extends BaseDTO {
   description!: string;
 
   @IsNotEmpty()
-  @IsArray( { message: "Tags must be an array" } )
+  @IsArray({ message: "Tags must be an array" })
   tags!: number[];
 
   @IsNotEmpty()
@@ -44,10 +50,10 @@ export class LibraryUpdateDTO extends BaseDTO {
   @IsOptional()
   link!: string;
 
-  @IsNotEmpty( { message: "State must be defined" } )
+  @IsNotEmpty({ message: "State must be defined" })
   @IsOptional()
-  @IsEnum( State, { message: "State must be one of: ACTIVE, PENDING, INACTIVE" } )
-  state!: State
+  @IsEnum(State, { message: "State must be one of: ACTIVE, PENDING, INACTIVE" })
+  state!: State;
 }
 
 export class LibraryResponseDTO extends BaseDTO {
@@ -67,13 +73,11 @@ export class LibraryResponseDTO extends BaseDTO {
     this.name = library.name;
     this.description = library.description;
     this.link = library.link;
-    this.tags = library.tags.map((tag) => {
-      const dto : TagDto = new TagDto();
-      dto.name = tag.name;
-      dto.color = tag.color;
-      dto.id = tag.id;
-      return dto;
-    });
+    this.tags = library.tags
+      .filter(
+        (tag) => tag.isActive === true && tag !== null && tag !== undefined
+      )
+      .map((tag) => new TagResponseDto(tag));
     this.createdBy = new UserResponseDTO(library.createdBy);
     this.createdAt = library.createdAt;
     this.state = library.state;
@@ -84,6 +88,6 @@ export class LibraryResponseDTO extends BaseDTO {
 
 export class LibraryCustomQueryDTO extends BaseDTO {
   @IsOptional()
-  @IsArray( { message: "Tags must be an array" } )
+  @IsArray({ message: "Tags must be an array" })
   tags!: number[];
 }
