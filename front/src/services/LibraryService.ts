@@ -1,4 +1,5 @@
-import axios from "axios"
+import { ResponseSuccess } from "@/interfaces/responseSuccess"
+import axios, { AxiosResponse } from "axios"
 
 export interface LibraryDtoUser {
   name: string
@@ -44,9 +45,10 @@ export async function getAllLibraries() {
     return error
   }
 }
-export function postLibrary(library: LibraryDtoUser, userId: number) {
+export async function postLibrary(library: LibraryDtoUser, userId: number): Promise<AxiosResponse<ResponseSuccess>> {
+  // eslint-disable-next-line no-useless-catch
   try {
-    const response = axios.post(
+    const response = await axios.post(
       `http://localhost:8000/api/library/create/${userId}`,
       {
         name: library.name,
@@ -54,14 +56,17 @@ export function postLibrary(library: LibraryDtoUser, userId: number) {
         link: library.link,
         tags: library.tags
       }
-    )
-    return response
+    );
+    return response;
   } catch (error) {
-    return error
+    throw error;
   }
 }
 
-export function putLibraryUser(library: LibraryDtoUser, libraryId: number) {
+
+
+export function putLibraryUser(library: LibraryDtoUser, libraryId: number): Promise<AxiosResponse<ResponseSuccess>>{
+  // eslint-disable-next-line no-useless-catch
   try {
     const response = axios.put(
       `http://localhost:8000/api/library/update/${libraryId}`,
@@ -71,7 +76,7 @@ export function putLibraryUser(library: LibraryDtoUser, libraryId: number) {
     )
     return response
   } catch (error) {
-    return error
+    throw error
   }
 }
 export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {

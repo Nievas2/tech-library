@@ -23,6 +23,8 @@ import {
 } from "@/services/LibraryService"
 import { Tag } from "@/interfaces/Tag"
 import { useToast } from "@/components/ui/use-toast"
+import { AxiosError } from "axios"
+import { ResponseSuccess } from "@/interfaces/responseSuccess"
 
 interface CardProps {
   card: Library | undefined
@@ -95,7 +97,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       window.location.reload()
     } catch (error) {
       toast({
-        title: error.response.data.statusMessage
+        title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage
       })
     }
   }
@@ -108,7 +110,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       window.location.reload()
     } catch (error) {
       toast({
-        title: error.response.data.statusMessage
+        title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage
       })
     }
   }
