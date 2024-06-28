@@ -39,9 +39,9 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
         <h2 className="text-2xl font-bold">{card.name}</h2>
         <p className="text-base">{card.description}</p>
       </div>
-      {card.state === "ACTIVE" ? 
+      {card.state === "ACTIVE" ? (
         ""
-       : (
+      ) : (
         <div className="flex items-center justify-between mt-4">
           <Dialog>
             <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-main/80 text-light py-2 rounded-sm">
@@ -55,9 +55,9 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
             <DialogContent className="bg-light dark:bg-dark ">
               <DialogHeader className="">
                 <DialogTitle>
-                  <h2 className="text-dark dark:text-dark ">
+                  <strong className="text-dark dark:text-light ">
                     Sugerir
-                  </h2>
+                  </strong>
                 </DialogTitle>
               </DialogHeader>
               <EditLibraryAdmin card={card} />

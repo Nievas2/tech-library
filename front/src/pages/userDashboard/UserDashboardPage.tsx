@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import FormAddLibrary from "./components/FormAddLibrary"
+import FormAddLibrary from "@/components/shared/FormAddLibrary"
 import StateCard from "./components/StateCard"
 import { useEffect, useState } from "react"
 import { getLibrariesUserDashboard } from "@/services/LibraryService"

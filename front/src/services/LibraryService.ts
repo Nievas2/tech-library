@@ -10,7 +10,7 @@ export interface LibraryDtoAdmin {
   name: string
   description: string
   link: string
-  tags: number[]  
+  tags: number[]
   state: "ACTIVE" | "PENDING" | "INACTIVE"
 }
 export function getLibraries(userId: number) {
@@ -41,53 +41,49 @@ export async function getAllLibraries() {
     const response = await axios.get(`http://localhost:8000/api/library/all`)
     return response.data.data.results
   } catch (error) {
-    console.log(error)
-    return null
+    return error
   }
 }
 export function postLibrary(library: LibraryDtoUser, userId: number) {
-  axios
-    .post(`http://localhost:8000/api/library/create/${userId}`, {
-      name: library.name,
-      description: library.description,
-      link: library.link,
-      tags: library.tags
-    })
-    .then((response) => {
-      console.log(response)
-
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  try {
+    const response = axios.post(
+      `http://localhost:8000/api/library/create/${userId}`,
+      {
+        name: library.name,
+        description: library.description,
+        link: library.link,
+        tags: library.tags
+      }
+    )
+    return response
+  } catch (error) {
+    return error
+  }
 }
 
 export function putLibraryUser(library: LibraryDtoUser, libraryId: number) {
-  axios
-    .put(`http://localhost:8000/api/library/update/${libraryId}`, {
-      library
-    })
-    .then((response) => {
-      console.log(response)
-
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  try {
+    const response = axios.put(
+      `http://localhost:8000/api/library/update/${libraryId}`,
+      {
+        library
+      }
+    )
+    return response
+  } catch (error) {
+    return error
+  }
 }
 export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {
-  axios
-    .put(`http://localhost:8000/api/library/admin/update/${libraryId}`, {
-      library
-    })
-    .then((response) => {
-      console.log(response)
-
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  try {
+    const response = axios.put(
+      `http://localhost:8000/api/library/admin/update/${libraryId}`,
+      {
+        library
+      }
+    )
+    return response
+  } catch (error) {
+    return error
+  }
 }

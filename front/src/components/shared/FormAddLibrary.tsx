@@ -22,12 +22,14 @@ import {
   putLibraryUser
 } from "@/services/LibraryService"
 import { Tag } from "@/interfaces/Tag"
+import { useToast } from "@/components/ui/use-toast"
 
 interface CardProps {
   card: Library | undefined
 }
 
 export default function FormAddLibrary({ card }: CardProps) {
+  const { toast } = useToast()
   const tags = useTagStore((state) => state.tags)
 
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
@@ -43,7 +45,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       link: card?.link || ""
     },
     validationSchema: librarySchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (card === undefined) {
         if (tagsAdded?.length === 0) return setError(true)
         setError(false)
@@ -58,7 +60,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             tags: filteredTagsId as number[]
           }
           console.log(valuesDate)
-          postLibrary(valuesDate, 1)
+          postLibraryFunction(valuesDate, 1)
         }
       } else {
         setError(false)
@@ -79,13 +81,37 @@ export default function FormAddLibrary({ card }: CardProps) {
             link: values.link,
             tags: filteredTagsId as number[]
           }
-          console.log(valuesDate)
-          putLibraryUser(valuesDate, card.id)
+          putLibraryFunction(valuesDate, card.id)
         }
       }
     }
   })
-
+  async function putLibraryFunction(values: LibraryDtoUser, id: number) {
+    try {
+      const response = await putLibraryUser(values, id)
+      toast({
+        title: response.data.statusMessage
+      })
+      window.location.reload()
+    } catch (error) {
+      toast({
+        title: error.response.data.statusMessage
+      })
+    }
+  }
+  async function postLibraryFunction(values: LibraryDtoUser, id: number) {
+    try {
+      const response = await postLibrary(values, id)
+      toast({
+        title: response.data.statusMessage
+      })
+      window.location.reload()
+    } catch (error) {
+      toast({
+        title: error.response.data.statusMessage
+      })
+    }
+  }
   const addTag = (value: string) => {
     if (tagsAdded?.find((tag) => tag.name === value)) return
     const tagSelected = tags.find((tag) => tag.name === value)

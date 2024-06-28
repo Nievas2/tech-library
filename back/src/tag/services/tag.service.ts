@@ -1,4 +1,4 @@
-import { DeleteResult, UpdateResult } from "typeorm";
+import { UpdateResult } from "typeorm";
 import { BaseService } from "../../config/base.service";
 import { TagDto, TagResponseDto } from "../entities/tag.dto";
 import { TagEntity } from "../entities/tag.entity";

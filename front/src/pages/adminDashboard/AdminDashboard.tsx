@@ -18,7 +18,7 @@ import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ChangeTag from "./components/ChangeTag"
 import StateCardAdmin from "./components/StateCardAdmin"
-import FormAddLibrary from "../userDashboard/components/FormAddLibrary"
+import FormAddLibrary from "../../components/shared/FormAddLibrary"
 import { getAllLibraries } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 import { Button } from "@/components/ui/button"
@@ -124,7 +124,8 @@ const AdminDashboardPage = () => {
       {showTags && (
         <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1">
           {tags?.map((tag) => (
-            <Dialog key={crypto.randomUUID()}>
+            <div key={crypto.randomUUID()}>
+              <Dialog >
               <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
                 {tag.name}
               </DialogTrigger>
@@ -139,6 +140,8 @@ const AdminDashboardPage = () => {
                 <ChangeTag tag={tag} />
               </DialogContent>
             </Dialog>
+            </div>
+            
           ))}
         </section>
       )}

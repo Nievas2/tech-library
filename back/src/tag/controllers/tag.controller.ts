@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TagService } from "../services/tag.service";
-import { DeleteResult, QueryFailedError, UpdateResult } from "typeorm";
+import { QueryFailedError, UpdateResult } from "typeorm";
 import { TagHttpResponse } from "../response/tag.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { TagResponseDto } from "../entities/tag.dto";
