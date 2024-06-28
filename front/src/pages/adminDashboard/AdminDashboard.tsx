@@ -25,11 +25,13 @@ import { Button } from "@/components/ui/button"
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
+  const [defaultList, setDefaultList] = useState<Library[]>()
   const tags = useTagStore((state) => state.tags)
   const getTags = useTagStore((state) => state.getTags)
   async function getLibraries() {
     const response = await getAllLibraries()
     setList(response)
+    setDefaultList(response)
   }
   useEffect(() => {
     getLibraries()
@@ -37,8 +39,8 @@ const AdminDashboardPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) 
   function handleChangeSelect(value: string) {
-    const cloneList = [...(list || [])]
-    if (value === "ALL") return setList(cloneList)
+    const cloneList = [...(defaultList || [])]
+    if (value === "ALL") return setList(defaultList)
     const result = cloneList.filter((item) => item.state === value)
     setList(result)
   }
