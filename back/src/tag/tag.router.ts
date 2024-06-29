@@ -18,14 +18,10 @@ export class TagRouter extends BaseRouter<TagController, TagMiddleware> {
   public routes(): void {
     this.router.get(
       "/tag/all",
-      this.middleware.passAuth("jwt"),
-      (req, res, next) => this.middleware.checkUserRole(req, res, next),
       (req, res) => this.controller.getTags(req, res)
     );
     this.router.get(
       "/tag/:id",
-      this.middleware.passAuth("jwt"),
-      (req, res, next) => this.middleware.checkUserRole(req, res, next),
       (req, res) => this.controller.getTag(req, res)
     );
     this.router.post(
