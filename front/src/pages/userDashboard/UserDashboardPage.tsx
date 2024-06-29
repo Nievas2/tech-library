@@ -13,116 +13,28 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import FormAddLibrary from "./components/FormAddLibrary"
+import FormAddLibrary from "@/components/shared/FormAddLibrary"
 import StateCard from "./components/StateCard"
+import { useEffect, useState } from "react"
+import { getLibrariesUserDashboard } from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
-import { useState } from "react"
-const cardDetails: Library[] = [
-  {
-    id: 1,
-    name: "React",
-    description:
-      "Un framework de JavaScript para construir interfaces de usuario",
-    tags: [
-      {
-        id: 1,
-        name: "JavaScript",
-        bgColor: "#F7DC6F",
-        borderColor: "#F7DC6F"
-      },
-      {
-        id: 2,
-        name: "Frontend",
-        bgColor: "#3498DB",
-        borderColor: "#3498DB"
-      },
-      { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
-    ],
-    likes: 1,
-    isActive: true,
-    state: "ACTIVE",
-    link: "https://reactjs.org/",
-    createdBy: {
-      id: 1,
-      name: "John",
-      lastname: "Doe",
-      username: "johndoe",
-      password: "password123",
-      email: "johndoe@me.com"
-    }
-  },
-  {
-    id: 1,
-    name: "React",
-    description:
-      "Un framework de JavaScript para construir interfaces de usuario",
-    tags: [
-      {
-        id: 1,
-        name: "JavaScript",
-        bgColor: "#F7DC6F",
-        borderColor: "#F7DC6F"
-      },
-      {
-        id: 2,
-        name: "Frontend",
-        bgColor: "#3498DB",
-        borderColor: "#3498DB"
-      },
-      { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
-    ],
-    likes: 1,
-    isActive: true,
-    state: "PENDING",
-    link: "https://reactjs.org/",
-    createdBy: {
-      id: 1,
-      name: "John",
-      lastname: "Doe",
-      username: "johndoe",
-      password: "password123",
-      email: "johndoe@me.com"
-    }
-  },
-  {
-    id: 1,
-    name: "React",
-    description:
-      "Un framework de JavaScript para construir interfaces de usuario",
-    tags: [
-      {
-        id: 1,
-        name: "JavaScript",
-        bgColor: "#F7DC6F",
-        borderColor: "#F7DC6F"
-      },
-      {
-        id: 2,
-        name: "Frontend",
-        bgColor: "#3498DB",
-        borderColor: "#3498DB"
-      },
-      { id: 3, name: "UI", bgColor: "#9B59B6", borderColor: "#9B59B6" }
-    ],
-    likes: 1,
-    isActive: true,
-    state: "INACTIVE",
-    link: "https://reactjs.org/",
-    createdBy: {
-      id: 1,
-      name: "John",
-      lastname: "Doe",
-      username: "johndoe",
-      password: "password123",
-      email: "johndoe@me.com"
-    }
-  }
-]
+import { useTagStore } from "@/stores"
 const UserDashboardPage = () => {
-  const [list, setList] = useState(cardDetails)
+  const [list, setList] = useState<Library[]>()
+  const getTags = useTagStore((state) => state.getTags)
+  async function getLibrary() {
+    const response = await getLibrariesUserDashboard(1)
+    console.log(response)
+
+    setList(response.results)
+  }
+  useEffect(() => {
+    getLibrary()
+    getTags()
+  }, [])
 
   function handleChangeSelect(value: string) {
-    const cloneList = cardDetails
+    const cloneList = [...(list || [])]
     if (value === "ALL") return setList(cloneList)
     const result = cloneList.filter((item) => item.state === value)
     setList(result)
@@ -169,7 +81,7 @@ const UserDashboardPage = () => {
       </div>
 
       <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
-        {list.map((card) => (
+        {list?.map((card) => (
           <StateCard
             key={crypto.randomUUID()}
             card={card}

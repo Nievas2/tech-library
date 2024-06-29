@@ -1,6 +1,5 @@
 export interface Tag {
-  id: number
+  id?: number
   name: string
-  bgColor: string
-  borderColor: string
+  color: string
 }
