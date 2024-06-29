@@ -152,20 +152,25 @@ export class LibraryService extends BaseService<LibraryEntity> {
       .take(pageSize)
       .skip((currentPage - 1) * pageSize);
 
-    if ( query && query.trim() != "" && query.length > 1) {
-      queryBuilder.andWhere("library.name like :query", { query: `%${query}%` });
+    if (query && query.trim() != "" && query.length > 1) {
+      queryBuilder.andWhere("library.name like :query", {
+        query: `%${query}%`,
+      });
     }
 
     if (tags && tags.length > 0) {
       const tagsEntity: TagEntity[] = await this.getTags(tags);
-      queryBuilder.andWhere("tag.id IN (:...tags)", { tags: tagsEntity.map(tag => tag.id) });
+      queryBuilder.andWhere("tag.id IN (:...tags)", {
+        tags: tagsEntity.map((tag) => tag.id),
+      });
     }
 
     if (orderMostLiked) {
-      if (orderMostLiked == "asc") queryBuilder.orderBy("library.likesCount", "ASC");
-      if (orderMostLiked == "desc") queryBuilder.orderBy("library.likesCount", "DESC");
-    }
-    else {
+      if (orderMostLiked == "asc")
+        queryBuilder.orderBy("library.likesCount", "ASC");
+      if (orderMostLiked == "desc")
+        queryBuilder.orderBy("library.likesCount", "DESC");
+    } else {
       queryBuilder.orderBy("library.name", "ASC");
     }
 
@@ -221,14 +226,16 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @param id - Id del usuario
    * @param currentPage - Pagina actual
    * @param pageSize - Cantidad de elementos por pagina
+   * @param userAuth - Usuario autenticado en el sistema
    * @throws {UserNotFoundException}
    */
   async findyAllByUserId(
     id: number,
     currentPage: number,
-    pageSize: number
+    pageSize: number,
+    userAuth: UserEntity
   ): Promise<LibraryPagesDto> {
-    const user: UserEntity = await this.findUserById(id);
+    const user: UserEntity = await this.findUserById(id, userAuth);
 
     const query = (await this.execRepository).createQueryBuilder("library");
 
@@ -306,9 +313,9 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   async create(
     libraryDto: LibraryCreateDTO,
-    idUsuario: number
+    idUsuario: number,
   ): Promise<LibraryResponseDTO> {
-    const user = await this.findUserById(idUsuario);
+    const user = await this.findUserByIdWhithOutAuth(idUsuario);
     await this.existsByName(libraryDto.name);
     const tags = await this.getTags(libraryDto.tags);
 
@@ -336,9 +343,9 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   async addLikeInLibrary(
     idUsuario: number,
-    idLibrary: number
+    idLibrary: number,
   ): Promise<LibraryResponseDTO> {
-    const user: UserEntity = await this.findUserById(idUsuario);
+    const user: UserEntity = await this.findUserByIdWhithOutAuth(idUsuario);
     const library: LibraryEntity = await this.likeService.likeLibrary(
       user,
       await this.findById(idLibrary)
@@ -450,9 +457,9 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   async removeLikeInLibrary(
     idUsuario: number,
-    idLibrary: number
+    idLibrary: number,
   ): Promise<LibraryResponseDTO> {
-    const user: UserEntity = await this.findUserById(idUsuario);
+    const user: UserEntity = await this.findUserByIdWhithOutAuth(idUsuario);
     const library: LibraryEntity = await this.likeService.unLikeLibrary(
       user,
       await this.findById(idLibrary)
@@ -556,10 +563,19 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @param id - Id del usuario
    * @throws {UserNotFoundException}
    */
-  private async findUserById(id: number): Promise<UserEntity> {
-    const user = await this.userService.findById(id);
+  private async findUserById(
+    id: number,
+    userAuth: UserEntity
+  ): Promise<UserEntity> {
+    const user = await this.userService.findById(id, userAuth);
     if (user !== null) return user;
     throw new UserNotFoundException("User not found");
+  }
+
+  private async findUserByIdWhithOutAuth(id: number): Promise<UserEntity> {
+    const data = await (await this.userService.execRepository).findOneBy({ id: id });
+    if (data === null) throw new UserNotFoundException("User not found");
+    return data;
   }
 
   //--------------------------HELPERs METHODS TAGS-----------------------------
@@ -572,11 +588,14 @@ export class LibraryService extends BaseService<LibraryEntity> {
   private async getTags(tags: number[]): Promise<TagEntity[]> {
     const tagList: (TagEntity | null | undefined)[] = await Promise.all(
       tags.map(async (tag) => {
-        const tagEntity = await (await this.tagService.execRepository).findOneBy({ id: tag, isActive: true });
+        const tagEntity = await (
+          await this.tagService.execRepository
+        ).findOneBy({ id: tag, isActive: true });
         if (tagEntity !== null && tagEntity !== undefined) return tagEntity;
       })
     );
-    return tagList.filter((tag): tag is TagEntity => tag !== null && tag !== undefined);
+    return tagList.filter(
+      (tag): tag is TagEntity => tag !== null && tag !== undefined
+    );
   }
-  
 }

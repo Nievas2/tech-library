@@ -7,6 +7,9 @@ import { ConfigServer } from "./config/config";
 import { TagRouter } from "./tag/tag.router";
 import { DataSource } from "typeorm";
 import { LibraryRouter } from "./library/library.router";
+import { LoginLocalStrategy } from "./auth/strategies/local.login.strategy";
+import { JwtStrategy } from "./auth/strategies/jwt.strategy";
+import { AuthRouter } from "./auth/auth.routher";
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -29,6 +32,9 @@ class ServerBootstrap extends ConfigServer {
 
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+
+    this.passportUSe();
+
     this.app.use(morgan("dev"));
     this.app.use(cors());
 
@@ -52,8 +58,12 @@ class ServerBootstrap extends ConfigServer {
     });
   }
 
+  passportUSe(){
+    return [new LoginLocalStrategy().use, new JwtStrategy().use];
+  }
+
   routers(): Array<express.Router> {
-    return [new UserRouter().router, new TagRouter().router, new LibraryRouter().router];
+    return [new UserRouter().router, new TagRouter().router, new LibraryRouter().router, new AuthRouter().router];
   }
 }
 

@@ -3,6 +3,7 @@ import { UserService } from "../services/user.service";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { UserHttpResponse } from "../response/user.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
+import { UserEntity } from "../entities/user.entity";
 
 /**
  * @version 1.0.0
@@ -71,8 +72,9 @@ export class UserController {
    */
   public async getUser(req: Request, res: Response) {
     try {
+      const userAuth = req.user as UserEntity;
       const id = Number(req.params.id);
-      const data = await this.service.findById(id);
+      const data = await this.service.findById(id, userAuth);
       this.userHttpResponse.Ok(res, data);
     } catch (error) {
       if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
@@ -88,8 +90,9 @@ export class UserController {
    */
   public async getUserActive(req: Request, res: Response) {
     try {
+      const userAuth = req.user as UserEntity;
       const id = Number(req.params.id);
-      const data = await this.service.findByIdActive(id);
+      const data = await this.service.findByIdActive(id, userAuth);
       this.userHttpResponse.Ok(res, data);
     } catch (error) {
       if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
@@ -121,12 +124,12 @@ export class UserController {
    * @Returns Status 400 si el usuario ya estaba actualizado
    * @Returns Status 500 si hay un error en el servidor
    */
-  public async updateUser(req: Request, res: Response) {
+  public async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const data: UpdateResult = await this.service.update(id, req.body);
-      if (!data.affected) return this.userHttpResponse.BadRequestUpdatedUser(res, data);
-      this.userHttpResponse.Updated(res, data);
+      const userAuth = req.user as UserEntity;
+      const data = await this.service.update(id, req.body, userAuth);
+      this.userHttpResponse.Ok(res, data);
     } catch (e) {
       if(e instanceof Error) return this.globalExceptionHandler.handleErrors(e, res);
     }
@@ -162,8 +165,9 @@ export class UserController {
    */
   public async deleteLogicalUser(req: Request, res: Response) {
     try {
+      const userAuth = req.user as UserEntity;
       const id = Number(req.params.id);
-      const user = await this.service.findById(id);
+      const user = await this.service.findById(id, userAuth);
 
       if (!user?.isActive) return this.userHttpResponse.BadRequestUserAlreadyDisabled(res, user);
 
@@ -186,7 +190,8 @@ export class UserController {
   public async restoreUser(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const user = await this.service.findById(id);
+      const userAuth = req.user as UserEntity;
+      const user = await this.service.findById(id, userAuth);
 
       if (user?.isActive) return this.userHttpResponse.BadRequestUserAlreadyActive(res, user);
 

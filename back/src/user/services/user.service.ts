@@ -1,6 +1,7 @@
 import { DeleteResult, UpdateResult } from "typeorm";
+import * as bcrypt from "bcrypt";
 import { BaseService } from "../../config/base.service";
-import { UserDTO, UserResponseDTO } from "../entities/user.dto";
+import { UserDTO, UserResponseDTO, UserUpdateDTO } from "../entities/user.dto";
 import { UserEntity } from "../entities/user.entity";
 import { UserNotFoundException } from "../exceptions/user.notfound.exception";
 import {
@@ -8,6 +9,8 @@ import {
   UserAlreadyExistByUsernameException,
   UserAlreadyExistException,
 } from "../exceptions/user.alreadyexist.exception";
+import { RoleType } from "../entities/role";
+import { UnauthorizedException } from "../../shared/exception/unauthorized.exception";
 
 /**
  * @version 1.0.0
@@ -37,7 +40,7 @@ export class UserService extends BaseService<UserEntity> {
    */
   async findAll(): Promise<UserResponseDTO[]> {
     const data = await (await this.execRepository).find();
-    return data.map(user => new UserResponseDTO(user));
+    return data.map((user) => new UserResponseDTO(user));
   }
 
   /**
@@ -45,12 +48,14 @@ export class UserService extends BaseService<UserEntity> {
    * @returns Promise<UserResponseDTO[]>
    */
   async findAllActive(): Promise<UserResponseDTO[]> {
-    const data = await (await this.execRepository).find({
+    const data = await (
+      await this.execRepository
+    ).find({
       where: {
         isActive: true,
       },
-    })
-    return data.map(user => new UserResponseDTO(user));
+    });
+    return data.map((user) => new UserResponseDTO(user));
   }
 
   /**
@@ -58,9 +63,14 @@ export class UserService extends BaseService<UserEntity> {
    * @param id - Id del usuario
    * @returns Promise<UserResponseDTO>
    */
-  async findById(iduser: number): Promise<UserEntity> {
+  async findById(iduser: number, userAuth: UserEntity): Promise<UserEntity> {
     const data = await (await this.execRepository).findOneBy({ id: iduser });
     if (data === null) throw new UserNotFoundException("User not found");
+    if (userAuth.role === RoleType.ADMIN) return data;
+    if (userAuth.role === RoleType.USER && userAuth.id !== iduser)
+      throw new UnauthorizedException(
+        "You are not authorized to perform this action"
+      );
     return data;
   }
   /**
@@ -68,8 +78,11 @@ export class UserService extends BaseService<UserEntity> {
    * @param id - Id del usuario
    * @returns Promise<UserResponseDTO>
    */
-  async findByIdDTO(iduser: number): Promise<UserResponseDTO> {
-    const data = await this.findById(iduser);
+  async findByIdDTO(
+    iduser: number,
+    userAuth: UserEntity
+  ): Promise<UserResponseDTO> {
+    const data = await this.findById(iduser, userAuth);
     return new UserResponseDTO(data);
   }
 
@@ -78,21 +91,57 @@ export class UserService extends BaseService<UserEntity> {
    * @param id - Id del usuario
    * @returns Promise<UserResponseDTO>
    */
-  async findByIdActive(id: number): Promise<UserEntity> {
-    const data = await (await this.execRepository).findOneBy({ id: id, isActive: true });
+  async findByIdActive(id: number, userAuth: UserEntity): Promise<UserEntity> {
+    const data = await (
+      await this.execRepository
+    ).findOneBy({ id: id, isActive: true });
+
     if (data === null) throw new UserNotFoundException("User not found");
+    if (userAuth.role === RoleType.ADMIN) return data;
+    if (userAuth.role === RoleType.USER && userAuth.id !== id)
+      throw new UnauthorizedException(
+        "You are not authorized to perform this action"
+      );
     return data;
   }
 
-  
   /**
    * @method findByIdActiveDto - Retorna un DTO del usuario activo por su id
    * @param id - Id del usuario
    * @returns Promise<UserResponseDTO>
    */
-  async findByIdActiveDto(id: number): Promise<UserResponseDTO> {
-   const data = await this.findByIdActive(id);
+  async findByIdActiveDto(id: number, userAuth: UserEntity): Promise<UserResponseDTO> {
+    const data = await this.findByIdActive(id, userAuth);
     return new UserResponseDTO(data);
+  }
+
+  async findUserByEmail(email: string): Promise<UserEntity | null> {
+    const data = await (await this.execRepository)
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email: email })
+      .andWhere("user.isActive = true")
+      .addSelect("user.password")
+      .getOne();
+
+    return data;
+  }
+
+  async findUserByUsername(username: string): Promise<UserEntity | null> {
+    const data = await (await this.execRepository)
+      .createQueryBuilder("user")
+      .where("user.username = :username", { username: username })
+      .andWhere("user.isActive = true")
+      .addSelect("user.password")
+      .getOne();
+
+    return data;
+  }
+
+  async findUserWithRole(
+    id: number,
+    role: RoleType
+  ): Promise<UserEntity | null> {
+    return await (await this.execRepository).findOneBy({ id: id, role: role });
   }
 
   //-----------------CREATE METHODS-----------------
@@ -104,12 +153,17 @@ export class UserService extends BaseService<UserEntity> {
    * @throws {UserAlreadyExistException} - Error si el usuario ya existe
    * @throws {UserAlreadyExistByEmailException} - Error si el usuario ya existe con el mismo email
    * @throws {UserAlreadyExistByUsernameException} - Error si el usuario ya existe con el mismo username
+   *
    */
-  async create(user: UserDTO): Promise<UserResponseDTO> {
+  async create(user: UserDTO): Promise<UserEntity> {
     await this.existsByEmailAndUsername(user.username, user.email);
-    const userEntity = new UserEntity(user.username, user.password, user.email);
-    await (await this.execRepository).save(userEntity);
-    return new UserResponseDTO(userEntity);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const userEntity = new UserEntity(
+      user.username,
+      hashedPassword,
+      user.email
+    );
+    return await (await this.execRepository).save(userEntity);
   }
 
   //-----------------UPDATE METHODS-----------------
@@ -120,9 +174,27 @@ export class UserService extends BaseService<UserEntity> {
    * @param user - DTO del usuario
    * @returns Promise<UpdateResult>
    */
-  async update(id: number, user: UserDTO): Promise<UpdateResult> {
-    await this.existsById(id);
-    return (await this.execRepository).update(id, user);
+  async update(
+    id: number,
+    user: UserUpdateDTO,
+    userAuth: UserEntity
+  ): Promise<UserResponseDTO> {
+    const userEntity: UserEntity = await this.findById(id, userAuth);
+
+    this.existsByEmailAndUsername(user.username, user.email);
+
+    if (user.username) userEntity.username = user.username;
+    if (user.email) userEntity.email = user.email;
+    if (user.password)
+      userEntity.password = user.password
+        ? await bcrypt.hash(user.password, 10)
+        : userEntity.password;
+    if (userAuth.role === RoleType.ADMIN) {
+      if (user.role) userEntity.role = user.role;
+    }
+
+    await (await this.execRepository).save(userEntity);
+    return new UserResponseDTO(userEntity);
   }
 
   /**
@@ -175,33 +247,45 @@ export class UserService extends BaseService<UserEntity> {
    * @method existsByEmailAndUsername - Verifica si un usuario ya existe con el mismo email y username
    * @param usarname - Nombre de usuario
    * @param email - Email del usuario
-   * @returns Promise<void> 
+   * @returns Promise<void>
    * @throws {UserAlreadyExistException} - Error si el usuario ya existe con el mismo email y username
    * @throws {UserAlreadyExistByEmailException} - Error si el usuario ya existe con el mismo email
    * @throws {UserAlreadyExistByUsernameException} - Error si el usuario ya existe con el mismo username
    */
   private async existsByEmailAndUsername(
-    usarname: string,
+    username: string,
     email: string
   ): Promise<void> {
-    const existByUsername = await (
-      await this.execRepository
-    ).existsBy({ username: usarname });
-    const existByEmail = await (
-      await this.execRepository
-    ).existsBy({ email: email });
+    let existByUsername: boolean = false;
+    let existByEmail: boolean = false;
+
+    if (username != undefined) {
+      const usernameEntity = await (
+        await this.execRepository
+      ).existsBy({ username: username });
+      if (usernameEntity) {
+        existByUsername = true;
+        throw new UserAlreadyExistByUsernameException(
+          `User already exist with this username: ${username}`
+        );
+      }
+    }
+
+    if (email != undefined) {
+      const emailEntity = await (
+        await this.execRepository
+      ).existsBy({ email: email });
+      if (emailEntity) {
+        existByEmail = true;
+        throw new UserAlreadyExistByEmailException(
+          `User already exist with this email: ${email}`
+        );
+      }
+    }
 
     if (existByUsername && existByEmail)
       throw new UserAlreadyExistException(
-        `User already exist with this email and username: ${email} and ${usarname}`
-      );
-    if (existByEmail)
-      throw new UserAlreadyExistByEmailException(
-        `User already exist with this email: ${email}`
-      );
-    if (existByUsername)
-      throw new UserAlreadyExistByUsernameException(
-        `User already exist with this username: ${usarname}`
+        `User already exist with this email and username: ${email} and ${username}`
       );
   }
 }

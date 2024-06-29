@@ -11,15 +11,44 @@ import { TagMiddleware } from "./middlewares/tag.middleware";
  * @method constructor - Constructor de la clase TagRouter para registrar las rutas
  */
 export class TagRouter extends BaseRouter<TagController, TagMiddleware> {
-    constructor() {
-        super(TagController, TagMiddleware);
-    }
+  constructor() {
+    super(TagController, TagMiddleware);
+  }
 
-    public routes(): void {
-        this.router.get('/tag/all', (req, res) => this.controller.getTags( req, res))
-        this.router.get('/tag/:id', (req, res) => this.controller.getTag( req, res))
-        this.router.post('/tag/create', (req, res, next) => [this.middleware.tagCreateValidator( req, res, next)] , (req, res) => this.controller.createTag( req, res))
-        this.router.put('/tag/update/:id', (req, res, next) => [this.middleware.tagUpdateValidator( req, res, next)], (req, res) => this.controller.updateTag( req, res))
-        this.router.delete('/tag/delete/:id', (req, res) => this.controller.deleteTag( req, res));
-    }
+  public routes(): void {
+    this.router.get(
+      "/tag/all",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkUserRole(req, res, next),
+      (req, res) => this.controller.getTags(req, res)
+    );
+    this.router.get(
+      "/tag/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkUserRole(req, res, next),
+      (req, res) => this.controller.getTag(req, res)
+    );
+    this.router.post(
+      "/tag/create",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res, next) => this.middleware.tagCreateValidator(req, res, next),
+
+      (req, res) => this.controller.createTag(req, res)
+    );
+    this.router.put(
+      "/tag/update/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res, next) => this.middleware.tagUpdateValidator(req, res, next),
+
+      (req, res) => this.controller.updateTag(req, res)
+    );
+    this.router.delete(
+      "/tag/delete/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res) => this.controller.deleteTag(req, res)
+    );
+  }
 }

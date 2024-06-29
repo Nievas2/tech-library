@@ -1,7 +1,6 @@
 import { Column, Entity, OneToMany, Unique } from "typeorm";
 import { BaseEntity } from "../../config/base.entity";
 import { LibraryEntity } from "../../library/entities/library.entity";
-import { Exclude } from "class-transformer";
 import { LikeEntity } from "../../like/entities/like.entity";
 import { RoleType } from "./role";
 
@@ -27,8 +26,7 @@ export class UserEntity extends BaseEntity {
   @Column({ type: "varchar", length: 50, nullable: false })
   username!: string;
 
-  @Column({ type: "varchar", nullable: false })
-  @Exclude() 
+  @Column({ type: "varchar", nullable: false, select: false })
   password!: string;
 
   @Column({ type: "varchar", length: 50, nullable: false })
@@ -56,6 +54,7 @@ export class UserEntity extends BaseEntity {
     this.password = password;
     this.email = email;
     this.isActive = true;
+    this.role = RoleType.USER;
   }
 
 }

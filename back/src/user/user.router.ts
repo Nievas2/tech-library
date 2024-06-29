@@ -22,34 +22,72 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
    *
    */
   public routes(): void {
-    this.router.get("/user/all", (req, res) =>
-      this.controller.getUsers(req, res)
+    //--------------------GET---------------------
+    this.router.get(
+      "/user/all",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res) => this.controller.getUsers(req, res)
     );
-    this.router.get("/user/all/active", (req, res) =>
-      this.controller.getUsersActive(req, res)
+    this.router.get(
+      "/user/all/active",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res) => this.controller.getUsersActive(req, res)
     );
-    this.router.get("/user/:id", (req, res) =>
-      this.controller.getUser(req, res)
+    this.router.get(
+      "/user/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkUserRole(req, res, next),
+      (req, res) => this.controller.getUser(req, res)
     );
-    this.router.get("/user/active/:id", (req, res) =>
-      this.controller.getUserActive(req, res)
+    this.router.get(
+      "/user/active/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkUserRole(req, res, next),
+      (req, res) => this.controller.getUserActive(req, res)
     );
+
+    //--------------------POST--------------------
     this.router.post(
       "/user/create",
-      (req, res, next) => [this.middleware.userValidator(req, res, next)],
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res, next) => this.middleware.userValidator(req, res, next),
+
       (req, res) => this.controller.createUser(req, res)
     );
-    this.router.delete("/user/delete/definitive/:id", (req, res) =>
-      this.controller.deleteUser(req, res)
+
+    //--------------------DELETE--------------------
+    this.router.delete(
+      "/user/delete/definitive/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res) => this.controller.deleteUser(req, res)
     );
-    this.router.delete("/user/delete/temporal/:id", (req, res) =>
-      this.controller.deleteLogicalUser(req, res)
+    this.router.delete(
+      "/user/delete/temporal/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res) => this.controller.deleteLogicalUser(req, res)
     );
-    this.router.put("/user/update/:id", (req, res) =>
-      this.controller.updateUser(req, res)
+
+    //--------------------PUT---------------------
+    this.router.put(
+      "/user/update/:id",
+
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkUserRole(req, res, next),
+      (req, res, next) => this.middleware.userUpdateValidator(req, res, next),
+      (req, res) => this.controller.update(req, res)
     );
-    this.router.get("/users/restore/:id", (req, res) =>
-      this.controller.restoreUser(req, res)
+
+    this.router.put(
+      "/user/restore/:id",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+
+      (req, res) => this.controller.restoreUser(req, res)
     );
   }
 }

@@ -29,13 +29,14 @@ export class UserMiddleware extends BaseMiddleware<UserDTO | UserUpdateDTO> {
   }
 
   public userUpdateValidator(req: Request, res: Response, next: NextFunction) {
-    const {username, password, email} = req.body;
+    const {username, password, email, role} = req.body;
 
     const post = new UserUpdateDTO();
 
     if (username) post.username = username;
     if (password) post.password = password;
     if (email) post.email = email;
+    if(role) post.role = role
 
     this.validator(post, res, next);
   }
