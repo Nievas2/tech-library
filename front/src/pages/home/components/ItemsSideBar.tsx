@@ -8,6 +8,7 @@ interface ItemsSideBarProps {
 export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
   const [active, setActive] = useState(tag.selected)
   const activeTag = useTagStore(state => state.activeTag)
+
   
   const handleClick = () => {
     setActive(!active);

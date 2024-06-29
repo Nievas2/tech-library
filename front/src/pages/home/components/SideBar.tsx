@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Tag, useTagStore } from "@/stores"
 
 export default function SideBar() {
-  const [open, setOpen] = useState(window.innerWidth > 768)
-  const tags = useTagStore(state => state.tags)
+  const [open, setOpen] = useState(window.innerWidth > 768);
+  const tags = useTagStore(state => state.tags);
+  const getTags = useTagStore(state => state.getTags);
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,6 +20,10 @@ export default function SideBar() {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  useEffect(() => {
+    getTags();
+  }, [getTags]);
 
   const handleSidebar = () => {
     setOpen(!open)

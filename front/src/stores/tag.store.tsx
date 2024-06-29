@@ -1,4 +1,4 @@
-import axios from "axios"
+import { getTagsApi } from "@/services/TagService"
 import { StateCreator, create } from "zustand"
 import { persist } from "zustand/middleware"
 import { immer } from "zustand/middleware/immer"
@@ -67,19 +67,18 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (set) => ({
       color: "#38b2ac"
     } */
   ],
+
   getTags: async () => {
-    await axios
-      .get("http://localhost:8000/api/tag/all")
-      .then((response) => {
-        const data = response.data.data
-        set((state) => {
-          state.tags = data
-        })
+    try {
+      const data = await getTagsApi()
+      set((state) => {
+        state.tags = data
       })
-      .catch((error) => {
-        console.log(error)
-      })
+    } catch (error) {
+      console.log(error)
+    }
   },
+  
   activeTag: (tagId: number) => {
     set((state) => {
       const tag = state.tags.find((tag) => tag.id === tagId)

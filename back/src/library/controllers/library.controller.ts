@@ -151,7 +151,7 @@ export class LibraryController {
    */
   public async getLibrarysSearch(req: Request, res: Response) {
     try {
-      const { currentPage, pageSize } = this.getParams(req);
+      const { currentPage, pageSize } = this.get(req);
       const idUsuario = Number(req.params.userid);
       const query = req.query.q as string;
       const orderLike = req.query.like as string;
