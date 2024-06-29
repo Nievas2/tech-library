@@ -1,3 +1,4 @@
+import axiosInstance from "@/api/axiosInstance"
 import { Tag } from "@/interfaces/Tag"
 import axios from "axios"
 
@@ -5,17 +6,15 @@ interface TagDto {
   name: string
   color: string
 }
-export function getTags() {
-  axios
-    .get("http://localhost:8000/api/tag/all")
-    .then((response) => {
-      console.log(response)
 
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+export async function getTagsApi() {
+  try {
+    const response = await axiosInstance.get("/api/tag/all")
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
 }
 
 export function postTag(tag: Tag) {
@@ -35,6 +34,7 @@ export function postTag(tag: Tag) {
       console.log(error)
     })
 }
+
 export function putTag(tag: TagDto, tagId: number) {
   axios
     .put(`http://localhost:8000/api/tag/update/${tagId}`, {
@@ -50,6 +50,7 @@ export function putTag(tag: TagDto, tagId: number) {
       return null
     })
 }
+
 export function deleteTag(tagId: number) {
   axios
     .delete(`http://localhost:8000/api/tag/delete/${tagId}`)

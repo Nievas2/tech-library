@@ -7,22 +7,22 @@ import { Tag } from "@/interfaces/Tag"
 import { useLibraryStore } from "@/stores"
 
 interface CardProps {
-  card: Library
+  library : Library
 }
 
-const Card = ({ card }: CardProps) => {
+const Card = ({ library }: CardProps) => {
   const favorites             = useLibraryStore((state) => state.favorites);
   const addFavoriteLibrary    = useLibraryStore((state) => state.addFavoriteLibrary);
   const deleteFavoriteLibrary = useLibraryStore((state) => state.deleteFavoriteLibrary);
 
-  const isFavorite = favorites?.some((favorite) => favorite.id === card.id);
+  const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
   const [favoriteActive, setFavoriteActive] = useState(isFavorite);
 
   const toggleFavorite = () => {
     if (favoriteActive) {
-      deleteFavoriteLibrary(card.id);
+      deleteFavoriteLibrary(library.id);
     } else {
-      addFavoriteLibrary(card);
+      addFavoriteLibrary(library);
     }
     setFavoriteActive(!favoriteActive);
   };
@@ -34,10 +34,10 @@ const Card = ({ card }: CardProps) => {
   return (
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
       <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-bold">{card.name}</h2>
-        <p className="text-base">{card.description}</p>
+        <h2 className="text-2xl font-bold">{library.name}</h2>
+        <p className="text-base">{library.description}</p>
         <div className="flex flex-row flex-wrap gap-2 text-sm">
-          {card.tags?.map((tag: Tag) => (
+          {library.tags?.map((tag: Tag) => (
             <h4
               key={tag.id}
               style={{ backgroundColor: tag.color }}
@@ -77,7 +77,7 @@ const Card = ({ card }: CardProps) => {
         <div className="flex flex-row items-center justify-end gap-2">
           <small>
             Suggested by{" "}
-            <span className="font-semibold text-main">{card.createdBy.name}</span>
+            <span className="font-semibold text-main">{library.createdBy.name}</span>
           </small>
           <small>|</small>
           <small>02-08-1999</small>
