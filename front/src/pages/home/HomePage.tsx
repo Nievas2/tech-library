@@ -13,7 +13,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const response = await axiosInstance.get('/api/library/all/active/1');
+        const response = await axiosInstance.get('/library/all/active/1');
         setLibraries(response.data.data.results);
       } catch (error) {
         console.error("Error fetching libraries", error);
