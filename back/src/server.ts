@@ -36,7 +36,13 @@ class ServerBootstrap extends ConfigServer {
     this.passportUSe();
 
     this.app.use(morgan("dev"));
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin: this.getEnvironment("ORIGIN"),
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+      })
+    );
 
     this.dbConnect();
 
@@ -51,19 +57,26 @@ class ServerBootstrap extends ConfigServer {
   }
 
   async dbConnect(): Promise<DataSource | void> {
-    return this.initConnect.then(() => {
-      console.log("Connect to database successfully");
-    }).catch((error) => {
-      console.error("Error connecting to database:", error);
-    });
+    return this.initConnect
+      .then(() => {
+        console.log("Connect to database successfully");
+      })
+      .catch((error) => {
+        console.error("Error connecting to database:", error);
+      });
   }
 
-  passportUSe(){
+  passportUSe() {
     return [new LoginLocalStrategy().use, new JwtStrategy().use];
   }
 
   routers(): Array<express.Router> {
-    return [new UserRouter().router, new TagRouter().router, new LibraryRouter().router, new AuthRouter().router];
+    return [
+      new UserRouter().router,
+      new TagRouter().router,
+      new LibraryRouter().router,
+      new AuthRouter().router,
+    ];
   }
 }
 
