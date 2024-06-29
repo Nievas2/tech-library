@@ -5,14 +5,12 @@ import { Link } from "react-router-dom"
 import { Icon } from "@iconify/react"
 import { useFormik } from "formik"
 import { loginSchema } from "@/utils"
-import axiosInstance from "@/api/axiosInstance"
 import { Login, login } from "@/services/AuthService"
-import { AxiosError } from "axios"
-import { ResponseSuccess } from "@/interfaces/responseSuccess"
-
 import { useToast } from "@/components/ui/use-toast"
+import { useTokenStore } from "@/stores/user.store"
 
 const LoginPage = () => {
+  const setToken = useTokenStore((state) => state.setToken)
   const { toast } = useToast()
   // const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
@@ -28,6 +26,8 @@ const LoginPage = () => {
   async function loginFunction(values: Login) {
     try {
       const response = await login(values)
+      
+      setToken(response.data.accesToken)
       window.location.pathname = "/home"
       return response
     } catch (error) {

@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { ModeToggle } from "../mode-toggle";
-import ItemsNavbar from "./Navbar-components/items";
-import { Icon } from "@iconify/react";
+import { useEffect, useState } from "react"
+import { ModeToggle } from "../mode-toggle"
+import ItemsNavbar from "./Navbar-components/items"
+import { Icon } from "@iconify/react"
+import { useTokenStore } from "@/stores/user.store"
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const [isLoged] = useState(false);
-
+  const token = useTokenStore((state) => state.token)
+  const logOut = useTokenStore((state) => state.logOut)
+  const [open, setOpen] = useState(false)
+  const [isLoged, setIsLoged] = useState(false)
+  useEffect(() => {
+    if (token) {
+      setIsLoged(true)
+    }
+  }, [])
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
       {/* bg-light dark:bg-dark */}
@@ -32,36 +40,54 @@ const Navbar = () => {
                       height="26"
                     />
                   ) : (
-                    <Icon icon="material-symbols:menu" width="26" height="26" />
+                    <Icon
+                      icon="material-symbols:menu"
+                      width="26"
+                      height="26"
+                    />
                   )}
                 </div>
               )}
             </button>
           </div>
-          
+
           <div className="flex flex-1 items-center justify-start">
-            <a className="flex flex-shrink-0 items-center gap-1" href="/home">
-              <Icon icon="system-uicons:book" width="42" height="42" />
+            <Link
+              className="flex flex-shrink-0 items-center gap-1"
+              to="/home"
+            >
+              <Icon
+                icon="system-uicons:book"
+                width="42"
+                height="42"
+              />
               <h1 className="text-2xl font-bold hidden sm:block">
                 Tech Library
               </h1>
-            </a>
+            </Link>
 
             <div className={`flex-grow items-center flex justify-end `}>
               <div className="flex items-center justify-center gap-3">
                 {isLoged ? (
                   <section className="flex justify-end mr-8 sm:mr-0">
-                    <a
-                      href="/favorites"
+                    <Link
+                      to="/favorites"
                       className="text-black rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                     >
-                      <Icon icon="raphael:fave" width="46" height="46" />
-                    </a>
+                      <Icon
+                        icon="raphael:fave"
+                        width="46"
+                        height="46"
+                      />
+                    </Link>
                     <div className="text-black rounded-md px-3 py-2 text-sm font-medium">
                       <ModeToggle />
                     </div>
                     <div className="flex text-black rounded-md items-center py-2 text-sm font-medium">
-                      <button>
+                      <button onClick={() => {
+                        setIsLoged(false)
+                        logOut()
+                        }}>
                         <Icon
                           icon="material-symbols:logout"
                           className="rounded-md mx-3 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
@@ -80,7 +106,7 @@ const Navbar = () => {
                         key={crypto.randomUUID()}
                       />
                     </div>
-                    
+
                     <div>
                       <ItemsNavbar
                         name="SIGNUP"
@@ -144,7 +170,7 @@ const Navbar = () => {
         </div>
       )}
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
