@@ -1,6 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { validate } from "class-validator";
 import { BaseDTO } from '../../config/base.dto';
+import { SharedMiddleware } from './shared.middleware';
 
 /**
  * @version 1.0.0
@@ -8,9 +9,11 @@ import { BaseDTO } from '../../config/base.dto';
  * @class BaseMiddleware
  * @description Clase generica que se encarga de validar los datos de las rutas y controladores de la API
  */
-export abstract class BaseMiddleware<T extends BaseDTO> {
+export abstract class BaseMiddleware<T extends BaseDTO> extends SharedMiddleware {
 
-    constructor() {}
+    constructor() {
+        super();
+    }
 
     public validator(post: T , res: Response, next: NextFunction): Response | void {
         validate(post, { validationError: { target: false } }).then((errors) => {

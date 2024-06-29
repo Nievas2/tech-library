@@ -5,6 +5,7 @@ import { LibraryService } from "../services/library.service";
 import { getValidNumber } from "../../shared/utils/utils";
 import { TagIdInvalidException } from "../../tag/exceptions/tag.id.invalid";
 import { isArray } from "class-validator";
+import { UserEntity } from "../../user/entities/user.entity";
 
 /**
  * @version 1.0.0
@@ -114,10 +115,12 @@ export class LibraryController {
       const id = Number(req.params.userid);
       const { currentPage, pageSize } = this.getParams(req);
 
+      const userAuth = req.user as UserEntity;
       const data = await this.service.findyAllByUserId(
         id,
         currentPage,
-        pageSize
+        pageSize,
+        userAuth
       );
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
