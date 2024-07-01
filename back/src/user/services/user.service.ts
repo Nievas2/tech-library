@@ -127,6 +127,8 @@ export class UserService extends BaseService<UserEntity> {
   }
 
   async findUserByUsername(username: string): Promise<UserEntity | null> {
+    console.log(username);
+    
     const data = await (await this.execRepository)
       .createQueryBuilder("user")
       .where("user.username = :username", { username: username })

@@ -7,7 +7,7 @@ export class SharedMiddleware {
   constructor() {}
 
   passAuth(typeStrategy: string) {
-    return passport.authenticate(typeStrategy, { session: false });
+    return passport.authenticate(typeStrategy, { session: false, failureRedirect: "/api/auth/login"});
   }
 
   checkAdminRole(req: Request, res: Response, next: NextFunction) {

@@ -35,15 +35,12 @@ export class AuthService extends ConfigServer {
     username: string,
     password: string
   ): Promise<UserEntity | null> {
-
-    
     const userByUsername = await this.userService.findUserByUsername(username);
 
     if (userByUsername) {
       const isMatch = await bcrypt.compare(password, userByUsername.password);
-
       if (!isMatch) return null;
-
+      
       return userByUsername;
     }
 

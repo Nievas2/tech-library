@@ -12,17 +12,30 @@ import { Request, Response } from "express";
  * @method constructor - Constructor de la clase AuthRouter para registrar las rutas
  */
 export class AuthRouter extends BaseRouter<AuthController, UserMiddleware> {
+  constructor() {
+    super(AuthController, UserMiddleware);
+  }
 
-    constructor() {
-        super(AuthController, UserMiddleware);
-    }
+  public routes(): void {
+    this.router.post(
+      "/login",
+      this.middleware.passAuth("local"),
+      (req: Request, res: Response) => this.controller.login(req, res)
+    );
 
-    public routes(): void {
-        this.router.post('/login', 
-            this.middleware.passAuth("local"),
-            (req: Request, res: Response) => this.controller.login(req, res)
-        );
+    this.router.post(
+      "/register",
+      (req: Request, res: Response, next) =>
+        this.middleware.userValidator(req, res, next),
+      (req: Request, res: Response) => this.controller.register(req, res)
+    );
 
-        this.router.post('/register', (req: Request, res: Response, next) => this.middleware.userValidator( req, res, next) , (req: Request, res: Response) => this.controller.register(req, res));
-    }
+    this.router.get("/login/github", this.middleware.passAuth("github"));
+
+    this.router.get(
+      "/auth/github/callback",
+      this.middleware.passAuth("github"),
+      (req: Request, res: Response) => this.controller.loginGitHub(req, res)
+    );
+  }
 }
