@@ -1,34 +1,58 @@
 import CardsContainer from "@/components/shared/CardsContainer"
 import SideBar from "./components/SideBar"
 import SearchBar from "./components/SearchBar"
-import { useEffect, useState } from "react";
-import { Library } from "@/interfaces/Library";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Pagination } from "@/components/shared/Pagination";
-import usePagination from "@/hooks/usePagination";
-import { getLibraries } from "@/services/LibraryService";
+import { useEffect, useState } from "react"
+import { Library } from "@/interfaces/Library"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Pagination } from "@/components/shared/Pagination"
+import usePagination from "@/hooks/usePagination"
+import { getLibraries, getLibrariesSearch } from "@/services/LibraryService"
+import { useTagStore } from "@/stores"
 
 const HomePage = () => {
-  const [libraries, setLibraries] = useState<Library[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { currentPage, totalPages, setTotalPages, handlePageChange, getInitialPage } = usePagination();
+  const [libraries, setLibraries] = useState<Library[]>([])
+  const [loading, setLoading] = useState(true)
+  const tagActives = useTagStore((state) => state.tagActives)
+  const tags = useTagStore((state) => state.tags)
+  const {
+    currentPage,
+    totalPages,
+    setTotalPages,
+    handlePageChange,
+    getInitialPage
+  } = usePagination()
 
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const currentPageFromUrl = getInitialPage();
-        const { libraries, totalPages } = await getLibraries(currentPageFromUrl, 3);
-        setLibraries(libraries);
-        setTotalPages(totalPages);
-        setLoading(false);
+        const tags = tagActives()
+        if (tags) {
+          const tagsIds = tags.map((tag) => tag.id)
+          const { libraries, totalPages } = await getLibrariesSearch(
+            currentPage,
+            3,
+            tagsIds
+          )
+          setLibraries(libraries)
+          setTotalPages(totalPages)
+        } else {
+          const currentPageFromUrl = getInitialPage()
+          const { libraries, totalPages } = await getLibraries(
+            currentPageFromUrl,
+            3
+          )
+          setLibraries(libraries)
+          setTotalPages(totalPages)
+        }
+        setLoading(false)
       } catch (err) {
-        console.error('Error fetching libraries:', err);
-        setLoading(false);
+        console.error("Error fetching libraries:", err)
+        setLoading(false)
       }
-    };
-  
-    fetchLibraries();
-  }, [getInitialPage, setTotalPages]);
+    }
+
+    fetchLibraries()
+  }, [getInitialPage, setTotalPages, tags])
 
   const SkeletonCard = () => {
     return (
@@ -39,7 +63,10 @@ const HomePage = () => {
           <Skeleton className="h-4 w-5/6 rounded-md" />
           <div className="flex flex-row flex-wrap gap-2 text-sm">
             {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} className="h-6 w-12 rounded-lg" />
+              <Skeleton
+                key={index}
+                className="h-6 w-12 rounded-lg"
+              />
             ))}
           </div>
         </div>
@@ -54,8 +81,8 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const renderSkeletons = () => {
     return (
@@ -64,8 +91,8 @@ const HomePage = () => {
           <SkeletonCard key={index} />
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <>
