@@ -12,23 +12,40 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
-import { useTagStore } from "@/stores"
 import { LibraryDtoAdmin, putLibraryAdmin } from "@/services/LibraryService"
 import { Tag } from "@/interfaces/Tag"
+import { getTagsApi } from "@/services/TagService"
 
 interface CardProps {
   card: Library
 }
 
 export default function EditLibraryAdmin({ card }: CardProps) {
-  const tags = useTagStore((state) => state.tags)
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
     card?.tags?.map((tag) => tag) || []
   )
   const [error, setError] = useState(false)
+
+  const [tags, setTags] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const tags = await getTagsApi();
+        setTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -61,9 +78,11 @@ export default function EditLibraryAdmin({ card }: CardProps) {
   const editState = (value: string) => {
     formik.setFieldValue("state", value)
   }
+
   const addTag = (value: string) => {
     if (tagsAdded?.find((tag) => tag.name === value)) return
-    const tagSelected = tags.find((tag) => tag.name === value)
+
+    const tagSelected = tags.find((tag: any) => tag.name === value)
     if (!tagSelected) return
     console.log(tagSelected)
 

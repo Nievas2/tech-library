@@ -20,30 +20,50 @@ import ChangeTag from "./components/ChangeTag"
 import StateCardAdmin from "./components/StateCardAdmin"
 import FormAddLibrary from "../../components/shared/FormAddLibrary"
 import { getAllLibraries } from "@/services/LibraryService"
-import { useTagStore } from "@/stores"
 import { Button } from "@/components/ui/button"
+import { getTagsApi } from "@/services/TagService"
+
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
   const [defaultList, setDefaultList] = useState<Library[]>()
-  const tags = useTagStore((state) => state.tags)
-  const getTags = useTagStore((state) => state.getTags)
+  const [tags, setTags] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const tags = await getTagsApi();
+        setTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+
   async function getLibraries() {
     const response = await getAllLibraries()
     setList(response)
     setDefaultList(response)
   }
+
   useEffect(() => {
     getLibraries()
-    getTags()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) 
+
   function handleChangeSelect(value: string) {
     const cloneList = [...(defaultList || [])]
     if (value === "ALL") return setList(defaultList)
     const result = cloneList.filter((item) => item.state === value)
     setList(result)
   }
+
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
       <div className="flex flex-wrap py-2 gap-1">
@@ -125,7 +145,7 @@ const AdminDashboardPage = () => {
       </section>
       {showTags && (
         <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1">
-          {tags?.map((tag) => (
+          {tags?.map((tag: any) => (
             <div key={crypto.randomUUID()}>
               <Dialog >
               <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">

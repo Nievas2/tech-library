@@ -1,3 +1,5 @@
+import axiosInstance from "@/api/axiosInstance"
+import { Library } from "@/interfaces/Library"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
 import axios, { AxiosResponse } from "axios"
 
@@ -7,6 +9,7 @@ export interface LibraryDtoUser {
   link: string
   tags: number[]
 }
+
 export interface LibraryDtoAdmin {
   name: string
   description: string
@@ -14,18 +17,20 @@ export interface LibraryDtoAdmin {
   tags: number[]
   state: "ACTIVE" | "PENDING" | "INACTIVE"
 }
-export function getLibraries(userId: number) {
-  axios
-    .get(`http://localhost:8000/api/library/all/active/${userId}`)
-    .then((response) => {
-      console.log(response)
 
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+export async function getLibraries(page: number, userId: number): Promise<{ libraries: Library[]; totalPages: number }> {
+  try {
+    const response = await axiosInstance.get(`/library/all/active/${userId}?page=${page}`);
+    return {
+      libraries  : response.data.data.results,
+      totalPages : Math.ceil(response.data.data.total_pages),
+    };
+  } catch (error) {
+    console.error('Error fetching libraries:', error);
+    throw error;
+  }
 }
+
 export async function getLibrariesUserDashboard(userId: number) {
   try {
     const response = await axios.get(
@@ -37,6 +42,7 @@ export async function getLibrariesUserDashboard(userId: number) {
     return null
   }
 }
+
 export async function getAllLibraries() {
   try {
     const response = await axios.get(`http://localhost:8000/api/library/all`)
@@ -45,6 +51,7 @@ export async function getAllLibraries() {
     return error
   }
 }
+
 export async function postLibrary(library: LibraryDtoUser, userId: number): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
@@ -63,8 +70,6 @@ export async function postLibrary(library: LibraryDtoUser, userId: number): Prom
   }
 }
 
-
-
 export function putLibraryUser(library: LibraryDtoUser, libraryId: number): Promise<AxiosResponse<ResponseSuccess>>{
   // eslint-disable-next-line no-useless-catch
   try {
@@ -79,6 +84,7 @@ export function putLibraryUser(library: LibraryDtoUser, libraryId: number): Prom
     throw error
   }
 }
+
 export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {
   try {
     const response = axios.put(
