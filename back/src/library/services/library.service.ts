@@ -135,50 +135,52 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @param query - Query
    * @throws {UserNotFoundException}
    */
-  async findAllSearchQueryCustom(
-    idUsuario: number,
-    currentPage: number,
-    pageSize: number,
-    tags?: number[],
-    query?: string,
-    orderMostLiked?: string
-  ) {
-    const queryBuilder = (await this.execRepository)
-      .createQueryBuilder("library")
-      .andWhere("library.isActive = :isActive", { isActive: true })
-      .andWhere("library.state = :state", { state: State.ACTIVE })
-      .leftJoinAndSelect("library.tags", "tag")
-      .leftJoinAndSelect("library.createdBy", "user")
-      .take(pageSize)
-      .skip((currentPage - 1) * pageSize);
+async findAllSearchQueryCustom(
+  idUsuario: number,
+  currentPage: number,
+  pageSize: number,
+  tags?: number[],
+  query?: string,
+  orderMostLiked?: string
+) {
+  // Primero, construye una subconsulta para las bibliotecas que coinciden con las tags
+  let subQuery = (await this.execRepository)
+    .createQueryBuilder("library")
+    .select("library.id")
+    .leftJoin("library.tags", "tag");
 
-    if (query && query.trim() != "" && query.length > 1) {
-      queryBuilder.andWhere("library.name like :query", {
-        query: `%${query}%`,
-      });
-    }
-
-    if (tags && tags.length > 0) {
-      queryBuilder.andWhere("tag.id IN (:...tags)", {
-        tags: tags,
-      });
-    }
-
-    if (orderMostLiked) {
-      if (orderMostLiked == "asc")
-        queryBuilder.orderBy("library.likesCount", "ASC");
-      if (orderMostLiked == "desc")
-        queryBuilder.orderBy("library.likesCount", "DESC");
-    } else {
-      queryBuilder.orderBy("library.name", "ASC");
-    }
-
-    const [data, total] = await queryBuilder.getManyAndCount();
-
-    const dataWithLike = await this.createResponseDTOWithLike(data, idUsuario);
-
-    return new LibraryPagesDto(currentPage, pageSize, total, dataWithLike);
+  if (tags && tags.length > 0) {
+    subQuery = subQuery.where("tag.id IN (:...tags)", { tags });
   }
+
+  // Ahora, construye la consulta principal que utiliza la subconsulta para filtrar las bibliotecas
+  const queryBuilder = (await this.execRepository)
+    .createQueryBuilder("library")
+    .leftJoinAndSelect("library.tags", "tag") // Asegura traer todas las tags
+    .leftJoinAndSelect("library.createdBy", "user")
+    .where(`library.id IN (${subQuery.getQuery()})`)
+    .andWhere("library.isActive = :isActive", { isActive: true })
+    .andWhere("library.state = :state", { state: State.ACTIVE })
+    .setParameters(subQuery.getParameters()) // Asegurar pasar los parámetros de la subconsulta
+    .take(pageSize)
+    .skip((currentPage - 1) * pageSize);
+
+  if (query && query.trim() != "" && query.length > 1) {
+    queryBuilder.andWhere("library.name like :query", { query: `%${query}%` });
+  }
+
+  if (orderMostLiked) {
+    if (orderMostLiked === "asc") queryBuilder.orderBy("library.likesCount", "ASC");
+    if (orderMostLiked === "desc") queryBuilder.orderBy("library.likesCount", "DESC");
+  } else {
+    queryBuilder.orderBy("library.name", "ASC");
+  }
+
+  const [data, total] = await queryBuilder.getManyAndCount();
+  const dataWithLike = await this.createResponseDTOWithLike(data, idUsuario);
+
+  return new LibraryPagesDto(currentPage, pageSize, total, dataWithLike);
+}
   /**
    * @method findAllStatusActive - Retorna todos las librerias con estado activo
    * @param currentPage - Pagina actual
