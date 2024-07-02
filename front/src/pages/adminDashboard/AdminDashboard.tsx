@@ -22,12 +22,13 @@ import FormAddLibrary from "../../components/shared/FormAddLibrary"
 import { getAllLibraries } from "@/services/LibraryService"
 import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
+import { Tag } from "@/interfaces/Tag"
 
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
   const [defaultList, setDefaultList] = useState<Library[]>()
-  const [tags, setTags] = useState<any[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -3,11 +3,13 @@ import ItemsSideBar from "./ItemsSideBar"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
+import { Tag, useTagStore } from "@/stores"
 
 export default function SideBar() {
-  const [open, setOpen] = useState(window.innerWidth > 768);
-  const [tags, setTags] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(window.innerWidth > 768)
+  const setTags = useTagStore((state) => state.setTags)
+  const tags = useTagStore((state) => state.tags)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,23 +24,30 @@ export default function SideBar() {
   }, [])
 
   useEffect(() => {
+    console.log("remder");
+    
+    setLoading(true)
     const fetchTags = async () => {
       try {
-        const { tags } = await getTagsApi();        
-        setTags(tags);
+        const response = await getTagsApi()
+        console.log(response)
+        response.map((tag : Tag) => {
+          tag.selected = false
+        })        
+        setTags(response)
       } catch (error) {
-        console.error("Error fetching tags", error);
+        console.error("Error fetching tags", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchTags();
-  }, []);
+    fetchTags()
+  }, [])
 
   const handleSidebar = () => {
     setOpen(!open)
-  };
+  }
 
   return (
     <section
@@ -76,12 +85,18 @@ export default function SideBar() {
         <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
           <h2 className="text-xl font-bold">TECNOLOGIES</h2>
           <ul className="flex flex-col gap-1">
-            {tags?.map((tag: any) => (
-              <ItemsSideBar
-                key={tag.name}
-                tag={tag}
-              />
-            ))}
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <div>
+                {tags && tags?.map((tag: Tag) => (
+                  <ItemsSideBar
+                    key={tag.name}
+                    tag={tag}
+                  />
+                ))}
+              </div>
+            )}
           </ul>
         </div>
       </div>
