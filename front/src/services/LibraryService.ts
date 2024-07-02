@@ -62,7 +62,7 @@ export async function getLibrariesSearch(
 ): Promise<{ libraries: Library[]; totalPages: number }> {
   try {
     const response = await axiosInstance.get(
-      `/library/all/search/${userId}?page=${page}&tags=${tags}&query=${search}`
+      `/library/all/search/${userId}?page=${page}&tags=${tags}&q=${search}`
     )
     return {
       libraries: response.data.data.results,
