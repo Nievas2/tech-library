@@ -6,12 +6,13 @@ import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
 import usePagination from "@/hooks/usePagination"
-import { getLibraries, getLibrariesSearch } from "@/services/LibraryService"
+import { getLibraries, getLibrariesFilter } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState<boolean>(false)
   const tagActives = useTagStore((state) => state.tagActives)
   const tags = useTagStore((state) => state.tags)
   const {
@@ -26,10 +27,11 @@ const HomePage = () => {
     const fetchLibraries = async () => {
       try {
         const tags = tagActives()
-        if (tags.length >= 1 ) {
+        if (tags.length >= 1) {
+          const currentPageFromUrl = getInitialPage()
           const tagsIds = tags.map((tag) => tag.id)
-          const { libraries, totalPages } = await getLibrariesSearch(
-            currentPage,
+          const { libraries, totalPages } = await getLibrariesFilter(
+            currentPageFromUrl,
             1,
             tagsIds.toString()
           )
@@ -101,12 +103,19 @@ const HomePage = () => {
           <SideBar />
         </div>
         <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
-          <SearchBar />
-          {loading ? (
-            renderSkeletons()
-          ) : (
+          <SearchBar setLibrary={setLibraries} setSearch={setSearch} />
+          {search ? (
             <CardsContainer libraries={libraries} />
+          ) : (
+            <div>
+              {loading ? (
+                renderSkeletons()
+              ) : (
+                <CardsContainer libraries={libraries} />
+              )}
+            </div>
           )}
+
           <div className="">
             <Pagination
               currentPage={currentPage}

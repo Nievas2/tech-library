@@ -36,7 +36,7 @@ export async function getLibraries(
     throw error
   }
 }
-export async function getLibrariesSearch(
+export async function getLibrariesFilter(
   page: number,
   userId: number,
   tags: string | undefined
@@ -44,6 +44,25 @@ export async function getLibrariesSearch(
   try {
     const response = await axiosInstance.get(
       `/library/all/search/${userId}?page=${page}&tags=${tags}`
+    )
+    return {
+      libraries: response.data.data.results,
+      totalPages: Math.ceil(response.data.data.total_pages)
+    }
+  } catch (error) {
+    console.error("Error fetching libraries:", error)
+    throw error
+  }
+}
+export async function getLibrariesSearch(
+  page: number,
+  userId: number,
+  tags: string | undefined,
+  search: string
+): Promise<{ libraries: Library[]; totalPages: number }> {
+  try {
+    const response = await axiosInstance.get(
+      `/library/all/search/${userId}?page=${page}&tags=${tags}&query=${search}`
     )
     return {
       libraries: response.data.data.results,
