@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv";
 import { DataSource } from "typeorm";
 import { AppDataSource } from "./data.source";
 
@@ -16,8 +15,6 @@ import { AppDataSource } from "./data.source";
  */
 export abstract class ConfigServer {
   constructor() {
-    const nodeNameEnv = this.createPathEnv(this.nodeEnv);
-    dotenv.config({ path: nodeNameEnv });
   }
 
   public getEnvironment(key: string): string | undefined {
@@ -26,21 +23,6 @@ export abstract class ConfigServer {
 
   public getNumberEnvironment(key: string): number {
     return Number(this.getEnvironment(key));
-  }
-
-  public get nodeEnv(): string {
-    return this.getEnvironment("NODE_ENV")?.trim() || "";
-  }
-
-  public createPathEnv(path: string): string {
-    const arrEnv: string[] = ["env"];
-
-    if (path.length > 0) {
-      const stringToArray = path.split(".");
-      arrEnv.unshift(...stringToArray);
-    }
-
-    return "." + arrEnv.join(".");
   }
 
   get initConnect(): Promise<DataSource> {

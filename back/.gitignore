@@ -5,8 +5,7 @@ node_modules/
 dist/
 
 # Variables de entorno
-# .env
-# .production.env
+.env
 
 # Directorios de bases de datos locales (si se generan)
 # mysql/
