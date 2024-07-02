@@ -102,4 +102,5 @@ export class AuthService extends ConfigServer {
     const data = await this.userService.create(userdto);
     return data;
   }
+
 }

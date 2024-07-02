@@ -23,6 +23,9 @@ export class JwtStrategy extends AuthService {
    * @returns done - Retorna el token de autorización
    */
   async validate(payload: PayloadToken, done: any) {
+    if (!payload) {
+      return done( null, false ,{status: 401, message: "Invalid token"});
+    }
     return done(null, payload);
   }
 
@@ -45,6 +48,7 @@ export class JwtStrategy extends AuthService {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: this.getEnvironment("JWT_SECRET") || "secret",
       passReqToCallback: false, 
+
     }, this.validate);
   }
 }
