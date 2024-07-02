@@ -159,9 +159,8 @@ export class LibraryService extends BaseService<LibraryEntity> {
     }
 
     if (tags && tags.length > 0) {
-      const tagsEntity: TagEntity[] = await this.getTags(tags);
       queryBuilder.andWhere("tag.id IN (:...tags)", {
-        tags: tagsEntity.map((tag) => tag.id),
+        tags: tags,
       });
     }
 
@@ -180,7 +179,6 @@ export class LibraryService extends BaseService<LibraryEntity> {
 
     return new LibraryPagesDto(currentPage, pageSize, total, dataWithLike);
   }
-
   /**
    * @method findAllStatusActive - Retorna todos las librerias con estado activo
    * @param currentPage - Pagina actual
@@ -313,7 +311,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   async create(
     libraryDto: LibraryCreateDTO,
-    idUsuario: number,
+    idUsuario: number
   ): Promise<LibraryResponseDTO> {
     const user = await this.findUserByIdWhithOutAuth(idUsuario);
     await this.existsByName(libraryDto.name);
@@ -343,7 +341,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   async addLikeInLibrary(
     idUsuario: number,
-    idLibrary: number,
+    idLibrary: number
   ): Promise<LibraryResponseDTO> {
     const user: UserEntity = await this.findUserByIdWhithOutAuth(idUsuario);
     const library: LibraryEntity = await this.likeService.likeLibrary(
@@ -457,7 +455,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   async removeLikeInLibrary(
     idUsuario: number,
-    idLibrary: number,
+    idLibrary: number
   ): Promise<LibraryResponseDTO> {
     const user: UserEntity = await this.findUserByIdWhithOutAuth(idUsuario);
     const library: LibraryEntity = await this.likeService.unLikeLibrary(
@@ -573,7 +571,9 @@ export class LibraryService extends BaseService<LibraryEntity> {
   }
 
   private async findUserByIdWhithOutAuth(id: number): Promise<UserEntity> {
-    const data = await (await this.userService.execRepository).findOneBy({ id: id });
+    const data = await (
+      await this.userService.execRepository
+    ).findOneBy({ id: id });
     if (data === null) throw new UserNotFoundException("User not found");
     return data;
   }

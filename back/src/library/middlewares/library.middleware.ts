@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { BaseMiddleware } from "../../shared/middlewares/base.middleware";
-import { LibraryCreateDTO, LibraryCustomQueryDTO, LibraryUpdateDTO } from "../entities/library.dto";
+import {
+  LibraryCreateDTO,
+  LibraryCustomQueryDTO,
+  LibraryUpdateDTO,
+} from "../entities/library.dto";
 
 /**
  * @version 1.0.0
@@ -17,7 +21,11 @@ export class LibraryMiddleware extends BaseMiddleware<
     super();
   }
 
-  public libraryCreateValidator(req: Request, res: Response, next: NextFunction) {
+  public libraryCreateValidator(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     const { name, description, tags, link } = req.body;
 
     const post = new LibraryCreateDTO();
@@ -48,7 +56,11 @@ export class LibraryMiddleware extends BaseMiddleware<
     this.validator(post, res, next);
   }
 
-  public libraryUpdateUserValidator( req: Request, res: Response, next: NextFunction ){
+  public libraryUpdateUserValidator(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     const { name, description, tags, link } = req.body;
 
     const post = new LibraryUpdateDTO();
@@ -61,13 +73,4 @@ export class LibraryMiddleware extends BaseMiddleware<
     this.validator(post, res, next);
   }
 
-  public libaryCustomQueryValidator( req: Request, res: Response, next: NextFunction ){
-    const {tags} = req.query as unknown as LibraryCustomQueryDTO;
-
-    const post = new LibraryCustomQueryDTO();
-
-    if (tags) post.tags = tags;
-
-    this.validator(post, res, next);
-  }
 }

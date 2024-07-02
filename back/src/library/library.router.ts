@@ -57,8 +57,6 @@ export class LibraryRouter extends BaseRouter<
 
     this.router.get(
       "/library/all/search/:userid",
-      (req, res, next) =>
-        this.middleware.libaryCustomQueryValidator(req, res, next),
       (req, res) => this.controller.getLibrarysSearch(req, res)
     );
 

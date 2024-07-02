@@ -3,8 +3,6 @@ import { LibraryHttpResponse } from "../response/library.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { LibraryService } from "../services/library.service";
 import { getValidNumber } from "../../shared/utils/utils";
-import { TagIdInvalidException } from "../../tag/exceptions/tag.id.invalid";
-import { isArray } from "class-validator";
 import { UserEntity } from "../../user/entities/user.entity";
 
 /**
@@ -158,27 +156,25 @@ export class LibraryController {
       const idUsuario = Number(req.params.userid);
       const query = req.query.q as string;
       const orderLike = req.query.like as string;
-      const tagList = req.body.tags as number[];
 
-      let tagListParse: number[] = [];
+      const tags = req.query.tags as string;
+      let arrayIds: number[] = [];
 
-      if (isArray(tagList)) {
-        tagListParse = tagList.map((item) => {
-          if (Number.isNaN(Number(item))) {
-            throw new TagIdInvalidException(item);
-          }
-          return Number(item);
-        });
+      if (tags) {
+        if (tags.length > 0 || tags !== "" && tags !== undefined) {
+          arrayIds = tags.split(",").map((id) => parseInt(id)).filter((id) => !isNaN(id));
+        }
       }
 
       const data = await this.service.findAllSearchQueryCustom(
         idUsuario,
         currentPage,
         pageSize,
-        tagListParse,
+        arrayIds,
         query,
         orderLike
       );
+      
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
