@@ -39,11 +39,11 @@ export async function getLibraries(
 export async function getLibrariesSearch(
   page: number,
   userId: number,
-  tags: number[] | undefined
+  tags: string | undefined
 ): Promise<{ libraries: Library[]; totalPages: number }> {
   try {
     const response = await axiosInstance.get(
-      `/library/all/search/${userId}?page=${page}?tags=${tags?.toString}`
+      `/library/all/search/${userId}?page=${page}&tags=${tags}`
     )
     return {
       libraries: response.data.data.results,

@@ -26,12 +26,12 @@ const HomePage = () => {
     const fetchLibraries = async () => {
       try {
         const tags = tagActives()
-        if (tags) {
+        if (tags.length >= 1 ) {
           const tagsIds = tags.map((tag) => tag.id)
           const { libraries, totalPages } = await getLibrariesSearch(
             currentPage,
-            3,
-            tagsIds
+            1,
+            tagsIds.toString()
           )
           setLibraries(libraries)
           setTotalPages(totalPages)
@@ -39,7 +39,7 @@ const HomePage = () => {
           const currentPageFromUrl = getInitialPage()
           const { libraries, totalPages } = await getLibraries(
             currentPageFromUrl,
-            3
+            1
           )
           setLibraries(libraries)
           setTotalPages(totalPages)
