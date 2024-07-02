@@ -1,25 +1,26 @@
-import { Tag, useTagStore } from "@/stores"
 import { capitalizeFirstLetter } from "@/utils"
-import { useState } from "react"
+// import { useState } from "react"
 
 interface ItemsSideBarProps {
-  tag: Tag
+  tag: any
 }
+
 export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
-  const [active, setActive] = useState(tag.selected)
-  const activeTag = useTagStore(state => state.activeTag)
+  // const [active, setActive] = useState(tag.selected)
+  // const activeTag = useTagStore(state => state.activeTag)
 
   
-  const handleClick = () => {
-    setActive(!active);
-    activeTag(tag.id);
-  };
+  // const handleClick = () => {
+  //   setActive(!active);
+  //   activeTag(tag.id);
+  // };
 
   return (
     <li className="flex">
       <button
-        className={`${active ? "text-main" : ""}`}
-        onClick={handleClick}
+        // className={`${active ? "text-main" : ""}`}
+        // onClick={handleClick}
+        className={`"text-main" : ""}`}
       >
         {capitalizeFirstLetter(tag.name)}
       </button>

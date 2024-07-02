@@ -7,7 +7,7 @@ interface CardsContainerProps {
 
 const CardsContainer = ({ libraries }: CardsContainerProps) => {
   return (
-    <div className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mb-10">
+    <div className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
       {libraries?.map((library: Library, index: number) => (
         <Card 
           key={index}

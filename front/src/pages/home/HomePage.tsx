@@ -2,28 +2,33 @@ import CardsContainer from "@/components/shared/CardsContainer"
 import SideBar from "./components/SideBar"
 import SearchBar from "./components/SearchBar"
 import { useEffect, useState } from "react";
-import axiosInstance from "@/api/axiosInstance";
 import { Library } from "@/interfaces/Library";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination } from "@/components/shared/Pagination";
+import usePagination from "@/hooks/usePagination";
+import { getLibraries } from "@/services/LibraryService";
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([]);
   const [loading, setLoading] = useState(true);
+  const { currentPage, totalPages, setTotalPages, handlePageChange, getInitialPage } = usePagination();
 
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const response = await axiosInstance.get('/library/all/active/1');
-        setLibraries(response.data.data.results);
-      } catch (error) {
-        console.error("Error fetching libraries", error);
-      } finally {
+        const currentPageFromUrl = getInitialPage();
+        const { libraries, totalPages } = await getLibraries(currentPageFromUrl, 3);
+        setLibraries(libraries);
+        setTotalPages(totalPages);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching libraries:', err);
         setLoading(false);
       }
     };
-
+  
     fetchLibraries();
-  }, []);
+  }, [getInitialPage, setTotalPages]);
 
   const SkeletonCard = () => {
     return (
@@ -64,17 +69,24 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="flex flex-row">
+      <section className="flex flex-row min-h-full">
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center">
+        <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
           <SearchBar />
           {loading ? (
             renderSkeletons()
           ) : (
             <CardsContainer libraries={libraries} />
           )}
+          <div className="">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
       </section>
     </>

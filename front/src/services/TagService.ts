@@ -7,13 +7,15 @@ interface TagDto {
   color: string
 }
 
-export async function getTagsApi() {
+export async function getTagsApi(): Promise<{ tags: Tag[] }> {
   try {
-    const response = await axiosInstance.get("/api/tag/all")
-    return response.data.data
+    const response = await axiosInstance.get<{ data: Tag[] }>("/tag/all");
+    return {
+      tags: response.data.data,
+    };    
   } catch (error) {
-    console.log(error)
-    throw error
+    console.error("Error fetching tags", error);
+    throw error;
   }
 }
 

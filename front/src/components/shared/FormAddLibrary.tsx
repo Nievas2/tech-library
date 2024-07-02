@@ -12,10 +12,9 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
-import { useTagStore } from "@/stores"
 import {
   LibraryDtoUser,
   postLibrary,
@@ -25,6 +24,7 @@ import { Tag } from "@/interfaces/Tag"
 import { useToast } from "@/components/ui/use-toast"
 import { AxiosError } from "axios"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
+import { getTagsApi } from "@/services/TagService"
 
 interface CardProps {
   card: Library | undefined
@@ -32,7 +32,23 @@ interface CardProps {
 
 export default function FormAddLibrary({ card }: CardProps) {
   const { toast } = useToast()
-  const tags = useTagStore((state) => state.tags)
+  const [tags, setTags] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const tags = await getTagsApi();
+        setTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
 
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
     card?.tags?.map((tag) => tag) || []
@@ -88,6 +104,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       }
     }
   })
+
   async function putLibraryFunction(values: LibraryDtoUser, id: number) {
     try {
       const response = await putLibraryUser(values, id)
@@ -101,6 +118,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       })
     }
   }
+
   async function postLibraryFunction(values: LibraryDtoUser, id: number) {
     try {
       const response = await postLibrary(values, id)
@@ -114,6 +132,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       })
     }
   }
+
   const addTag = (value: string) => {
     if (tagsAdded?.find((tag) => tag.name === value)) return
     const tagSelected = tags.find((tag) => tag.name === value)
