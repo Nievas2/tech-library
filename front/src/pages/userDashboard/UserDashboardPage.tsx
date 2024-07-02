@@ -18,19 +18,38 @@ import StateCard from "./components/StateCard"
 import { useEffect, useState } from "react"
 import { getLibrariesUserDashboard } from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
-import { useTagStore } from "@/stores"
+import { getTagsApi } from "@/services/TagService"
+
 const UserDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
-  const getTags = useTagStore((state) => state.getTags)
+
+  const [tags, setTags] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const tags = await getTagsApi();
+        setTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
   async function getLibrary() {
     const response = await getLibrariesUserDashboard(1)
     console.log(response)
 
     setList(response.results)
   }
+
   useEffect(() => {
     getLibrary()
-    getTags()
   }, [])
 
   function handleChangeSelect(value: string) {
@@ -39,6 +58,7 @@ const UserDashboardPage = () => {
     const result = cloneList.filter((item) => item.state === value)
     setList(result)
   }
+
   return (
     <div className="flex flex-1 mx-auto max-w-[1240px] w-screen flex-col relative gap-6 pt-0 p-4 md:pt-0 sm:p-4 sm:pt-0 xl:p-0">
       <div className="flex">

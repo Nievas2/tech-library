@@ -2,11 +2,12 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import ItemsSideBar from "./ItemsSideBar"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Tag, useTagStore } from "@/stores"
+import { getTagsApi } from "@/services/TagService"
 
 export default function SideBar() {
-  const [open, setOpen] = useState(window.innerWidth > 768)
-  const tags = useTagStore(state => state.tags)
+  const [open, setOpen] = useState(window.innerWidth > 768);
+  const [tags, setTags] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,13 +21,28 @@ export default function SideBar() {
     }
   }, [])
 
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const { tags } = await getTagsApi();        
+        setTags(tags);
+      } catch (error) {
+        console.error("Error fetching tags", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
   const handleSidebar = () => {
     setOpen(!open)
   };
 
   return (
     <section
-      className={`h-full transition-width duration-300 ease-out fixed z-10 md:static bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
+      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
         open ? "w-60" : "w-0"
       } `}
     >
@@ -60,7 +76,7 @@ export default function SideBar() {
         <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
           <h2 className="text-xl font-bold">TECNOLOGIES</h2>
           <ul className="flex flex-col gap-1">
-            {tags?.map((tag: Tag) => (
+            {tags?.map((tag: any) => (
               <ItemsSideBar
                 key={tag.name}
                 tag={tag}
