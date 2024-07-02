@@ -21,6 +21,7 @@ export default function SideBar() {
     }
   }, [])
 
+  // Forma optima de traer las tags
   useEffect(() => {
     const fetchTags = async () => {
       try {

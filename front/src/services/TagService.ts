@@ -7,6 +7,7 @@ interface TagDto {
   color: string
 }
 
+// Trae todas las tags
 export async function getTagsApi(): Promise<{ tags: Tag[] }> {
   try {
     const response = await axiosInstance.get<{ data: Tag[] }>("/tag/all");
