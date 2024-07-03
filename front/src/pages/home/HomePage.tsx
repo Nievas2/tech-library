@@ -33,11 +33,9 @@ const HomePage = () => {
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const tags = tagsActives()
-        const tagsIds = tags
-          .filter((tag) => tag.id)
-          .map((tag) => tag.id)
-          .join(",")
+        const urlParams = new URLSearchParams(window.location.search)
+        const tagsIds = String(urlParams.get("tags"))
+        
         const currentPage = getInitialPage()
 
         let librariesResponse
@@ -84,8 +82,6 @@ const HomePage = () => {
   }, [getInitialPage, setTotalPages, tags, search])
  
   useEffect(() => {
-    console.log("datra")
-    
     handlePageChange(1)
   }, [tagsActives, totalPages])
   const SkeletonCard = () => {
