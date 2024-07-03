@@ -51,7 +51,7 @@ const Card = ({ library }: CardProps) => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-row gap-4 justify-center items-center">
-          <NavLink className="flex flex-grow" to="/favorites">
+          <NavLink className="flex flex-grow" to={library.link}>
             <Button
               variant="directLink"
               className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointer"
@@ -76,8 +76,7 @@ const Card = ({ library }: CardProps) => {
 
         <div className="flex flex-row items-center justify-end gap-2">
           <small>
-            Suggested by{" "}
-            <span className="font-semibold text-main">{library.createdBy.name}</span>
+            Suggested by <span className="font-semibold text-main">{library.createdBy.username}</span>
           </small>
           <small>|</small>
           <small>02-08-1999</small>

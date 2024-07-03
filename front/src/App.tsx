@@ -9,10 +9,13 @@ import RegisterPage from "./pages/register/RegisterPage"
 import FavoritesPage from "./pages/favorites/FavoritesPage"
 import UserDashboardPage from "./pages/userDashboard/UserDashboardPage"
 import AdminDashboardPage from "./pages/adminDashboard/AdminDashboard"
+import { useAuthContext } from "./contexts"
 
 function App() {
   const location = useLocation();
   const noPadding = ['/', '/login', '/signup', '/home'].includes(location.pathname);
+
+  const { authUser } = useAuthContext();
 
   return (
     <main className="bg-light dark:bg-dark text-dark dark:text-light">
@@ -21,12 +24,12 @@ function App() {
 
         <div className={`flex flex-col justify-start items-center gap-7 flex-1 max-w-7xl ${!noPadding ? 'pt-[120px]' : 'pt-24'}`}>
           <Routes>
-            <Route path='/' element={<LandingPage />} />
-            <Route path='/home' element={<HomePage />} />
+            <Route path='/' element={ authUser ? <LandingPage /> : <Navigate to={"/login"} /> } />
+            <Route path='/home' element={ authUser ? <HomePage /> : <Navigate to={"/login"} /> } />
             <Route path='/favorites' element={<FavoritesPage />} />
 
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/signup' element={<RegisterPage />} />
+            <Route path='/login' element={ authUser ? <Navigate to='/home' /> : <LoginPage /> } />
+            <Route path='/signup' element={ authUser ? <Navigate to='/home' /> : <RegisterPage /> } />
 
             <Route path='/user-dashboard' element={<UserDashboardPage />} />
             <Route path='/admin-dashboard' element={<AdminDashboardPage />} />
