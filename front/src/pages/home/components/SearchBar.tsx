@@ -11,7 +11,7 @@ interface SearchBarProps {
   setSearch: React.Dispatch<React.SetStateAction<boolean>>
 }
 const SearchBar = ({ setLibrary, setSearch }: SearchBarProps) => {
-  const [text, setText] = useState("Hello")
+  const [text, setText] = useState("")
   const [value] = useDebounce(text, 500)
   const {
     setTotalPages,

@@ -27,24 +27,26 @@ const HomePage = () => {
     const fetchLibraries = async () => {
       try {
         const tags = tagActives()
-        if (tags.length >= 1) {
-          const currentPageFromUrl = getInitialPage()
-          const tagsIds = tags.map((tag) => tag.id)
-          const { libraries, totalPages } = await getLibrariesFilter(
-            currentPageFromUrl,
-            1,
-            tagsIds.toString()
-          )
-          setLibraries(libraries)
-          setTotalPages(totalPages)
-        } else {
-          const currentPageFromUrl = getInitialPage()
-          const { libraries, totalPages } = await getLibraries(
-            currentPageFromUrl,
-            1
-          )
-          setLibraries(libraries)
-          setTotalPages(totalPages)
+        if (!search) {
+          if (tags.length >= 1) {
+            const currentPageFromUrl = getInitialPage()
+            const tagsIds = tags.map((tag) => tag.id)
+            const { libraries, totalPages } = await getLibrariesFilter(
+              currentPageFromUrl,
+              1,
+              tagsIds.toString()
+            )
+            setLibraries(libraries)
+            setTotalPages(totalPages)
+          } else {
+            const currentPageFromUrl = getInitialPage()
+            const { libraries, totalPages } = await getLibraries(
+              currentPageFromUrl,
+              1
+            )
+            setLibraries(libraries)
+            setTotalPages(totalPages)
+          }
         }
         setLoading(false)
       } catch (err) {
@@ -103,7 +105,10 @@ const HomePage = () => {
           <SideBar />
         </div>
         <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
-          <SearchBar setLibrary={setLibraries} setSearch={setSearch} />
+          <SearchBar
+            setLibrary={setLibraries}
+            setSearch={setSearch}
+          />
           {search ? (
             <CardsContainer libraries={libraries} />
           ) : (
