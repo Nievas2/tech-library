@@ -9,7 +9,11 @@ export interface LibraryDtoUser {
   link: string
   tags: number[]
 }
-
+export interface LibraryDtoUserPut {
+  description: string
+  link: string
+  tags: number[]
+}
 export interface LibraryDtoAdmin {
   name: string
   description: string
@@ -118,7 +122,7 @@ export async function postLibrary(
 }
 
 export function putLibraryUser(
-  library: LibraryDtoUser,
+  library: LibraryDtoUserPut | LibraryDtoUser,
   libraryId: number
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
@@ -126,7 +130,9 @@ export function putLibraryUser(
     const response = axiosInstance.put(
       `/library/update/${libraryId}`,
       {
-        library
+        description: library.description,
+        link: library.link,
+        tags: library.tags
       }
     )
     return response

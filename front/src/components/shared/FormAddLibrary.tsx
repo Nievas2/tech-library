@@ -33,24 +33,24 @@ interface CardProps {
 
 export default function FormAddLibrary({ card }: CardProps) {
   const { toast } = useToast()
-  const [tags, setTags] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { authUser } = useAuthContext();
+  const [tags, setTags] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const { authUser } = useAuthContext()
 
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const tags = await getTagsApi();
-        setTags(tags);
+        const tags = await getTagsApi()
+        setTags(tags)
       } catch (error) {
-        console.error("Error fetching tags", error);
+        console.error("Error fetching tags", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchTags();
-  }, []);
+    fetchTags()
+  }, [])
 
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
     card?.tags?.map((tag) => tag) || []
@@ -109,14 +109,27 @@ export default function FormAddLibrary({ card }: CardProps) {
 
   async function putLibraryFunction(values: LibraryDtoUser, id: number) {
     try {
-      const response = await putLibraryUser(values, id)
+      let data
+
+      if (values.name === card?.name) {
+        data = {
+          description: values.description,
+          link: values.link,
+          tags: values.tags
+        }
+      } else {
+        data = values
+      }
+
+      const response = await putLibraryUser(data, id)
       toast({
         title: response.data.statusMessage
       })
       window.location.reload()
     } catch (error) {
       toast({
-        title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage
+        title: (error as AxiosError<ResponseSuccess>).response?.data
+          .statusMessage
       })
     }
   }
@@ -130,7 +143,8 @@ export default function FormAddLibrary({ card }: CardProps) {
       window.location.reload()
     } catch (error) {
       toast({
-        title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage
+        title: (error as AxiosError<ResponseSuccess>).response?.data
+          .statusMessage
       })
     }
   }
