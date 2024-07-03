@@ -20,11 +20,9 @@ export class UserDTO extends BaseDTO {
 export class userLoginDTO extends BaseDTO {
   @IsOptional()
   @IsNotEmpty({ message: "Username cannot be empty" })
-  @Length(4, 20, { message: "Username must be between 4 and 20 characters" })
   username!: string;
 
   @IsOptional()
-  @Min(4, { message: "Password must be at least 4 characters long" })
   @IsNotEmpty({ message: "Password cannot be empty" })
   password!: string;
 
@@ -68,6 +66,5 @@ export class UserResponseDTO extends BaseDTO {
     this.email = user.email;
     this.id = user.id;
     this.role = user.role
-
   }
 }
