@@ -11,6 +11,7 @@ export enum HttpStatus {
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
+  CONFLICT = 409,
   INTERNAL_SERVER_ERROR = 500,
 }
 
@@ -116,6 +117,17 @@ export abstract class BaseHttpResponse extends BaseMessage {
     return res.status(HttpStatus.BAD_REQUEST).json({
       status: HttpStatus.BAD_REQUEST,
       statusMessage: message,
+    });
+  }
+
+  Conflict(res: Response, env: string , data?: any): Response {
+    const message = this.hasLenguaje()
+      ? this.getEnvironment(env)
+      : "Conflict";
+    return res.status(HttpStatus.CONFLICT).json({
+      status: HttpStatus.CONFLICT,
+      statusMessage: message,
+      data: data,
     });
   }
 }

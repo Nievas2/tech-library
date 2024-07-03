@@ -20,16 +20,16 @@ export class UserHttpResponse extends BaseHttpResponse {
     return this.BadRequest(res, "USER_ALREADY_ACTIVE", _data);
   }
 
-  BadRequestUserAlreadyExist(res: Response, _data?: any): Response {
-    return this.BadRequest(res, "USER_ALREADY_EXIST", _data);
+  BadRequestUserAlreadyExist(res: Response, data?: any): Response {
+    return this.Conflict(res, "USER_ALREADY_EXIST", data);
   }
 
-  BadRequestUserAlreadyByEmail(res: Response, _data?: any): Response {
-    return this.BadRequest(res, "USER_ALREADY_EXIST_EMAIL", _data);
+  BadRequestUserAlreadyByEmail(res: Response, data?: any): Response {
+    return this.Conflict(res, "USER_ALREADY_EXIST_EMAIL", data);
   }
 
-  BadRequestUserAlreadyByUsername(res: Response, _data?: any): Response {
-    return this.BadRequest(res, "USER_ALREADY_EXIST_USERNAME", _data);
+  BadRequestUserAlreadyByUsername(res: Response, data?: any): Response {
+    return this.Conflict(res, "USER_ALREADY_EXIST_USERNAME", data);
   }
 
   BadRequestUpdatedUser(res: Response, _data?: UpdateResult): Response {

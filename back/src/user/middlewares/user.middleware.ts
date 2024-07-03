@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserDTO, UserUpdateDTO } from "../entities/user.dto";
+import { UserDTO, UserUpdateDTO, userLoginDTO } from "../entities/user.dto";
 import { BaseMiddleware } from "../../shared/middlewares/base.middleware";
 
 /**
@@ -37,6 +37,17 @@ export class UserMiddleware extends BaseMiddleware<UserDTO | UserUpdateDTO> {
     if (password) post.password = password;
     if (email) post.email = email;
     if(role) post.role = role
+
+    this.validator(post, res, next);
+  }
+
+  public userLoginValidate(req: Request, res: Response, next: NextFunction) {
+    const {username, password} = req.body;
+
+    const post = new userLoginDTO();
+
+    post.username = username;
+    post.password = password;
 
     this.validator(post, res, next);
   }

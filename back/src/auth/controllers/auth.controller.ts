@@ -99,4 +99,12 @@ export class AuthController {
       }
     }
   }
+
+
+  async loginGoogle (req: Request, res: Response) {
+
+    console.log(req.user);
+    
+    res.send(req.user)
+  }
 }
