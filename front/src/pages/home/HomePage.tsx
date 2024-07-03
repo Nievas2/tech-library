@@ -18,6 +18,7 @@ const HomePage = () => {
       try {
         const currentPageFromUrl = getInitialPage();
         const { libraries, totalPages } = await getLibraries(currentPageFromUrl, 3);
+        
         setLibraries(libraries);
         setTotalPages(totalPages);
         setLoading(false);

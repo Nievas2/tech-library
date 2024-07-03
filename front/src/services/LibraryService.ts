@@ -25,6 +25,7 @@ export async function getLibraries(page: number, userId: number): Promise<{ libr
       libraries  : response.data.data.results,
       totalPages : Math.ceil(response.data.data.total_pages),
     };
+    
   } catch (error) {
     console.error('Error fetching libraries:', error);
     throw error;

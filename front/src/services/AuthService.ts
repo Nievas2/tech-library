@@ -1,14 +1,16 @@
 import axiosInstance from "@/api/axiosInstance"
 
 export interface Login {
-  username: string
-  password: string
+  username : string
+  password : string
 }
+
 export interface Register {
-  username: string
-  email: string
-  password: string
+  username : string
+  email    : string
+  password : string
 }
+
 export function login(user: Login) {
   try {
     const response = axiosInstance.post("/login", user)
@@ -17,6 +19,7 @@ export function login(user: Login) {
     throw error
   }
 }
+
 export function register(user: Register) {
   try {
     const response = axiosInstance.post("/register", user)

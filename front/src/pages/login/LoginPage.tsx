@@ -5,12 +5,14 @@ import { Link } from "react-router-dom"
 import { Icon } from "@iconify/react"
 import { useFormik } from "formik"
 import { loginSchema } from "@/utils"
-import { Login, login } from "@/services/AuthService"
+import { Login } from "@/services/AuthService"
 import { useToast } from "@/components/ui/use-toast"
-import { useTokenStore } from "@/stores/user.store"
+// import { useTokenStore } from "@/stores/user.store"
+import useLogin from "@/hooks/useLogin"
 
 const LoginPage = () => {
-  const setToken = useTokenStore((state) => state.setToken)
+  // const setToken = useTokenStore((state) => state.setToken)
+  const { loading, login } = useLogin()
   const { toast } = useToast()
   // const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
@@ -19,17 +21,19 @@ const LoginPage = () => {
       password: ""
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
+    onSubmit: (values) => {      
       loginFunction(values)
     }
   })
+  
   async function loginFunction(values: Login) {
     try {
-      const response = await login(values)
+      await login(values)
+      // const response = await login(values)
       
-      setToken(response.data.accesToken)
-      window.location.pathname = "/home"
-      return response
+      // setToken(response.data.accesToken)
+      // window.location.pathname = "/home"
+      // return response
     } catch (error) {
       toast({
         title: "Any of the fields are incorrect"

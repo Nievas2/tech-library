@@ -12,6 +12,7 @@ const storeApi: StateCreator<TokenState, [["zustand/immer", never]]> = (set) => 
   setToken: (token: string) => {
     set({ token })
   },
+  
   logOut: () => {
     set({ token: "" })
   }
