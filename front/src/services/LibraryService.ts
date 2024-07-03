@@ -98,12 +98,12 @@ export async function getAllLibraries() {
 
 export async function postLibrary(
   library: LibraryDtoUser,
-  userId: number
+  userId: string
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = await axios.post(
-      `http://localhost:8000/api/library/create/${userId}`,
+    const response = await axiosInstance.post(
+      `/library/create/${userId}`,
       {
         name: library.name,
         description: library.description,
@@ -123,8 +123,8 @@ export function putLibraryUser(
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = axios.put(
-      `http://localhost:8000/api/library/update/${libraryId}`,
+    const response = axiosInstance.put(
+      `/library/update/${libraryId}`,
       {
         library
       }

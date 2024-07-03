@@ -25,6 +25,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { AxiosError } from "axios"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
 import { getTagsApi } from "@/services/TagService"
+import { useAuthContext } from "@/contexts"
 
 interface CardProps {
   card: Library | undefined
@@ -34,6 +35,7 @@ export default function FormAddLibrary({ card }: CardProps) {
   const { toast } = useToast()
   const [tags, setTags] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -78,7 +80,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             tags: filteredTagsId as number[]
           }
           console.log(valuesDate)
-          postLibraryFunction(valuesDate, 1)
+          postLibraryFunction(valuesDate, authUser!.user.id)
         }
       } else {
         setError(false)
@@ -119,7 +121,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     }
   }
 
-  async function postLibraryFunction(values: LibraryDtoUser, id: number) {
+  async function postLibraryFunction(values: LibraryDtoUser, id: string) {
     try {
       const response = await postLibrary(values, id)
       toast({
