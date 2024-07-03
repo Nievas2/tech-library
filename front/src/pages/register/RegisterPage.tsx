@@ -9,13 +9,17 @@ import { signupSchema } from "@/utils"
 import { Icon } from "@iconify/react/dist/iconify.js"
 
 import { useFormik } from "formik"
-import { Register, register } from "@/services/AuthService"
 
 import { useToast } from "@/components/ui/use-toast"
 import { AxiosError } from "axios"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
+import { useRegister } from "@/hooks"
+import { Register } from "@/services/AuthService"
+
 const RegisterPage = () => {
+  const { loading, register } = useRegister()
   const { toast } = useToast()
+
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {
       username: "",
@@ -27,11 +31,10 @@ const RegisterPage = () => {
       registerFunction(values)
     }
   })
-  async function registerFunction(user: Register) {
+  
+  async function registerFunction(values: Register) {
     try {
-      const response = await register(user)
-      window.location.pathname = "/home"
-      return response
+      await register(values)
     } catch (error) {
       toast({
         title: (error as AxiosError<ResponseSuccess>).response?.data
@@ -40,6 +43,7 @@ const RegisterPage = () => {
       throw error
     }
   }
+  
   return (
     <div className="flex my-auto">
       <form

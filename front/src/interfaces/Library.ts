@@ -10,5 +10,6 @@ export interface Library {
   isActive: boolean
   state: "ACTIVE" | "PENDING" | "INACTIVE"
   createdBy: User
+  createdAt: string;
   tags?: Tag[]
 }

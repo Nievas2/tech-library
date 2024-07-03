@@ -7,17 +7,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/shared/Pagination";
 import usePagination from "@/hooks/usePagination";
 import { getLibraries } from "@/services/LibraryService";
+import { useAuthContext } from "@/contexts";
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([]);
   const [loading, setLoading] = useState(true);
   const { currentPage, totalPages, setTotalPages, handlePageChange, getInitialPage } = usePagination();
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
         const currentPageFromUrl = getInitialPage();
-        const { libraries, totalPages } = await getLibraries(currentPageFromUrl, 3);
+        const { libraries, totalPages } = await getLibraries(currentPageFromUrl, authUser!.user.id);
         
         setLibraries(libraries);
         setTotalPages(totalPages);
@@ -30,6 +32,9 @@ const HomePage = () => {
   
     fetchLibraries();
   }, [getInitialPage, setTotalPages]);
+
+  console.log(libraries);
+  
 
   const SkeletonCard = () => {
     return (

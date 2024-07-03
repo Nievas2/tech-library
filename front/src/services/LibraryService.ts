@@ -18,9 +18,10 @@ export interface LibraryDtoAdmin {
   state: "ACTIVE" | "PENDING" | "INACTIVE"
 }
 
-export async function getLibraries(page: number, userId: number): Promise<{ libraries: Library[]; totalPages: number }> {
+export async function getLibraries(page: number, userId: string): Promise<{ libraries: Library[]; totalPages: number }> {
   try {
     const response = await axiosInstance.get(`/library/all/active/${userId}?page=${page}`);
+    
     return {
       libraries  : response.data.data.results,
       totalPages : Math.ceil(response.data.data.total_pages),
@@ -32,10 +33,10 @@ export async function getLibraries(page: number, userId: number): Promise<{ libr
   }
 }
 
-export async function getLibrariesUserDashboard(userId: number) {
+export async function getLibrariesUserDashboard(userId: string) {
   try {
-    const response = await axios.get(
-      `http://localhost:8000/api/library/all/user/${userId}`
+    const response = await axiosInstance.get(
+      `/library/all/user/${userId}`
     )
     return response.data.data
   } catch (error) {

@@ -29,11 +29,6 @@ const LoginPage = () => {
   async function loginFunction(values: Login) {
     try {
       await login(values)
-      // const response = await login(values)
-      
-      // setToken(response.data.accesToken)
-      // window.location.pathname = "/home"
-      // return response
     } catch (error) {
       toast({
         title: "Any of the fields are incorrect"
@@ -41,6 +36,7 @@ const LoginPage = () => {
       throw error
     }
   }
+  
   return (
     <div className="flex my-auto">
       <form

@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom"
 import { Library } from "@/interfaces/Library"
 import { Tag } from "@/interfaces/Tag"
 import { useLibraryStore } from "@/stores"
+import { formatDate } from "@/utils"
 
 interface CardProps {
   library : Library
@@ -74,12 +75,10 @@ const Card = ({ library }: CardProps) => {
           </div>
         </div>
 
-        <div className="flex flex-row items-center justify-end gap-2">
+        <div className="flex justify-end flex-row items-center">
           <small>
-            Suggested by <span className="font-semibold text-main">{library.createdBy.username}</span>
+            Suggested by <span className="font-semibold text-main">@{library.createdBy.username}</span> on {formatDate(library.createdAt)}
           </small>
-          <small>|</small>
-          <small>02-08-1999</small>
         </div>
       </div>
     </div>

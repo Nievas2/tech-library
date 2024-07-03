@@ -19,8 +19,11 @@ import { useEffect, useState } from "react"
 import { getLibrariesUserDashboard } from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
 import { getTagsApi } from "@/services/TagService"
+import { useAuthContext } from "@/contexts"
 
 const UserDashboardPage = () => {
+  const { authUser } = useAuthContext();
+
   const [list, setList] = useState<Library[]>()
 
   const [tags, setTags] = useState<any[]>([]);
@@ -42,7 +45,7 @@ const UserDashboardPage = () => {
   }, []);
 
   async function getLibrary() {
-    const response = await getLibrariesUserDashboard(3)
+    const response = await getLibrariesUserDashboard(authUser!.user.id)
     console.log(response)
 
     setList(response.results)
