@@ -1,41 +1,17 @@
 import { Input } from "@/components/ui/input"
 import usePagination from "@/hooks/usePagination"
-import { Library } from "@/interfaces/Library"
-import { getLibrariesSearch } from "@/services/LibraryService"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useEffect, useState } from "react"
 import { useDebounce } from "use-debounce"
 
-interface SearchBarProps {
-  setLibrary: React.Dispatch<React.SetStateAction<Library[]>>
-  setSearch: React.Dispatch<React.SetStateAction<boolean>>
-}
-const SearchBar = ({ setLibrary, setSearch }: SearchBarProps) => {
+const SearchBar = () => {
+  const { handleSearch } = usePagination()
   const [text, setText] = useState("")
-  const [value] = useDebounce(text, 500)
-  const {
-    setTotalPages,
-    getInitialPage
-  } = usePagination()
+  const [value] = useDebounce(text, 350)
   useEffect(() => {
-    const fetchLibraries = async () => {
-      try {
-        if(value === "") return setSearch(false)
-        console.log(value)
-        const currentPageFromUrl = getInitialPage()
-        const {libraries, totalPages} = await getLibrariesSearch(
-          currentPageFromUrl,
-          1,
-          "1,2",
-          value
-        )
-        setLibrary(libraries)
-        setTotalPages(totalPages)
-        setSearch(true)
-      } catch (error) {}
-    }
-    fetchLibraries()
+    handleSearch(value)
   }, [value])
+
   return (
     <div className="w-[80%] sticky z-0 top-28 flex h-10 ">
       <div className="bg-light dark:bg-dark rounded-md border rounded-r-none w-10 grid place-content-center border-dark dark:border-light">

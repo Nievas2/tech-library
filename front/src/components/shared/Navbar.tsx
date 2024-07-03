@@ -21,9 +21,9 @@ const Navbar = () => {
   //     setIsLoged(true)
   //   }
   // }, [])
-  const { loading, logOut } = useLogout();
+  const { logOut } = useLogout();
   const { authUser } = useAuthContext();
-  console.log(authUser, "authUser");
+  //console.log(authUser, "authUser");
   
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">

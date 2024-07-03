@@ -6,13 +6,13 @@ import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
 import usePagination from "@/hooks/usePagination"
-import { getLibraries, getLibrariesFilter } from "@/services/LibraryService"
+import { getLibraries, getLibrariesFilter, getLibrariesSearch } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState<boolean>(false)
+  const [notFound, setNotFound] = useState(false)
   const tagActives = useTagStore((state) => state.tagActives)
   const tags = useTagStore((state) => state.tags)
   const {
@@ -20,21 +20,24 @@ const HomePage = () => {
     totalPages,
     setTotalPages,
     handlePageChange,
-    getInitialPage
+    getInitialPage,
+    handleSearch,
+    searchParams
   } = usePagination()
+  const search = searchParams.get("search")
+  console.log("home: ", searchParams.get("search"))
 
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const tags = tagActives()
+        const tags = tagActives().toString()
+        const currentPageFromUrl = getInitialPage()
         if (!search) {
           if (tags.length >= 1) {
-            const currentPageFromUrl = getInitialPage()
-            const tagsIds = tags.map((tag) => tag.id)
             const { libraries, totalPages } = await getLibrariesFilter(
               currentPageFromUrl,
               1,
-              tagsIds.toString()
+              tags
             )
             setLibraries(libraries)
             setTotalPages(totalPages)
@@ -47,10 +50,21 @@ const HomePage = () => {
             setLibraries(libraries)
             setTotalPages(totalPages)
           }
+        }else{
+          const {libraries, totalPages} = await getLibrariesSearch(
+            currentPageFromUrl,
+            1,
+            "1,2",
+            search
+          )
+          setLibraries(libraries)
+          setTotalPages(totalPages)
         }
         setLoading(false)
+        setNotFound(false)
       } catch (err) {
         console.error("Error fetching libraries:", err)
+        setNotFound(true)
         setLoading(false)
       }
     }
@@ -105,11 +119,11 @@ const HomePage = () => {
           <SideBar />
         </div>
         <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
-          <SearchBar
-            setLibrary={setLibraries}
-            setSearch={setSearch}
-          />
-          {search ? (
+          <SearchBar />
+          {
+            notFound ? <h1>not found</h1> : (
+              <div>
+                {search ? (
             <CardsContainer libraries={libraries} />
           ) : (
             <div>
@@ -120,6 +134,10 @@ const HomePage = () => {
               )}
             </div>
           )}
+              </div>
+            )
+          }
+          
 
           <div className="">
             <Pagination
