@@ -6,7 +6,6 @@ const usePagination = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const [search, setSearch] = useState("")
 
   const handlePageChange = useCallback((page: any) => {
     setCurrentPage(page)
@@ -14,7 +13,6 @@ const usePagination = () => {
   }, [])
 
   const handleSearch = useCallback((search: any) => {
-    setSearch(search)
     updateSearchUrl(search, 1)
   }, [])
 
@@ -27,7 +25,9 @@ const usePagination = () => {
 
   const updateUrl = useCallback(
     (page: any) => {
-      setSearchParams({ currentPage: page.toString() })
+      const urlParams = new URLSearchParams(window.location.search)
+      const search = urlParams.get("search") || ""
+      setSearchParams({ currentPage: page.toString(), search: search })
     },
     [setSearchParams]
   )
@@ -44,8 +44,6 @@ const usePagination = () => {
     setTotalPages,
     handlePageChange,
     getInitialPage,
-    search,
-    setSearch,
     handleSearch,
     searchParams
   }

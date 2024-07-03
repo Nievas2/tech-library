@@ -20,7 +20,6 @@ const HomePage = () => {
   const { authUser } = useAuthContext()
   const [notFound, setNotFound] = useState(false)
   const tagsActives = useTagStore((state) => state.tagsActives)
-  const tagActives = useTagStore((state) => state.tagActives)
   const tags = useTagStore((state) => state.tags)
   const {
     currentPage,
@@ -34,7 +33,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const tags = tagActives()
+        const tags = tagsActives()
         const tagsIds = tags
           .filter((tag) => tag.id)
           .map((tag) => tag.id)
@@ -69,8 +68,13 @@ const HomePage = () => {
         setTotalPages(totalPages)
         setLoading(false)
         setNotFound(false)
+        
       } catch (err) {
         console.error("Error fetching libraries:", err)
+        if (totalPages > currentPage) {
+          handlePageChange(1)
+        }
+        setTotalPages(1)
         setNotFound(true)
         setLoading(false)
       }
@@ -78,11 +82,12 @@ const HomePage = () => {
 
     fetchLibraries()
   }, [getInitialPage, setTotalPages, tags, search])
+ 
   useEffect(() => {
     console.log("datra")
-
+    
     handlePageChange(1)
-  }, [tagsActives])
+  }, [tagsActives, totalPages])
   const SkeletonCard = () => {
     return (
       <div className="flex w-[322.67px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">

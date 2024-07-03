@@ -13,7 +13,7 @@ interface TagState {
   tags: Tag[]
   setTags: (tags: Tag[]) => void
   activeTag: (tagId: number) => void
-  tagActives: () => Tag[]
+  tagsActives: () => Tag[]
 }
 
 const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
@@ -34,7 +34,7 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
     })
   },
 
-  tagActives: () => {
+  tagsActives: () => {
     const tags = get().tags
     const tagsActives = tags.filter((tag) => tag.selected)
     return tagsActives
