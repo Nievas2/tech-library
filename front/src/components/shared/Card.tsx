@@ -4,17 +4,17 @@ import { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 import { Library } from "@/interfaces/Library"
 import { Tag } from "@/interfaces/Tag"
-import { useLibraryStore } from "@/stores"
 import { formatDate } from "@/utils"
+import { useFavoriteStore } from "@/stores"
 
 interface CardProps {
   library : Library
 }
 
 const Card = ({ library }: CardProps) => {
-  const favorites             = useLibraryStore((state) => state.favorites);
-  const addFavoriteLibrary    = useLibraryStore((state) => state.addFavoriteLibrary);
-  const deleteFavoriteLibrary = useLibraryStore((state) => state.deleteFavoriteLibrary);
+  const favorites             = useFavoriteStore((state) => state.favorites);
+  const addFavoriteLibrary    = useFavoriteStore((state) => state.addFavoriteLibrary);
+  const deleteFavoriteLibrary = useFavoriteStore((state) => state.deleteFavoriteLibrary);
 
   const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
   const [favoriteActive, setFavoriteActive] = useState(isFavorite);

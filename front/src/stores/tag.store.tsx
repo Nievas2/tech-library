@@ -1,98 +1,46 @@
-// import { getTagsApi } from "@/services/TagService"
-// import { StateCreator, create } from "zustand"
-// import { persist } from "zustand/middleware"
-// import { immer } from "zustand/middleware/immer"
+import { StateCreator, create } from "zustand"
+import { immer } from "zustand/middleware/immer"
 
-// export interface Tag {
-//   id: number
-//   name: string
-//   selected: boolean
-//   color: string
-// }
 
-// interface TagState {
-//   tags: Tag[]
-//   activeTag: (tagId: number) => void
-//   getTags: () => void
-// }
+export interface Tag {
+  id: number
+  name: string
+  selected: boolean
+  color: string
+}
 
-// const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (set) => ({
-//   tags: [/* 
-//     {
-//       id: 1,
-//       name: "javascript",
-//       selected: false,
-//       color: "#f7df1e"
-//     },
-//     {
-//       id: 2,
-//       name: "typescript",
-//       selected: false,
-//       color: "#3178c6"
-//     },
-//     {
-//       id: 4,
-//       name: "react",
-//       selected: false,
-//       color: "#61dafb"
-//     },
-//     {
-//       id: 3,
-//       name: "nextjs",
-//       selected: false,
-//       color: "#000000"
-//     },
-//     {
-//       id: 5,
-//       name: "nodejs",
-//       selected: false,
-//       color: "#339933"
-//     },
-//     {
-//       id: 6,
-//       name: "graphql",
-//       selected: false,
-//       color: "#e10098"
-//     },
-//     {
-//       id: 7,
-//       name: "tailwindcss",
-//       selected: false,
-//       color: "#38b2ac"
-//     },
-//     {
-//       id: 8,
-//       name: "tailwindui",
-//       selected: false,
-//       color: "#38b2ac"
-//     } */
-//   ],
+interface TagState {
+  tags: Tag[]
+  setTags: (tags: Tag[]) => void
+  activeTag: (tagId: number) => void
+  tagActives: () => Tag[]
+}
 
-//   getTags: async () => {
-//     try {
-//       const data = await getTagsApi()
-//       console.log(data);
-      
-//       set((state) => {
-//         state.tags = data
-//       })
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   },
-  
-//   activeTag: (tagId: number) => {
-//     set((state) => {
-//       const tag = state.tags.find((tag) => tag.id === tagId)
-//       if (tag) {
-//         tag.selected = !tag.selected
-//       }
-//     })
-//   }
-// })
+const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
+  set,
+  get
+) => ({
+  tags: [],
+  setTags: (tags: Tag[]) => {
+    set({ tags })
+  },
 
-// export const useTagStore = create<TagState>()(
-//   persist(immer(storeApi), {
-//     name: "tag-storage"
-//   })
-// )
+  activeTag: (tagId: number) => {
+    set((state) => {
+      const tag = state.tags.find((tag) => tag.id === tagId)
+      if (tag) {
+        tag.selected = !tag.selected
+      }
+    })
+  },
+
+  tagActives: () => {
+    const tags = get().tags
+    const tagsActives = tags.filter((tag) => tag.selected)
+    return tagsActives
+    
+  }
+
+})
+
+export const useTagStore = create<TagState>()(immer (storeApi))

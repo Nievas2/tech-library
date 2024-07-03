@@ -18,7 +18,6 @@ import StateCard from "./components/StateCard"
 import { useEffect, useState } from "react"
 import { getLibrariesUserDashboard } from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
-import { getTagsApi } from "@/services/TagService"
 import { useAuthContext } from "@/contexts"
 
 const UserDashboardPage = () => {
@@ -26,29 +25,14 @@ const UserDashboardPage = () => {
 
   const [list, setList] = useState<Library[]>()
 
-  const [tags, setTags] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const tags = await getTagsApi();
-        setTags(tags);
-      } catch (error) {
-        console.error("Error fetching tags", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTags();
-  }, []);
+  const [listClone, setListClone] = useState<Library[]>()
 
   async function getLibrary() {
     const response = await getLibrariesUserDashboard(authUser!.user.id)
     console.log(response)
 
-    setList(response.results)
+    setList(response.results);
+    setListClone(response.results);
   }
 
   useEffect(() => {
@@ -56,7 +40,7 @@ const UserDashboardPage = () => {
   }, [])
 
   function handleChangeSelect(value: string) {
-    const cloneList = [...(list || [])]
+    const cloneList = [...(listClone || [])]
     if (value === "ALL") return setList(cloneList)
     const result = cloneList.filter((item) => item.state === value)
     setList(result)

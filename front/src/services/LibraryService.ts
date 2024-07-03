@@ -18,18 +18,60 @@ export interface LibraryDtoAdmin {
   state: "ACTIVE" | "PENDING" | "INACTIVE"
 }
 
-export async function getLibraries(page: number, userId: string): Promise<{ libraries: Library[]; totalPages: number }> {
+export async function getLibraries(
+  page: number,
+  userId: string
+): Promise<{ libraries: Library[]; totalPages: number }> {
   try {
-    const response = await axiosInstance.get(`/library/all/active/${userId}?page=${page}`);
-    
+    const response = await axiosInstance.get(
+      `/library/all/active/${userId}?page=${page}`
+    )
     return {
-      libraries  : response.data.data.results,
-      totalPages : Math.ceil(response.data.data.total_pages),
-    };
-    
+      libraries: response.data.data.results,
+      totalPages: Math.ceil(response.data.data.total_pages)
+    }
   } catch (error) {
-    console.error('Error fetching libraries:', error);
-    throw error;
+    console.error("Error fetching libraries:", error)
+    throw error
+  }
+}
+
+export async function getLibrariesFilter(
+  page: number,
+  userId: number,
+  tags: string | undefined
+): Promise<{ libraries: Library[]; totalPages: number }> {
+  try {
+    const response = await axiosInstance.get(
+      `/library/all/search/${userId}?page=${page}&tags=${tags}`
+    )
+    return {
+      libraries: response.data.data.results,
+      totalPages: Math.ceil(response.data.data.total_pages)
+    }
+  } catch (error) {
+    console.error("Error fetching libraries:", error)
+    throw error
+  }
+}
+
+export async function getLibrariesSearch(
+  page: number,
+  userId: number,
+  tags: string | undefined,
+  search: string
+): Promise<{ libraries: Library[]; totalPages: number }> {
+  try {
+    const response = await axiosInstance.get(
+      `/library/all/search/${userId}?page=${page}&tags=${tags}&q=${search}`
+    )
+    return {
+      libraries: response.data.data.results,
+      totalPages: Math.ceil(response.data.data.total_pages)
+    }
+  } catch (error) {
+    console.error("Error fetching libraries:", error)
+    throw error
   }
 }
 
@@ -54,7 +96,10 @@ export async function getAllLibraries() {
   }
 }
 
-export async function postLibrary(library: LibraryDtoUser, userId: number): Promise<AxiosResponse<ResponseSuccess>> {
+export async function postLibrary(
+  library: LibraryDtoUser,
+  userId: number
+): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
     const response = await axios.post(
@@ -65,14 +110,17 @@ export async function postLibrary(library: LibraryDtoUser, userId: number): Prom
         link: library.link,
         tags: library.tags
       }
-    );
-    return response;
+    )
+    return response
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
-export function putLibraryUser(library: LibraryDtoUser, libraryId: number): Promise<AxiosResponse<ResponseSuccess>>{
+export function putLibraryUser(
+  library: LibraryDtoUser,
+  libraryId: number
+): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
     const response = axios.put(

@@ -1,5 +1,5 @@
 import axiosInstance from "@/api/axiosInstance"
-import { Tag } from "@/interfaces/Tag"
+import { Tag } from "@/stores"
 import axios from "axios"
 
 interface TagDto {
@@ -7,20 +7,17 @@ interface TagDto {
   color: string
 }
 
-// Trae todas las tags
-export async function getTagsApi(): Promise<{ tags: Tag[] }> {
+export async function getTagsApi(): Promise<Tag[]> {
   try {
-    const response = await axiosInstance.get<{ data: Tag[] }>("/tag/all");
-    return {
-      tags: response.data.data,
-    };    
+    const response = await axiosInstance.get<{ data: Tag[] }>("/tag/all")
+    return response.data.data
   } catch (error) {
-    console.error("Error fetching tags", error);
-    throw error;
+    console.error("Error fetching tags", error)
+    throw error
   }
 }
 
-export function postTag(tag: Tag) {
+export function postTag(tag: TagDto) {
   console.log(tag)
 
   axios

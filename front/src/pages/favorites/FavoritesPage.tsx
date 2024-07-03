@@ -1,8 +1,8 @@
 import CardsContainer from "@/components/shared/CardsContainer"
-import { useLibraryStore } from "@/stores";
+import { useFavoriteStore } from "@/stores";
 
 const FavoritesPage = () => {
-  const favorites = useLibraryStore(state => state.favorites)
+  const favorites = useFavoriteStore(state => state.favorites)
   
   console.log(favorites);
   
