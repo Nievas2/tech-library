@@ -6,15 +6,20 @@ import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
 import usePagination from "@/hooks/usePagination"
-import { getLibraries, getLibrariesFilter, getLibrariesSearch } from "@/services/LibraryService"
+import {
+  getLibraries,
+  getLibrariesFilter,
+  getLibrariesSearch
+} from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 import { useAuthContext } from "@/contexts"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
   const [loading, setLoading] = useState(true)
-  const { authUser } = useAuthContext();
+  const { authUser } = useAuthContext()
   const [notFound, setNotFound] = useState(false)
+  const tagsActives = useTagStore((state) => state.tagsActives)
   const tagActives = useTagStore((state) => state.tagActives)
   const tags = useTagStore((state) => state.tags)
   const {
@@ -23,45 +28,45 @@ const HomePage = () => {
     setTotalPages,
     handlePageChange,
     getInitialPage,
-    handleSearch,
     searchParams
   } = usePagination()
   const search = searchParams.get("search")
-  console.log("home: ", searchParams.get("search"))
-
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
-        const tags = tagActives().toString()
-        const currentPageFromUrl = getInitialPage()
+        const tags = tagActives()
+        const tagsIds = tags
+          .filter((tag) => tag.id)
+          .map((tag) => tag.id)
+          .join(",")
+        const currentPage = getInitialPage()
+
+        let librariesResponse
         if (!search) {
           if (tags.length >= 1) {
-            const { libraries, totalPages } = await getLibrariesFilter(
-              currentPageFromUrl,
+            librariesResponse = await getLibrariesFilter(
+              currentPage,
               1,
-              tags
+              tagsIds
             )
-            setLibraries(libraries)
-            setTotalPages(totalPages)
           } else {
-            const currentPageFromUrl = getInitialPage()
-            const { libraries, totalPages } = await getLibraries(
-              currentPageFromUrl,
+            librariesResponse = await getLibraries(
+              currentPage,
               authUser!.user.id
             )
-            setLibraries(libraries)
-            setTotalPages(totalPages)
           }
-        }else{
-          const {libraries, totalPages} = await getLibrariesSearch(
-            currentPageFromUrl,
+        } else {
+          librariesResponse = await getLibrariesSearch(
+            currentPage,
             1,
-            "1,2",
+            tagsIds,
             search
           )
-          setLibraries(libraries)
-          setTotalPages(totalPages)
         }
+
+        const { libraries, totalPages } = librariesResponse
+        setLibraries(libraries)
+        setTotalPages(totalPages)
         setLoading(false)
         setNotFound(false)
       } catch (err) {
@@ -72,8 +77,12 @@ const HomePage = () => {
     }
 
     fetchLibraries()
-  }, [getInitialPage, setTotalPages, tags])
+  }, [getInitialPage, setTotalPages, tags, search])
+  useEffect(() => {
+    console.log("datra")
 
+    handlePageChange(1)
+  }, [tagsActives])
   const SkeletonCard = () => {
     return (
       <div className="flex w-[322.67px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
@@ -122,24 +131,25 @@ const HomePage = () => {
         </div>
         <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
           <SearchBar />
-          {
-            notFound ? <h1>not found</h1> : (
+          <div>
+            {notFound ? (
+              <h1>not found</h1>
+            ) : (
               <div>
                 {search ? (
-            <CardsContainer libraries={libraries} />
-          ) : (
-            <div>
-              {loading ? (
-                renderSkeletons()
-              ) : (
-                <CardsContainer libraries={libraries} />
-              )}
-            </div>
-          )}
+                  <CardsContainer libraries={libraries} />
+                ) : (
+                  <div>
+                    {loading ? (
+                      renderSkeletons()
+                    ) : (
+                      <CardsContainer libraries={libraries} />
+                    )}
+                  </div>
+                )}
               </div>
-            )
-          }
-          
+            )}
+          </div>
 
           <div className="">
             <Pagination
