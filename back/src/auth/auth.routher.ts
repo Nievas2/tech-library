@@ -1,7 +1,7 @@
 import { BaseRouter } from "../shared/router/router";
 import { UserMiddleware } from "../user/middlewares/user.middleware";
 import { AuthController } from "./controllers/auth.controller";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 /**
  * @version 1.0.0
@@ -19,6 +19,7 @@ export class AuthRouter extends BaseRouter<AuthController, UserMiddleware> {
   public routes(): void {
     this.router.post(
       "/login",
+      (req: Request, res: Response, next: NextFunction) => this.middleware.userLoginValidate(req, res, next),
       this.middleware.passAuth("local"),
       (req: Request, res: Response) => this.controller.login(req, res)
     );
@@ -36,6 +37,15 @@ export class AuthRouter extends BaseRouter<AuthController, UserMiddleware> {
       "/auth/github/callback",
       this.middleware.passAuth("github"),
       (req: Request, res: Response) => this.controller.loginGitHub(req, res)
+    );
+
+    this.router.get(
+      "/login/google", this.middleware.passAuth("google") )
+
+    this.router.get(
+      "/auth/google/callback",
+      this.middleware.passAuth("google"),
+      (req: Request, res: Response) => this.controller.loginGoogle(req, res)
     );
   }
 }

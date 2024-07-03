@@ -11,6 +11,7 @@ import { LoginLocalStrategy } from "./auth/strategies/local.login.strategy";
 import { JwtStrategy } from "./auth/strategies/jwt.strategy";
 import { AuthRouter } from "./auth/auth.routher";
 import { GithubStrategy } from "./auth/strategies/github.strategy";
+import { GoogleStrategy } from "./auth/strategies/google.strategy";
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -68,7 +69,7 @@ class ServerBootstrap extends ConfigServer {
   }
 
   passportUSe() {
-    return [new LoginLocalStrategy().use, new JwtStrategy().use, new GithubStrategy().use];
+    return [new LoginLocalStrategy().use, new JwtStrategy().use, new GithubStrategy().use, new GoogleStrategy().use];
   }
 
   routers(): Array<express.Router> {
