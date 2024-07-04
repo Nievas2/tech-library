@@ -155,24 +155,205 @@
 
   ```json
 
+
     [
+      	{
 
-      {
+       "property": "string",
 
-        property: string; 
+        "value": any,
 
-        value: any; 
+        "constraints": { 
 
-        constraints?: { 
+            [type: "string"]: "string"
 
-            [type: string]: string;
+        }
 
-        };
+        "children": ValidationError[],
 
-        children?: ValidationError[]; 
-
-    }
-
+    	}
     ]
 
+  ```
+
+## Rutas de la api de Tags
+
+### Registrar una tag
+
+**Descripción:** Este endpoint guarda una tag la cual sera utilizada para crear o buscar librerias
+
+```http
+
+  POST /api/tag/create
+
+```
+
+#### Cuerpo de la solicitud
+
+```json
+
+{
+
+    "name" : "string",
+
+    "color" : "string",
+
+}
+
+```
+
+| Atributo | Descripcion                            | Valores admitidos                                                  |
+| -------- | -------------------------------------- | ------------------------------------------------------------------ |
+| name     | Nombre del tag                         | No debe estar vacio                                                |
+| color    | Color del tag utilizado en el frontend | Debe contener 7 caracteres y comenzar con #<br />ejemplo : #123456 |
+
+### Obtener una tag
+
+**Descripción:** Este endpoint devuelve la tag al id proporcionado (siempre que la misma tenga el estado active en true)
+
+```http
+
+  GET /api/tag/:id
+
+```
+
+#### Parametros de ruta
+
+| Parametro de ruta | Descripcion                 |
+| ----------------- | --------------------------- |
+| :id               | id unico de la tag a buscar |
+
+- **Encabezados de solicitud aceptados:** `Accept=application/json`
+- **Respuesta exitosa:**
+
+  - Código de estado: 200 OK
+  - Cuerpo de respuesta:
+
+  ```json
+   {
+      "status": number,
+      "statusMessage": "string",
+      "data": {
+          "name": "string",
+          "color": "string",
+          "isActive": boolean,
+          "id": "string",
+          "createdAt": Date,
+          "updatedAt": Date
+      }
+  }
+  ```
+- **Respuesta fallida:**
+
+  - Código de estado: 400 Bad Request
+  - Cuerpo de respuesta:
+
+  ```json
+   {
+      "status": number,
+      "statusMessage": "string",
+  }
+  ```
+
+### Obtener todas las tags
+
+**Descripción:** Este endpoint devuelve todas las tags registradas en base de datos (siempre que la misma tenga el estado active en true)
+
+```http
+
+  GET /api/tag/all
+
+```
+
+- **Encabezados de solicitud aceptados:** `Accept=application/json`
+
+  - **Respuesta exitosa:**
+
+    - Código de estado: 200 OK
+    - Cuerpo de respuesta:
+
+    ```json
+     {
+        "status": number,
+        "statusMessage": "string",
+        "data": [
+    	{
+            "name": "string",
+            "color": "string",
+            "isActive": boolean,
+            "id": "string",
+            "createdAt": Date,
+            "updatedAt": Date
+        	}
+    	]
+    }
+    ```
+- **Respuesta fallida:**
+
+  - Código de estado: 400 Bad Request
+  - Cuerpo de respuesta:
+
+  ```json
+   {
+      "status": number,
+      "statusMessage": "string",
+  }
+  ```
+
+### Editar una tag
+
+**Descripción:** Este endpoint edita una tag registrada en base de datos, el endpoint requiere un token con usuario administrador
+
+```http
+
+  PUT /tag/update/:id
+```
+
+#### Cuerpo de la solicitud
+
+```json
+
+{
+
+    "name" : "string",
+
+    "color" : "string",
+
+}
+
+```
+
+| Atributo | Descripcion                            | Valores admitidos                                                  | Opcional |
+| -------- | -------------------------------------- | ------------------------------------------------------------------ | -------- |
+| name     | Nombre del tag                         | No debe estar vacio                                                | Si       |
+| color    | Color del tag utilizado en el frontend | Debe contener 7 caracteres y comenzar con #<br />ejemplo : #123456 | Si       |
+
+### Eliminar una tag
+
+**Descripción:** Este endpoint edita una tag registrada en base de datos, el endpoint requiere un token con usuario administrador
+
+```http
+
+  DELETE /tag/delete/:id
+```
+
+
+#### Parametros de ruta
+
+| Parametro de ruta | Descripcion                 |
+| ----------------- | --------------------------- |
+| :id               | id unico de la tag a buscar |
+
+- **Encabezados de solicitud aceptados:** `Accept=application/json`
+- **Respuesta exitosa:**
+
+  - Código de estado: 200 OK
+  - **Respuesta fallida:
+  - **Código de estado: 400 Bad Request
+  - Cuerpo de respuesta:
+- ```json
+   {
+      "status": number,
+      "statusMessage": "string",
+  }
   ```

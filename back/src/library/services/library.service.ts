@@ -395,7 +395,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
     ) {
       let tags: TagEntity[] = [];
       if (library.tags) tags = await this.getTags(library.tags);
-
+      if(library.name) libraryUpdate.name = library.name;
       if (library.description) libraryUpdate.description = library.description;
       if (library.link) libraryUpdate.link = library.link;
       if (payload.role === RoleType.ADMIN) {
