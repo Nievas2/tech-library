@@ -1,3 +1,4 @@
+import usePagination from "@/hooks/usePagination"
 import { Tag, useTagStore } from "@/stores"
 
 interface ItemsSideBarProps {
@@ -6,9 +7,12 @@ interface ItemsSideBarProps {
 
 export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
   const activeTag = useTagStore((state) => state.activeTag)
+  const {sincronizeParams} = usePagination()
+
 
   const handleClick = () => {
     activeTag(tag.id)
+    sincronizeParams()
   }
 
   return (

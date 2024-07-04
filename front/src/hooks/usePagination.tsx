@@ -1,3 +1,4 @@
+import { useTagStore } from "@/stores"
 import { useState, useCallback } from "react"
 import { useSearchParams } from "react-router-dom"
 
@@ -6,15 +7,13 @@ const usePagination = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const [search, setSearch] = useState("")
-
+  const tagActives = useTagStore((state) => state.tagsActives)
   const handlePageChange = useCallback((page: any) => {
     setCurrentPage(page)
     updateUrl(page)
   }, [])
 
   const handleSearch = useCallback((search: any) => {
-    setSearch(search)
     updateSearchUrl(search, 1)
   }, [])
 
@@ -27,11 +26,44 @@ const usePagination = () => {
 
   const updateUrl = useCallback(
     (page: any) => {
-      setSearchParams({ currentPage: page.toString() })
+      const tags = tagActives()
+      let tagsId = ""
+      if (tags.length >= 1) {
+        tagsId = tags
+          .filter((tag) => tag.id)
+          .map((tag) => tag.id)
+          .join(",")
+          .toString()
+      }
+      const urlParams = new URLSearchParams(window.location.search)
+      const search = urlParams.get("search") || ""
+      setSearchParams({
+        currentPage: page.toString(),
+        search: search,
+        tags: tagsId || ""
+      })
     },
     [setSearchParams]
   )
-
+  const sincronizeParams = useCallback(() => {
+    const tags = tagActives()
+    let tagsId = ""
+    if (tags.length >= 1) {
+      tagsId = tags
+        .filter((tag) => tag.id)
+        .map((tag) => tag.id)
+        .join(",")
+        .toString()
+    }
+    const urlParams = new URLSearchParams(window.location.search)
+    const search = urlParams.get("search") || ""
+    const current = urlParams.get("currentPage") || ""
+    setSearchParams({
+      currentPage: current,
+      search: search,
+      tags: tagsId || ""
+    })
+  },[])
   const getInitialPage = useCallback(() => {
     const pageFromUrl = Number(searchParams.get("currentPage")) || 1
     setCurrentPage(pageFromUrl)
@@ -44,10 +76,9 @@ const usePagination = () => {
     setTotalPages,
     handlePageChange,
     getInitialPage,
-    search,
-    setSearch,
     handleSearch,
-    searchParams
+    searchParams,
+    sincronizeParams
   }
 }
 
