@@ -12,6 +12,7 @@ import { JwtStrategy } from "./auth/strategies/jwt.strategy";
 import { AuthRouter } from "./auth/auth.routher";
 import { GithubStrategy } from "./auth/strategies/github.strategy";
 import { GoogleStrategy } from "./auth/strategies/google.strategy";
+import path from "path";
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -47,8 +48,13 @@ class ServerBootstrap extends ConfigServer {
     );
 
     this.dbConnect();
-
     this.app.use("/api", this.routers());
+
+    // Middleware para manejar rutas no encontradas (404)
+    this.app.use((_req, res, ) => {
+      res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
+    });
+
     this.listen();
   }
 
@@ -69,7 +75,12 @@ class ServerBootstrap extends ConfigServer {
   }
 
   passportUSe() {
-    return [new LoginLocalStrategy().use, new JwtStrategy().use, new GithubStrategy().use, new GoogleStrategy().use];
+    return [
+      new LoginLocalStrategy().use,
+      new JwtStrategy().use,
+      new GithubStrategy().use,
+      new GoogleStrategy().use,
+    ];
   }
 
   routers(): Array<express.Router> {
