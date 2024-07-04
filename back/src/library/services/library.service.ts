@@ -20,6 +20,9 @@ import {
   LibraryAlreadyEnabledException,
 } from "../exception/library.soft.delete.exceptions";
 import { LibraryPagesDto } from "../entities/library.pages.dto";
+import { PayloadToken } from "../../auth/interfaces/auth.interface";
+import { RoleType } from "../../user/entities/role";
+import { UnauthorizedException } from "../../shared/exception/unauthorized.exception";
 
 /**
  * @version 1.0.0
@@ -135,52 +138,56 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @param query - Query
    * @throws {UserNotFoundException}
    */
-async findAllSearchQueryCustom(
-  idUsuario: number,
-  currentPage: number,
-  pageSize: number,
-  tags?: number[],
-  query?: string,
-  orderMostLiked?: string
-) {
-  // Primero, construye una subconsulta para las bibliotecas que coinciden con las tags
-  let subQuery = (await this.execRepository)
-    .createQueryBuilder("library")
-    .select("library.id")
-    .leftJoin("library.tags", "tag");
+  async findAllSearchQueryCustom(
+    idUsuario: number,
+    currentPage: number,
+    pageSize: number,
+    tags?: number[],
+    query?: string,
+    orderMostLiked?: string
+  ) {
+    // Primero, construye una subconsulta para las bibliotecas que coinciden con las tags
+    let subQuery = (await this.execRepository)
+      .createQueryBuilder("library")
+      .select("library.id")
+      .leftJoin("library.tags", "tag");
 
-  if (tags && tags.length > 0) {
-    subQuery = subQuery.where("tag.id IN (:...tags)", { tags });
+    if (tags && tags.length > 0) {
+      subQuery = subQuery.where("tag.id IN (:...tags)", { tags });
+    }
+
+    // Ahora, construye la consulta principal que utiliza la subconsulta para filtrar las bibliotecas
+    const queryBuilder = (await this.execRepository)
+      .createQueryBuilder("library")
+      .leftJoinAndSelect("library.tags", "tag") // Asegura traer todas las tags
+      .leftJoinAndSelect("library.createdBy", "user")
+      .where(`library.id IN (${subQuery.getQuery()})`)
+      .andWhere("library.isActive = :isActive", { isActive: true })
+      .andWhere("library.state = :state", { state: State.ACTIVE })
+      .setParameters(subQuery.getParameters()) // Asegurar pasar los parámetros de la subconsulta
+      .take(pageSize)
+      .skip((currentPage - 1) * pageSize);
+
+    if (query && query.trim() != "" && query.length > 1) {
+      queryBuilder.andWhere("library.name like :query", {
+        query: `%${query}%`,
+      });
+    }
+
+    if (orderMostLiked) {
+      if (orderMostLiked === "asc")
+        queryBuilder.orderBy("library.likesCount", "ASC");
+      if (orderMostLiked === "desc")
+        queryBuilder.orderBy("library.likesCount", "DESC");
+    } else {
+      queryBuilder.orderBy("library.name", "ASC");
+    }
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+    const dataWithLike = await this.createResponseDTOWithLike(data, idUsuario);
+
+    return new LibraryPagesDto(currentPage, pageSize, total, dataWithLike);
   }
-
-  // Ahora, construye la consulta principal que utiliza la subconsulta para filtrar las bibliotecas
-  const queryBuilder = (await this.execRepository)
-    .createQueryBuilder("library")
-    .leftJoinAndSelect("library.tags", "tag") // Asegura traer todas las tags
-    .leftJoinAndSelect("library.createdBy", "user")
-    .where(`library.id IN (${subQuery.getQuery()})`)
-    .andWhere("library.isActive = :isActive", { isActive: true })
-    .andWhere("library.state = :state", { state: State.ACTIVE })
-    .setParameters(subQuery.getParameters()) // Asegurar pasar los parámetros de la subconsulta
-    .take(pageSize)
-    .skip((currentPage - 1) * pageSize);
-
-  if (query && query.trim() != "" && query.length > 1) {
-    queryBuilder.andWhere("library.name like :query", { query: `%${query}%` });
-  }
-
-  if (orderMostLiked) {
-    if (orderMostLiked === "asc") queryBuilder.orderBy("library.likesCount", "ASC");
-    if (orderMostLiked === "desc") queryBuilder.orderBy("library.likesCount", "DESC");
-  } else {
-    queryBuilder.orderBy("library.name", "ASC");
-  }
-
-  const [data, total] = await queryBuilder.getManyAndCount();
-  const dataWithLike = await this.createResponseDTOWithLike(data, idUsuario);
-
-  return new LibraryPagesDto(currentPage, pageSize, total, dataWithLike);
-}
   /**
    * @method findAllStatusActive - Retorna todos las librerias con estado activo
    * @param currentPage - Pagina actual
@@ -365,41 +372,51 @@ async findAllSearchQueryCustom(
    * @throws {TagNotFoundException}
    * @throws {LibraryAlreadyExistsException}
    * @throws {UserNotFoundException}
+   * 
    */
   async update(
     id: number,
     library: LibraryUpdateDTO,
-    url: string
+    payload: PayloadToken
   ): Promise<LibraryResponseDTO> {
-    await this.existsByName(library.name);
-
     const libraryUpdate = await (
       await this.execRepository
     ).findOneBy({ id: id });
     if (libraryUpdate == null)
       throw new LibraryNotFoundException("Library not found");
 
-    let tags: TagEntity[] = [];
-    if (library.tags) tags = await this.getTags(library.tags);
-
-    if (library.name) libraryUpdate.name = library.name;
-    if (library.description) libraryUpdate.description = library.description;
-    if (library.link) libraryUpdate.link = library.link;
-    if (url.includes("admin")) {
-      if (library.state) libraryUpdate.state = library.state;
-    } else {
-      libraryUpdate.state = State.PENDING;
+    if (library.name && libraryUpdate.name !== library.name) {
+      await this.existsByName(library.name);
     }
 
-    await (await this.execRepository).save(libraryUpdate);
+    if (
+      libraryUpdate.createdBy.id === Number(payload.sub) ||
+      payload.role === RoleType.ADMIN
+    ) {
+      let tags: TagEntity[] = [];
+      if (library.tags) tags = await this.getTags(library.tags);
 
-    // Update tags
-    if (tags.length > 0 && url.includes("admin")) {
-      libraryUpdate.tags = tags;
+      if (library.description) libraryUpdate.description = library.description;
+      if (library.link) libraryUpdate.link = library.link;
+      if (payload.role === RoleType.ADMIN) {
+        if (library.state) libraryUpdate.state = library.state;
+      } else {
+        libraryUpdate.state = State.PENDING;
+      }
+
       await (await this.execRepository).save(libraryUpdate);
+
+      // Update tags
+      if (tags.length > 0 && payload.role === RoleType.ADMIN) {
+        libraryUpdate.tags = tags;
+        await (await this.execRepository).save(libraryUpdate);
+      }
+
+      return new LibraryResponseDTO(libraryUpdate);
     }
 
-    return new LibraryResponseDTO(libraryUpdate);
+    throw new UnauthorizedException("User is not authorized to update this library");
+   
   }
 
   /**
