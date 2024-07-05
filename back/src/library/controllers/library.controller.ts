@@ -4,6 +4,7 @@ import { GlobalExceptionHandling } from "../../shared/exception/global.exception
 import { LibraryService } from "../services/library.service";
 import { getValidNumber } from "../../shared/utils/utils";
 import { UserEntity } from "../../user/entities/user.entity";
+import { PayloadToken } from "../../auth/interfaces/auth.interface";
 
 /**
  * @version 1.0.0
@@ -211,9 +212,9 @@ export class LibraryController {
   //--------------------PUT--------------------
   public async updateLibrary(req: Request, res: Response) {
     try {
+      const user = req.user as PayloadToken;
       const id = Number(req.params.id);
-      const urlApi = req.originalUrl;
-      const data = await this.service.update(id, req.body, urlApi);
+      const data = await this.service.update(id, req.body, user);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
       if (error instanceof Error)

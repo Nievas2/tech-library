@@ -73,6 +73,12 @@ export class UserService extends BaseService<UserEntity> {
       );
     return data;
   }
+
+  async findByIdWithOutAuth(iduser: number): Promise<UserEntity> {
+    const data = await (await this.execRepository).findOneBy({ id: iduser });
+    if (data === null) throw new UserNotFoundException("User not found");
+    return data;
+  }
   /**
    * @method findById - Retorna un usuario por su id
    * @param id - Id del usuario
