@@ -11,7 +11,6 @@ export default function SideBar() {
   const setTags = useTagStore((state) => state.setTags)
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
-  const { activeTag } = useTagStore()
   const { searchParams } = usePagination()
   useEffect(() => {
     const handleResize = () => {

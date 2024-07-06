@@ -7,14 +7,11 @@ import { useFormik } from "formik"
 import { loginSchema } from "@/utils"
 import { Login } from "@/services/AuthService"
 import { useToast } from "@/components/ui/use-toast"
-// import { useTokenStore } from "@/stores/user.store"
 import useLogin from "@/hooks/useLogin"
 
 const LoginPage = () => {
-  // const setToken = useTokenStore((state) => state.setToken)
   const { loading, login } = useLogin()
   const { toast } = useToast()
-  // const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {
       username: "",
@@ -110,7 +107,8 @@ const LoginPage = () => {
                     className="w-full rounded-lg"
                     type="submit"
                   >
-                    Login
+                    {loading ? "loading..." : "Login"}
+                    
                   </Button>
                   <button
                     className="px-5 py-2.5 border flex justify-center items-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "

@@ -72,6 +72,7 @@ const AdminDashboardPage = () => {
           <Select
             defaultValue="ALL"
             onValueChange={(value) => handleChangeSelect(value)}
+            disabled={loading}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a state" />

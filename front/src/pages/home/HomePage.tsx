@@ -22,7 +22,6 @@ const HomePage = () => {
   const [notFound, setNotFound] = useState(false)
   const tagsActives = useTagStore((state) => state.tagsActives)
   const tags = useTagStore((state) => state.tags)
-  const activeTag = useTagStore((state) => state.activeTag)
   const {
     currentPage,
     totalPages,

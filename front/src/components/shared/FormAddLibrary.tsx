@@ -185,6 +185,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           value={formik.values.name}
           className="bg-light"
           maxLength={20}
+          disabled={loading}
         />
         <small
           className={`${
@@ -205,6 +206,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           value={formik.values.link}
           className="bg-light"
           maxLength={200}
+          disabled={loading}
         />
         <small
           className={`${
@@ -224,6 +226,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           value={formik.values.description}
           className="bg-light"
           maxLength={200}
+          disabled={loading}
         />
         <small
           className={`${
@@ -238,7 +241,10 @@ export default function FormAddLibrary({ card }: CardProps) {
         </small>
       </div>
       <div className="flex w-full items-center gap-1.5">
-        <Select onValueChange={(value) => addTag(value)}>
+        <Select
+          onValueChange={(value) => addTag(value)}
+          disabled={loading}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a tag" />
           </SelectTrigger>
@@ -285,8 +291,9 @@ export default function FormAddLibrary({ card }: CardProps) {
         variant={"marketing"}
         className="p-1"
         type="submit"
+        disabled={loading}
       >
-        Submit
+        {loading ? "Loading..." : "Submit"}
       </Button>
     </form>
   )
