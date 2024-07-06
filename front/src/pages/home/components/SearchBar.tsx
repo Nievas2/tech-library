@@ -5,10 +5,25 @@ import { useEffect, useState } from "react"
 import { useDebounce } from "use-debounce"
 
 const SearchBar = () => {
-  const { handleSearch } = usePagination()
+  const { handleSearch, searchParams } = usePagination()
   const [text, setText] = useState("")
   const [value] = useDebounce(text, 350)
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const search = urlParams.get("search")
+    const searchParamsData = searchParams.get("search")
+    search
+      ? setText(search)
+      : searchParamsData
+      ? setText(searchParamsData)
+      : setText("")
+  }, [])
+  useEffect(() => {    const urlParams = new URLSearchParams(window.location.search)
+    const search = urlParams.get("search")
+    const searchParamsData = searchParams.get("search")
+    if(search === text || searchParamsData === text){
+      return
+    }
     handleSearch(value)
   }, [value])
 
@@ -24,6 +39,7 @@ const SearchBar = () => {
 
       <Input
         placeholder="Search library"
+        value={text}
         onChange={(e) => {
           setText(e.target.value)
         }}

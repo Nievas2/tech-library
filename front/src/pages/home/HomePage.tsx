@@ -13,6 +13,7 @@ import {
 } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 import { useAuthContext } from "@/contexts"
+import NotFound from "@/components/shared/NotFound"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
@@ -37,6 +38,7 @@ const HomePage = () => {
         const tagsIds = String(urlParams.get("tags"))
         
         const currentPage = getInitialPage()
+console.log(search);
 
         let librariesResponse
         if (!search) {
@@ -134,7 +136,7 @@ const HomePage = () => {
           <SearchBar />
           <div>
             {notFound ? (
-              <h1>not found</h1>
+              <NotFound />
             ) : (
               <div>
                 {search ? (
@@ -152,7 +154,7 @@ const HomePage = () => {
             )}
           </div>
 
-          <div className="">
+          <div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
