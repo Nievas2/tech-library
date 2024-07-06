@@ -22,6 +22,7 @@ const HomePage = () => {
   const [notFound, setNotFound] = useState(false)
   const tagsActives = useTagStore((state) => state.tagsActives)
   const tags = useTagStore((state) => state.tags)
+  const activeTag = useTagStore((state) => state.activeTag)
   const {
     currentPage,
     totalPages,
@@ -30,23 +31,29 @@ const HomePage = () => {
     getInitialPage,
     searchParams
   } = usePagination()
-  const search = searchParams.get("search")
+  const search = String(searchParams.get("search"))
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const tagsIds = String(urlParams.get("tags"))
+        const tagsIdsParams = String(searchParams.get("tags"))
+        console.log(tagsIdsParams);
+        console.log(tagsIds);
         
+        const searchParamsData = searchParams.get("search")
         const currentPage = getInitialPage()
-console.log(search);
-
         let librariesResponse
-        if (!search) {
-          if (tags.length >= 1) {
+        if (!search && !searchParamsData) {
+          console.log("no hay busqueda");
+          
+          if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
+            console.log("hay tags");
+            
             librariesResponse = await getLibrariesFilter(
               currentPage,
               1,
-              tagsIds
+              tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
             )
           } else {
             librariesResponse = await getLibraries(
@@ -58,8 +65,8 @@ console.log(search);
           librariesResponse = await getLibrariesSearch(
             currentPage,
             1,
-            tagsIds,
-            search
+            tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
+            search ? search : searchParamsData ? searchParamsData : ""
           )
         }
 

@@ -8,7 +8,6 @@ const usePagination = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const tagActives = useTagStore((state) => state.tagsActives)
-  const activeTag = useTagStore((state) => state.activeTag)
   const handlePageChange = useCallback((page: any) => {
     setCurrentPage(page)
     updateUrl(page)
@@ -28,7 +27,7 @@ const usePagination = () => {
         tagsId = tags
           .filter((tag) => tag.id)
           .map((tag) => tag.id)
-          .join(",")
+          .join(",") 
           .toString()
       }
       setSearchParams({ currentPage: page.toString(), search: search, tags: tagsId })
@@ -48,22 +47,10 @@ const usePagination = () => {
           .map((tag) => tag.id)
           .join(",")
           .toString()
-      }console.log("tagsIdParams", tagsIdParams );
-        
-        tagsIdParams?.split(",").forEach((tagId) => {
-          console.log(tagId);
-          
-          activeTag(Number(tagId))
-        })
+      }
       const urlParams = new URLSearchParams(window.location.search)
       const search = urlParams.get("search")
-      const searchParamsData = searchParams.get("search")
-      
-      //console.log("tagsIdParams", tagsIdParams );
-      
-      //console.log("search", search);
-      //console.log("searchParamsData", searchParamsData);
-      
+      const searchParamsData = searchParams.get("search")      
       setSearchParams({
         currentPage: page.toString(),
         search: search ? search : searchParamsData ? searchParamsData : "",
@@ -77,6 +64,8 @@ const usePagination = () => {
     console.log("sincronizeParams");
     
     const tags = tagActives()
+    console.log(tags);
+    
     let tagsId = ""
     if (tags.length >= 1) {
       tagsId = tags
@@ -86,13 +75,12 @@ const usePagination = () => {
         .toString()
     }
     const urlParams = new URLSearchParams(window.location.search)
-    const tagsIdParams = urlParams.get("tags")
     const search = urlParams.get("search") || ""
     const current = urlParams.get("currentPage") || ""
     setSearchParams({
       currentPage: current,
       search: search,
-      tags: tagsId || tagsIdParams || ""
+      tags: tagsId || ""
     })
   },[])
   const getInitialPage = useCallback(() => {
