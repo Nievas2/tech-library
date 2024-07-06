@@ -21,8 +21,6 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         postTag(values)
       }
       if (tag != undefined) {
-        console.log(values, tag?.id)
-
         putTag(values, tag?.id)
       }
     }

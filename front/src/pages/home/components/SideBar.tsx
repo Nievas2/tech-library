@@ -27,8 +27,6 @@ export default function SideBar() {
 
   // Forma optima de traer las tags
   useEffect(() => {
-    console.log("remder")
-
     setLoading(true)
     const fetchTags = async () => {
       try {

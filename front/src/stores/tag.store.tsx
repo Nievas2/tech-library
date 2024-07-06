@@ -26,8 +26,6 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
   },
 
   activeTag: (tagId: number) => {
-    console.log(tagId);
-    
     set((state) => {
       const tag = state.tags.find((tag) => tag.id === tagId)
       if (tag) {

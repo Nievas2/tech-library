@@ -79,7 +79,6 @@ export default function FormAddLibrary({ card }: CardProps) {
             link: values.link,
             tags: filteredTagsId as number[]
           }
-          console.log(valuesDate)
           postLibraryFunction(valuesDate, authUser!.user.id)
         }
       } else {
@@ -153,7 +152,6 @@ export default function FormAddLibrary({ card }: CardProps) {
     if (tagsAdded?.find((tag) => tag.name === value)) return
     const tagSelected = tags.find((tag) => tag.name === value)
     if (!tagSelected) return
-    console.log(tagSelected)
 
     const tagSelectedFormat = {
       id: tagSelected.id,

@@ -69,7 +69,6 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           tags: filteredTagsId as number[],
           state: values.state
         }
-        console.log(valuesDate)
         putLibraryAdmin(valuesDate, card.id)
       }
     }
@@ -84,7 +83,6 @@ export default function EditLibraryAdmin({ card }: CardProps) {
 
     const tagSelected = tags.find((tag: any) => tag.name === value)
     if (!tagSelected) return
-    console.log(tagSelected)
 
     const tagSelectedFormat = {
       id: tagSelected.id,

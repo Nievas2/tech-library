@@ -11,19 +11,10 @@ import { Separator } from "../ui/separator"
 import { useLogout } from "@/hooks"
 
 const Navbar = () => {
-  // const token = useTokenStore((state) => state.token)
-  // const logOut = useTokenStore((state) => state.logOut)
   const [open, setOpen] = useState(false)
-  // const [isLoged, setIsLoged] = useState(false)
 
-  // useEffect(() => {
-  //   if (token) {
-  //     setIsLoged(true)
-  //   }
-  // }, [])
   const { logOut } = useLogout();
   const { authUser } = useAuthContext();
-  //console.log(authUser, "authUser");
   
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">

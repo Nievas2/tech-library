@@ -38,18 +38,11 @@ const HomePage = () => {
         const urlParams = new URLSearchParams(window.location.search)
         const tagsIds = String(urlParams.get("tags"))
         const tagsIdsParams = String(searchParams.get("tags"))
-        console.log(tagsIdsParams);
-        console.log(tagsIds);
-        
         const searchParamsData = searchParams.get("search")
         const currentPage = getInitialPage()
         let librariesResponse
         if (!search && !searchParamsData) {
-          console.log("no hay busqueda");
-          
           if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
-            console.log("hay tags");
-            
             librariesResponse = await getLibrariesFilter(
               currentPage,
               1,
