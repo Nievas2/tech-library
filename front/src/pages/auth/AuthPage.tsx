@@ -1,6 +1,6 @@
 import { AuthUser, useAuthContext } from "@/contexts"
 import { useEffect } from "react"
-
+import { LoaderIcon } from "lucide-react"
 const AuthPage = () => {
   const searchParams = new URLSearchParams(window.location.search)
   const { setAuthUser } = useAuthContext()
@@ -26,6 +26,10 @@ const AuthPage = () => {
   useEffect(() => {
     loginFunction()
   }, [])
-  return <div>AuthPage</div>
+  return (
+    <div>
+      <LoaderIcon className="animate-spin" />
+    </div>
+  )
 }
 export default AuthPage
