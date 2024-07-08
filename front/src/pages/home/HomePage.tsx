@@ -40,7 +40,12 @@ const HomePage = () => {
         const searchParamsData = searchParams.get("search")
         const currentPage = getInitialPage()
         let librariesResponse
-        if (!search && !searchParamsData) {
+        console.log("searchParamsData", searchParamsData)
+
+        console.log("search", search)
+
+        if (search == "null" && searchParamsData == null) {
+          //No hay search y hay tags
           if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
             librariesResponse = await getLibrariesFilter(
               currentPage,
@@ -48,12 +53,16 @@ const HomePage = () => {
               tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
             )
           } else {
+            //No hay search y no hay tags
             librariesResponse = await getLibraries(
               currentPage,
               authUser!.user.id
             )
           }
         } else {
+          // Hay search
+          console.log("hay search")
+
           librariesResponse = await getLibrariesSearch(
             currentPage,
             1,
@@ -67,7 +76,6 @@ const HomePage = () => {
         setTotalPages(totalPages)
         setLoading(false)
         setNotFound(false)
-        
       } catch (err) {
         console.error("Error fetching libraries:", err)
         if (totalPages > currentPage) {
@@ -81,7 +89,7 @@ const HomePage = () => {
 
     fetchLibraries()
   }, [getInitialPage, setTotalPages, tags, search])
- 
+
   useEffect(() => {
     handlePageChange(1)
   }, [tagsActives, totalPages])

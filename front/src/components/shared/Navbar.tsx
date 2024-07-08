@@ -1,9 +1,7 @@
-// import { useEffect, useState } from "react"
 import { useState } from "react"
 import { ModeToggle } from "../mode-toggle"
 import ItemsNavbar from "./Navbar-components/items"
 import { Icon } from "@iconify/react"
-// import { useTokenStore } from "@/stores/user.store"
 import { Link } from "react-router-dom"
 import { useAuthContext } from "@/contexts"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
@@ -15,7 +13,6 @@ const Navbar = () => {
 
   const { logOut } = useLogout();
   const { authUser } = useAuthContext();
-  console.log(authUser);
   
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
@@ -142,29 +139,10 @@ const Navbar = () => {
                           </div>
                         </PopoverContent>
                       </Popover>
-
-                      {/* <div className="flex justify-center items-center">
-                        <div className="rounded-full h-10 w-10 bg-dark dark:bg-light"></div>
-                      </div> */}
-                      {/* <div>
-                        <p>{authUser?.user.email}</p>
-                        <p>{authUser?.user.username}</p>
-                      </div> */}
                     </div>
 
                     <ModeToggle />
 
-                    {/* <div className="flex text-black rounded-md items-center text-sm font-medium">
-                      <button 
-                        onClick={() => logOut()}
-                      >
-                        <Icon
-                          icon="material-symbols:logout"
-                          width="36"
-                          height="36"
-                        />
-                      </button>
-                    </div> */}
                   </div>
                 ) : (
                   <div className="flex items-center justify-center gap-3">

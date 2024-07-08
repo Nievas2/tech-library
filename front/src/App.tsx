@@ -17,8 +17,6 @@ function App() {
   const noPadding = ['/', '/login', '/signup', '/home'].includes(location.pathname);
 
   const { authUser } = useAuthContext();
-  console.log(authUser)
-
   return (
     <main className="bg-light dark:bg-dark text-dark dark:text-light">
       <section className="w-full font-poppins flex flex-col justify-center items-center min-h-screen">
