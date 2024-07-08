@@ -34,11 +34,11 @@ const LoginPage = () => {
     }
   }
   function loginGoogle() {
-   window.open("http://localhost:8000/api/login/google/callback", "_self")
+   window.open("http://localhost:8000/api/auth/google/callback", "_self")
     
   }
   function loginGithub (){
-    window.open("http://localhost:8000/api/login/github", "_self")
+    window.open("http://localhost:8000/api/auth/github/callback", "_self")
   }
   return (
     <div className="flex my-auto">
