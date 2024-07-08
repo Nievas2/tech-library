@@ -170,57 +170,10 @@ const Navbar = () => {
                   </div>
                 )}
               </div>
-
-
             </div>
           </div>
-
         </div>
       </div>
-{/* 
-      {authUser && (
-        <div
-          className={`relative m-0 p-0 bg-transparent top-0 z-10`}
-          id="mobile-menu"
-        >
-          <div
-            className={`h-[90vh] w-[50%] fixed top-[64px] duration-300 right-[0%] ${
-              !open ? "translate-x-[100%]" : ""
-            } border-l-[1px] border-l-dark bg-light dark:bg-dark dark:border-l-light  `}
-          >
-            <div className="flex flex-col px-2 pb-3 pt-2 gap-10 h-full">
-              <h2 className="text-center text-2xl">Tech Library</h2>
-
-              <div>
-                <ItemsNavbar
-                  name="DASHBOARD"
-                  path="/dashboard"
-                  key={crypto.randomUUID()}
-                />
-              </div>
-
-              <div>
-                <ItemsNavbar
-                  name="FAVORITES"
-                  path="/favorites"
-                  key={crypto.randomUUID()}
-                />
-              </div>
-
-              <section className="flex flex-row flex-1 items-end">
-                <div className="basis-1/4 flex justify-center items-center py-2 h-20">
-                  <div className="rounded-full h-10 w-10 bg-dark dark:bg-light"></div>
-                </div>
-
-                <div className="basis-3/4 flex flex-col justify-center items-start text-left py-2 h-20">
-                  <h5>ejemplo@gmail.com</h5>
-                  <button>LOGOUT</button>
-                </div>
-              </section>
-            </div>
-          </div>
-        </div>
-      )} */}
     </nav>
   )
 }
