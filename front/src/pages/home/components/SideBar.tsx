@@ -75,6 +75,9 @@ export default function SideBar() {
             onClick={handleSidebar}
             variant="sidebarToggle"
             size="rounded"
+            id="sidebar-toggle"
+            role="button"
+            aria-label="Toggle sidebar"
           >
             <Icon
               icon="mingcute:right-fill"

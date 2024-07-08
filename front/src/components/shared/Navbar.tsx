@@ -55,6 +55,7 @@ const Navbar = () => {
             <Link
               className="flex flex-shrink-0 items-center gap-1"
               to="/home"
+              aria-label="Home"
             >
               <Icon
                 icon="system-uicons:book"
@@ -72,13 +73,14 @@ const Navbar = () => {
                   <div className="flex items-center justify-center gap-4">
                     <Link
                       to="/favorites"
+                      aria-label="Favorites"
                     >
                       <Icon icon="tdesign:heart-filled" width="40" height="40" />
                     </Link>
 
                     <div className="flex gap-4">
                       <Popover>
-                        <PopoverTrigger>
+                        <PopoverTrigger role="button" id="user-popover" aria-label="User">
                           <div className="rounded-full h-10 w-10 bg-dark dark:bg-light"></div>
                         </PopoverTrigger>
                         <PopoverContent>
@@ -196,7 +198,7 @@ const Navbar = () => {
 
         </div>
       </div>
-
+{/* 
       {authUser && (
         <div
           className={`relative m-0 p-0 bg-transparent top-0 z-10`}
@@ -239,7 +241,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </nav>
   )
 }
