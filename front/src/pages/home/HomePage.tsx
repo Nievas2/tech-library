@@ -40,10 +40,6 @@ const HomePage = () => {
         const searchParamsData = searchParams.get("search")
         const currentPage = getInitialPage()
         let librariesResponse
-        console.log("searchParamsData", searchParamsData)
-
-        console.log("search", search)
-
         if (search == "null" && searchParamsData == null) {
           //No hay search y hay tags
           if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
@@ -61,8 +57,6 @@ const HomePage = () => {
           }
         } else {
           // Hay search
-          console.log("hay search")
-
           librariesResponse = await getLibrariesSearch(
             currentPage,
             1,
