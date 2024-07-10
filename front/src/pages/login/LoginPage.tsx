@@ -34,11 +34,11 @@ const LoginPage = () => {
     }
   }
   function loginGoogle() {
-    window.open(`${import.meta.env.VITE_API_URL}/auth/google/callback`, "_self")
+    window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self")
   }
   function loginGithub() {
     window.open(
-      `${import.meta.env.VITE_API_URL}/api/auth/github/callback`,
+      `${import.meta.env.VITE_API_URL}/login/github`,
       "_self"
     )
   }
