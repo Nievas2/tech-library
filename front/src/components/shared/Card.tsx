@@ -1,6 +1,5 @@
 import { Heart, Link } from "lucide-react"
 import { Button } from "../ui/button"
-import { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom"
 import { Library } from "@/interfaces/Library"
 import { Tag } from "@/interfaces/Tag"
@@ -17,7 +16,6 @@ const Card = ({ library }: CardProps) => {
   const deleteFavoriteLibrary = useFavoriteStore((state) => state.deleteFavoriteLibrary);
 
   const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
-  // const [favoriteActive, setFavoriteActive] = useState(isFavorite);
 
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -26,10 +24,6 @@ const Card = ({ library }: CardProps) => {
       addFavoriteLibrary(library);
     }
   };
-
-  // useEffect(() => {
-  //   setFavoriteActive(isFavorite);
-  // }, [isFavorite]);
 
   return (
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">

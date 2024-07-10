@@ -4,14 +4,14 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
 import { Tag, useTagStore } from "@/stores"
-import usePagination from "@/hooks/usePagination"
+import usePaginationHome from "@/hooks/usePaginationHome"
 
 export default function SideBar() {
   const [open, setOpen] = useState(window.innerWidth > 768)
   const setTags = useTagStore((state) => state.setTags)
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
-  const { searchParams } = usePagination()
+  const { searchParams } = usePaginationHome()
   useEffect(() => {
     const handleResize = () => {
       setOpen(window.innerWidth > 768)

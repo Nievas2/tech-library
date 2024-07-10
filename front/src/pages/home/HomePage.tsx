@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
-import usePagination from "@/hooks/usePagination"
+import usePaginationHome from "@/hooks/usePaginationHome"
 import {
   getLibraries,
   getLibrariesFilter,
@@ -27,39 +27,49 @@ const HomePage = () => {
     totalPages,
     setTotalPages,
     handlePageChange,
-    getInitialPage,
-    searchParams
-  } = usePagination()
+    searchParams,
+    setCurrentPage
+  } = usePaginationHome()
   const search = String(searchParams.get("search"))
+  const searchParamsData = searchParams.get("search")
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [tagsActives, totalPages, searchParamsData, search])
+
+
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const tagsIds = String(urlParams.get("tags"))
         const tagsIdsParams = String(searchParams.get("tags"))
-        const searchParamsData = searchParams.get("search")
-        const currentPage = getInitialPage()
+        
         let librariesResponse
-        if (!search && !searchParamsData) {
-          if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
-            librariesResponse = await getLibrariesFilter(
+        if (currentPage === undefined) {
+          librariesResponse = await getLibraries(1, authUser!.user.id)
+        } else {
+          if (search == "null" && !searchParamsData) {
+            if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
+              librariesResponse = await getLibrariesFilter(
+                currentPage,
+                1,
+                tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
+              )
+            } else {
+              librariesResponse = await getLibraries(
+                currentPage,
+                authUser!.user.id
+              )
+            }
+          } else {
+            librariesResponse = await getLibrariesSearch(
               currentPage,
               1,
-              tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
-            )
-          } else {
-            librariesResponse = await getLibraries(
-              currentPage,
-              authUser!.user.id
+              tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
+              search !== null ? search : searchParamsData !== null ? searchParamsData : ""
             )
           }
-        } else {
-          librariesResponse = await getLibrariesSearch(
-            currentPage,
-            1,
-            tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
-            search ? search : searchParamsData ? searchParamsData : ""
-          )
         }
 
         const { libraries, totalPages } = librariesResponse
@@ -67,24 +77,24 @@ const HomePage = () => {
         setTotalPages(totalPages)
         setLoading(false)
         setNotFound(false)
-        
       } catch (err) {
         console.error("Error fetching libraries:", err)
-        if (totalPages > currentPage) {
-          handlePageChange(1)
+        if (currentPage !== undefined && totalPages > currentPage  ) {
+          setCurrentPage(1)
+        }
+        if(currentPage === 1){
+          setNotFound(true)
         }
         setTotalPages(1)
-        setNotFound(true)
+        
         setLoading(false)
       }
     }
 
     fetchLibraries()
-  }, [getInitialPage, setTotalPages, tags, search])
- 
-  useEffect(() => {
-    handlePageChange(1)
-  }, [tagsActives, totalPages])
+  }, [currentPage, setTotalPages, tags, search])
+
+
   const SkeletonCard = () => {
     return (
       <div className="flex w-[322.67px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
@@ -134,7 +144,7 @@ const HomePage = () => {
         <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
           <SearchBar />
           <div>
-            {notFound ? (
+            {notFound && currentPage === 1 ? (
               <NotFound />
             ) : (
               <div>
@@ -155,7 +165,7 @@ const HomePage = () => {
 
           <div>
             <Pagination
-              currentPage={currentPage}
+              currentPage={currentPage!}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />

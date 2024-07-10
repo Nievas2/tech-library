@@ -1,11 +1,11 @@
 import { Input } from "@/components/ui/input"
-import usePagination from "@/hooks/usePagination"
+import usePaginationHome from "@/hooks/usePaginationHome"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useEffect, useState } from "react"
 import { useDebounce } from "use-debounce"
 
 const SearchBar = () => {
-  const { handleSearch, searchParams } = usePagination()
+  const { handleSearch, searchParams } = usePaginationHome()
   const [text, setText] = useState("")
   const [value] = useDebounce(text, 350)
   useEffect(() => {
