@@ -16,10 +16,7 @@ const useLogin = () => {
 
     try {
       const response = await axiosInstance.post("/login", {username, password});
-      //console.log(response);
-      
       const data = response.data;
-      //console.log(data);
       
       localStorage.setItem("library-user", JSON.stringify(data));
       localStorage.setItem("user-token", data.accesToken);

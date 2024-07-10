@@ -32,7 +32,8 @@ const usePagination = () => {
     setTotalPages,
     handlePageChange,
     getInitialPage,
-    searchParams
+    searchParams,
+    setCurrentPage
   }
 }
 

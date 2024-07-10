@@ -73,8 +73,6 @@ export default function FormAddLibrary({ card }: CardProps) {
       setError(false);
 
       const tagsId = tagsAdded.map(tag => tag.id);
-      console.log(tagsId);
-      
       const valuesData: LibraryDtoUser = {
         name: values.name,
         description: values.description,
