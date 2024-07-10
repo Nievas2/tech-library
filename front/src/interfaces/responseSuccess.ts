@@ -1,4 +1,9 @@
+import { Library } from "./Library"
+
 export interface ResponseSuccess {
+  results: Library[]
+  current_page: number
+  total_pages: number
   status: number
   statusMessage: string
   data: DataDetails

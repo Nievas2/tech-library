@@ -19,59 +19,77 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import ChangeTag from "./components/ChangeTag"
 import StateCardAdmin from "./components/StateCardAdmin"
 import FormAddLibrary from "../../components/shared/FormAddLibrary"
-import { getAllLibraries } from "@/services/LibraryService"
+import { getLibrariesByStateAdmin } from "@/services/LibraryService"
 import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
 import { Tag } from "@/interfaces/Tag"
+import { Pagination } from "@/components/shared/Pagination"
+import usePagination from "@/hooks/usePagination"
+import { useToast } from "@/components/ui/use-toast"
 
 const AdminDashboardPage = () => {
+  const { toast } = useToast()
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
-  const [defaultList, setDefaultList] = useState<Library[]>()
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const tags = await getTagsApi();
-        setTags(tags);
-      } catch (error) {
-        console.error("Error fetching tags", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTags();
-  }, []);
-
-
-  async function getLibraries() {
-    const response = await getAllLibraries()
-    setList(response)
-    setDefaultList(response)
+  const [tags, setTags] = useState<Tag[]>([])
+  const [loading, setLoading] = useState(true)
+  const [state, setState] = useState("all")
+  const {
+    currentPage,
+    totalPages,
+    setTotalPages,
+    handlePageChange,
+    setCurrentPage
+  } = usePagination()
+  const fetchTags = async () => {
+    try {
+      const tags = await getTagsApi()
+      setTags(tags)
+    } catch (error) {
+      console.error("Error fetching tags", error)
+    } finally {
+      setLoading(false)
+    }
   }
-
   useEffect(() => {
-    getLibraries()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) 
+    fetchTags()
+    handlePageChange(1)
+  }, [])
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [state])
+  useEffect(() => {
+    fethLibraries(state)
+  }, [currentPage, state])
 
   function handleChangeSelect(value: string) {
-    const cloneList = [...(defaultList || [])]
-    if (value === "ALL") return setList(defaultList)
-    const result = cloneList.filter((item) => item.state === value)
-    setList(result)
+    setState(value.toLocaleLowerCase())
   }
 
+  async function fethLibraries(state: string) {
+    try {
+      const response = await getLibrariesByStateAdmin(
+        state.toLocaleLowerCase(),
+        currentPage
+      )
+      console.log(response)
+
+      setList(response.data.results)
+      setTotalPages(response.data.total_pages)
+    } catch (error) {
+      toast({
+        title: "Dont have libraries with this state"
+      })
+      throw error
+    }
+  }
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
           <Select
             defaultValue="ALL"
-            onValueChange={(value) => handleChangeSelect(value)}
+            onValueChange={handleChangeSelect}
             disabled={loading}
           >
             <SelectTrigger className="w-[180px]">
@@ -80,6 +98,7 @@ const AdminDashboardPage = () => {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="ALL">All</SelectItem>
+                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
                 <SelectItem value="PENDING">PENDING</SelectItem>
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
@@ -137,35 +156,47 @@ const AdminDashboardPage = () => {
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
-        {list?.map((card) => (
-          <StateCardAdmin
-            key={crypto.randomUUID()}
-            card={card}
-          />
-        ))}
-      </section>
+      {loading ? (
+        <span>Loading...</span>
+      ) : (
+        <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
+          {list &&
+            list?.map((card) => (
+              <StateCardAdmin
+                key={crypto.randomUUID()}
+                card={card}
+              />
+            ))}
+        </section>
+      )}
+
+      <div className="flex justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
       {showTags && (
-        <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1">
+        <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1 pb-4">
           {tags?.map((tag: any) => (
             <div key={crypto.randomUUID()}>
-              <Dialog >
-              <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
-                {tag.name}
-              </DialogTrigger>
-              <DialogContent className="bg-light dark:bg-dark ">
-                <DialogHeader className="">
-                  <DialogTitle>
-                    <strong className="text-dark dark:text-light ">
-                      Update Tag
-                    </strong>
-                  </DialogTitle>
-                </DialogHeader>
-                <ChangeTag tag={tag} />
-              </DialogContent>
-            </Dialog>
+              <Dialog>
+                <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
+                  {tag.name}
+                </DialogTrigger>
+                <DialogContent className="bg-light dark:bg-dark ">
+                  <DialogHeader className="">
+                    <DialogTitle>
+                      <strong className="text-dark dark:text-light ">
+                        Update Tag
+                      </strong>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <ChangeTag tag={tag} />
+                </DialogContent>
+              </Dialog>
             </div>
-            
           ))}
         </section>
       )}

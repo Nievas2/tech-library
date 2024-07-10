@@ -1,7 +1,7 @@
 import axiosInstance from "@/api/axiosInstance"
 import { Library } from "@/interfaces/Library"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
-import axios, { AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 
 export interface LibraryDtoUser {
   name: string
@@ -16,7 +16,6 @@ export interface LibraryDtoUserPut {
   tags: number[]
 }
 export interface LibraryDtoAdmin {
-  name: string
   description: string
   link: string
   tags: number[]
@@ -80,10 +79,10 @@ export async function getLibrariesSearch(
   }
 }
 
-export async function getLibrariesUserDashboard(userId: string) {
+export async function getLibrariesUserDashboard(userId: string, page: number) {
   try {
     const response = await axiosInstance.get(
-      `/library/all/user/${userId}`
+      `/library/all/user/${userId}?page=${page}`
     )
     return response.data.data
   } catch (error) {
@@ -92,30 +91,59 @@ export async function getLibrariesUserDashboard(userId: string) {
   }
 }
 
-export async function getAllLibraries() {
+export async function getAllLibraries(page: number) {
   try {
-    const response = await axios.get(`http://localhost:8000/api/library/all`)
-    return response.data.data.results
+    const response = await axiosInstance.get(`/library/all?currentPage=${page}`)
+    return response.data.data
   } catch (error) {
     return error
   }
 }
 
+export async function getLibrariesByStateAdmin(
+  state: string,
+  page: number
+): Promise<AxiosResponse<ResponseSuccess>> {
+  try {
+    let response
+    if (state === "all") {
+      response = await axiosInstance.get(`/library/all?page=${page}`)
+    } else {
+      response = await axiosInstance.get(
+        `/library/all/status/${state}?page=${page}`
+      )
+    }
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+export async function getLibrariesByStateUser(
+  state: string,
+  page: number,
+  userId: string
+): Promise<AxiosResponse<ResponseSuccess>> {
+  try {
+    let response = await axiosInstance.get(
+        `/library/all/user/${userId}?state=${state}&currentPage=${page}`
+      )
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
 export async function postLibrary(
   library: LibraryDtoUser,
   userId: string
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = await axiosInstance.post(
-      `/library/create/${userId}`,
-      {
-        // name: library.name,
-        description: library.description,
-        link: library.link,
-        tags: library.tags
-      }
-    )
+    const response = await axiosInstance.post(`/library/create/${userId}`, {
+      name: library.name,
+      description: library.description,
+      link: library.link,
+      tags: library.tags
+    })
     return response
   } catch (error) {
     throw error
@@ -128,31 +156,31 @@ export function putLibraryUser(
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = axiosInstance.put(
-      `/library/update/${libraryId}`,
-      {
-        name: library.name,
-        description: library.description,
-        link: library.link,
-        tags: library.tags
-      }
-    )
+    const response = axiosInstance.put(`/library/update/${libraryId}`, {
+      description: library.description,
+      link: library.link,
+      tags: library.tags
+    })
     return response
   } catch (error) {
     throw error
   }
 }
 
-export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {
+export function putLibraryAdmin(
+  library: LibraryDtoAdmin,
+  libraryId: number
+): Promise<AxiosResponse<ResponseSuccess>> {
+
   try {
-    const response = axios.put(
-      `http://localhost:8000/api/library/admin/update/${libraryId}`,
-      {
-        library
-      }
-    )
+    const response = axiosInstance.put(`/library/admin/update/${libraryId}`, {
+      description: library.description,
+      link: library.link,
+      tags: library.tags,
+      state: library.state
+    })
     return response
   } catch (error) {
-    return error
+    throw error
   }
 }

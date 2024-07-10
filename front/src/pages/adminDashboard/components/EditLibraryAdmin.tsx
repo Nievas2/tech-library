@@ -18,12 +18,16 @@ import { Textarea } from "@/components/ui/textarea"
 import { LibraryDtoAdmin, putLibraryAdmin } from "@/services/LibraryService"
 import { Tag } from "@/interfaces/Tag"
 import { getTagsApi } from "@/services/TagService"
+import { useToast } from "@/components/ui/use-toast"
+import { ResponseSuccess } from "@/interfaces/responseSuccess"
+import { AxiosError } from "axios"
 
 interface CardProps {
   card: Library
 }
 
 export default function EditLibraryAdmin({ card }: CardProps) {
+  const { toast } = useToast()
   const [tagsAdded, setTagsAdded] = useState<Tag[]>(
     card?.tags?.map((tag) => tag) || []
   )
@@ -63,16 +67,31 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       if (tagsId === undefined) return
       if (tagsAdded) {
         const valuesDate: LibraryDtoAdmin = {
-          name: values.name,
           description: values.description,
           link: values.link,
           tags: filteredTagsId as number[],
           state: values.state
         }
-        putLibraryAdmin(valuesDate, card.id)
+        putLibraryFunction(valuesDate)
       }
     }
   })
+  async function putLibraryFunction(valuesDate: LibraryDtoAdmin) {
+    try {
+
+      const response = await putLibraryAdmin(valuesDate, card.id)
+      
+      toast({
+        title: response.data.statusMessage
+      })
+      window.location.reload()
+    } catch (error) {
+      toast({
+        title: (error as AxiosError<ResponseSuccess>).response?.data
+          .statusMessage
+      })
+    }
+  }
 
   const editState = (value: string) => {
     formik.setFieldValue("state", value)
@@ -116,7 +135,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           value={formik.values.name}
           className="bg-light"
           maxLength={20}
-          disabled={loading}
+          disabled={true}
         />
         <small
           className={`${

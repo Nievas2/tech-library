@@ -7,7 +7,7 @@ interface User {
   role     : string;
 }
 
-interface AuthUser {
+export interface AuthUser {
   user  : User;
   token : string;
 }
