@@ -37,34 +37,33 @@ const HomePage = () => {
     setCurrentPage(1)
   }, [tagsActives, totalPages, searchParamsData, search])
 
-
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const tagsIds = String(urlParams.get("tags"))
         const tagsIdsParams = String(searchParams.get("tags"))
-        
+
         let librariesResponse
         if (search == "null" && searchParamsData == null) {
           //No hay search y hay tags
           if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
             librariesResponse = await getLibrariesFilter(
-              currentPage,
+              currentPage || 1,
               1,
               tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
             )
           } else {
             //No hay search y no hay tags
             librariesResponse = await getLibraries(
-              currentPage,
+              currentPage || 1,
               authUser!.user.id
             )
           }
         } else {
           // Hay search
           librariesResponse = await getLibrariesSearch(
-            currentPage,
+            currentPage || 1,
             1,
             tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
             search ? search : searchParamsData ? searchParamsData : ""
@@ -78,20 +77,20 @@ const HomePage = () => {
         setNotFound(false)
       } catch (err) {
         console.error("Error fetching libraries:", err)
-        if (currentPage !== undefined && totalPages > currentPage  ) {
+        if (currentPage !== undefined && totalPages > currentPage) {
           setCurrentPage(1)
         }
-        if(currentPage === 1){
+        if (currentPage === 1) {
           setNotFound(true)
         }
         setTotalPages(1)
-        
+
         setLoading(false)
       }
     }
 
     fetchLibraries()
-  }, [getInitialPage, setTotalPages, tags, search])
+  }, [setTotalPages, tags, search])
 
   useEffect(() => {
     handlePageChange(1)
