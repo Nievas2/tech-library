@@ -87,8 +87,8 @@ export class AuthController {
   async loginGitHub(req: Request, res: Response) {
     try {
       if (req.user) {
-        const { token, user } = req.user as ResponseToken;
-        const redirectUrl = `${this.authService.getEnvironment("REDIRECT_URL")}?token=${token}&user=${JSON.stringify(user)}`;
+        const { accesToken, user } = req.user as ResponseToken;
+        const redirectUrl = `${this.authService.getEnvironment("REDIRECT_URL")}?token=${accesToken}&user=${JSON.stringify(user)}`;
         res.redirect(redirectUrl);
       } else {
         return this.authHttpResponse.Unauthorized(res);
@@ -102,9 +102,19 @@ export class AuthController {
 
 
   async loginGoogle (req: Request, res: Response) {
+    try {
+      if (req.user) {
+        const {accesToken , user } = req.user as ResponseToken;
 
-    console.log(req.user);
-    
-    res.send(req.user)
+        const redirectUrl = `${this.authService.getEnvironment("REDIRECT_URL")}?token=${accesToken}&user=${JSON.stringify(user)}`;
+        res.redirect(redirectUrl);
+      } else {
+        return this.authHttpResponse.Unauthorized(res);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.globalExceptionHandler.handleErrors(error, res);
+      }
+    }
   }
 }

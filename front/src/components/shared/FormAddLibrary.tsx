@@ -137,6 +137,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           value={formik.values.name}
           className="bg-light"
           maxLength={20}
+          disabled={loading}
         />
         <small className={formik.touched.name && formik.errors.name ? "text-[#FF0000]" : ""}>
           {formik.touched.name && formik.errors.name ? formik.errors.name : ""}
@@ -153,6 +154,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           value={formik.values.link}
           className="bg-light"
           maxLength={200}
+          disabled={loading}
         />
         <small className={formik.touched.link && formik.errors.link ? "text-[#FF0000]" : ""}>
           {formik.touched.link && formik.errors.link ? formik.errors.link : ""}

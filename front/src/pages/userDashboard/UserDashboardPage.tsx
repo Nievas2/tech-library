@@ -29,7 +29,6 @@ const UserDashboardPage = () => {
 
   async function getLibrary() {
     const response = await getLibrariesUserDashboard(authUser!.user.id)
-    console.log(response)
 
     setList(response.results);
     setListClone(response.results);

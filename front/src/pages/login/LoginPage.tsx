@@ -7,25 +7,22 @@ import { useFormik } from "formik"
 import { loginSchema } from "@/utils"
 import { Login } from "@/services/AuthService"
 import { useToast } from "@/components/ui/use-toast"
-// import { useTokenStore } from "@/stores/user.store"
 import useLogin from "@/hooks/useLogin"
 
 const LoginPage = () => {
-  // const setToken = useTokenStore((state) => state.setToken)
   const { loading, login } = useLogin()
   const { toast } = useToast()
-  // const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {
       username: "",
       password: ""
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {      
+    onSubmit: (values) => {
       loginFunction(values)
     }
   })
-  
+
   async function loginFunction(values: Login) {
     try {
       await login(values)
@@ -36,7 +33,13 @@ const LoginPage = () => {
       throw error
     }
   }
-  
+  function loginGoogle() {
+   window.open("http://localhost:8000/api/login/google/callback", "_self")
+    
+  }
+  function loginGithub (){
+    window.open("http://localhost:8000/api/login/github", "_self")
+  }
   return (
     <div className="flex my-auto">
       <form
@@ -104,11 +107,13 @@ const LoginPage = () => {
                     className="w-full rounded-lg"
                     type="submit"
                   >
-                    Login
+                    {loading ? "loading..." : "Login"}
+                    
                   </Button>
                   <button
                     className="px-5 py-2.5 border flex justify-center items-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
                     type="button"
+                    onClick={loginGoogle}
                   >
                     <Icon
                       className="h-6 w-6"
@@ -119,6 +124,7 @@ const LoginPage = () => {
                   <button
                     className="px-5 py-2.5 border flex justify-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
                     type="button"
+                    onClick={loginGithub}
                   >
                     <Icon
                       className="h-6 w-6"

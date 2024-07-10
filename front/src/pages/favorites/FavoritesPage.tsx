@@ -2,11 +2,9 @@ import CardsContainer from "@/components/shared/CardsContainer"
 import { useFavoriteStore } from "@/stores";
 
 const FavoritesPage = () => {
-  const favorites = useFavoriteStore(state => state.favorites)
+  const favorites = useFavoriteStore((state) => state.favorites)
   
-  console.log(favorites);
-  
-  return <div>{favorites && <CardsContainer cards={favorites} />}</div>
+  return <div>{favorites && <CardsContainer libraries={favorites} />}</div>
 }
 
 export default FavoritesPage

@@ -31,7 +31,7 @@ const RegisterPage = () => {
       registerFunction(values)
     }
   })
-  
+
   async function registerFunction(values: Register) {
     try {
       await register(values)
@@ -43,7 +43,7 @@ const RegisterPage = () => {
       throw error
     }
   }
-  
+
   return (
     <div className="flex my-auto">
       <form
@@ -75,6 +75,7 @@ const RegisterPage = () => {
                     type="text"
                     placeholder="Sani"
                     {...getFieldProps("username")}
+                    disabled={loading}
                     // name="username"
                     // onChange={handleChange}
                     // onBlur={handleBlur}
@@ -93,6 +94,7 @@ const RegisterPage = () => {
                     type="email"
                     placeholder="example@gmail.com"
                     {...getFieldProps("email")}
+                    disabled={loading}
                     // onChange={handleChange}
                     // onBlur={handleBlur}
                     // value={values.email}
@@ -110,6 +112,7 @@ const RegisterPage = () => {
                     type="password"
                     placeholder="•••••••••••••••"
                     {...getFieldProps("password")}
+                    disabled={loading}
                     // onChange={handleChange}
                     // onBlur={handleBlur}
                     // value={values.password}
@@ -125,6 +128,7 @@ const RegisterPage = () => {
                   <Button
                     variant="authButton"
                     className="w-full rounded-lg"
+                    disabled={loading}
                   >
                     Sign up
                   </Button>

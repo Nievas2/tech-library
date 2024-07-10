@@ -13,6 +13,7 @@ import {
 } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 import { useAuthContext } from "@/contexts"
+import NotFound from "@/components/shared/NotFound"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
@@ -29,22 +30,22 @@ const HomePage = () => {
     getInitialPage,
     searchParams
   } = usePagination()
-  const search = searchParams.get("search")
+  const search = String(searchParams.get("search"))
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const tagsIds = String(urlParams.get("tags"))
-        
+        const tagsIdsParams = String(searchParams.get("tags"))
+        const searchParamsData = searchParams.get("search")
         const currentPage = getInitialPage()
-
         let librariesResponse
-        if (!search) {
-          if (tags.length >= 1) {
+        if (!search && !searchParamsData) {
+          if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
             librariesResponse = await getLibrariesFilter(
               currentPage,
               1,
-              tagsIds
+              tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
             )
           } else {
             librariesResponse = await getLibraries(
@@ -56,8 +57,8 @@ const HomePage = () => {
           librariesResponse = await getLibrariesSearch(
             currentPage,
             1,
-            tagsIds,
-            search
+            tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
+            search ? search : searchParamsData ? searchParamsData : ""
           )
         }
 
@@ -134,7 +135,7 @@ const HomePage = () => {
           <SearchBar />
           <div>
             {notFound ? (
-              <h1>not found</h1>
+              <NotFound />
             ) : (
               <div>
                 {search ? (
@@ -152,7 +153,7 @@ const HomePage = () => {
             )}
           </div>
 
-          <div className="">
+          <div>
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

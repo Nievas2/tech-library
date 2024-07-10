@@ -4,13 +4,14 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
 import { Tag, useTagStore } from "@/stores"
+import usePagination from "@/hooks/usePagination"
 
 export default function SideBar() {
   const [open, setOpen] = useState(window.innerWidth > 768)
   const setTags = useTagStore((state) => state.setTags)
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
-
+  const { searchParams } = usePagination()
   useEffect(() => {
     const handleResize = () => {
       setOpen(window.innerWidth > 768)
@@ -25,17 +26,19 @@ export default function SideBar() {
 
   // Forma optima de traer las tags
   useEffect(() => {
-    console.log("remder");
-    
     setLoading(true)
     const fetchTags = async () => {
       try {
         const response = await getTagsApi()
-        console.log(response)
-        response.map((tag : Tag) => {
-          tag.selected = false
-        })        
-        setTags(response)
+        const tagsIdsParams = String(searchParams.get("tags"))
+        const ids = tagsIdsParams.split(",").map(Number)
+        const updatedObjectsArray = response.map((obj) => {
+          return {
+            ...obj,
+            selected: ids.includes(Number(obj.id))
+          }
+        })
+        setTags(updatedObjectsArray)
       } catch (error) {
         console.error("Error fetching tags", error)
       } finally {
@@ -90,12 +93,13 @@ export default function SideBar() {
               <p>Loading...</p>
             ) : (
               <div>
-                {tags && tags?.map((tag: Tag) => (
-                  <ItemsSideBar
-                    key={tag.name}
-                    tag={tag}
-                  />
-                ))}
+                {tags &&
+                  tags?.map((tag: Tag) => (
+                    <ItemsSideBar
+                      key={tag.name}
+                      tag={tag}
+                    />
+                  ))}
               </div>
             )}
           </ul>

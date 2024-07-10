@@ -69,7 +69,6 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           tags: filteredTagsId as number[],
           state: values.state
         }
-        console.log(valuesDate)
         putLibraryAdmin(valuesDate, card.id)
       }
     }
@@ -84,7 +83,6 @@ export default function EditLibraryAdmin({ card }: CardProps) {
 
     const tagSelected = tags.find((tag: any) => tag.name === value)
     if (!tagSelected) return
-    console.log(tagSelected)
 
     const tagSelectedFormat = {
       id: tagSelected.id,
@@ -118,6 +116,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           value={formik.values.name}
           className="bg-light"
           maxLength={20}
+          disabled={loading}
         />
         <small
           className={`${
@@ -138,6 +137,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           value={formik.values.link}
           className="bg-light"
           maxLength={200}
+          disabled={loading}
         />
         <small
           className={`${
@@ -157,6 +157,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           value={formik.values.description}
           className="bg-light"
           maxLength={200}
+          disabled={loading}
         />
         <small
           className={`${
@@ -171,7 +172,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
         </small>
       </div>
       <div className="flex w-full items-center gap-1.5 justify-between">
-        <Select onValueChange={(value) => addTag(value)}>
+        <Select onValueChange={(value) => addTag(value)} disabled={loading}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a tag" />
           </SelectTrigger>
@@ -188,7 +189,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select onValueChange={(value) => editState(value)}>
+        <Select onValueChange={(value) => editState(value)} disabled={loading}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a State" />
           </SelectTrigger>
@@ -230,7 +231,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
         className="p-1"
         type="submit"
       >
-        Submit
+        {loading ? "Loading..." : "Submit"}
       </Button>
     </form>
   )
