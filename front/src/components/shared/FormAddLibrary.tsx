@@ -41,7 +41,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     const fetchTags = async () => {
       try {
         const tags = await getTagsApi()
-        
+
         setTags(tags)
       } catch (error) {
         console.error("Error fetching tags", error)
@@ -94,7 +94,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     try {
       const response = await putLibraryUser(values, id);
       toast({ title: response.data.statusMessage });
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       toast({ title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage });
     }
@@ -104,7 +104,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     try {
       const response = await postLibrary(values, authUser!.user.id);
       toast({ title: response.data.statusMessage });
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       toast({ title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage });
     }
