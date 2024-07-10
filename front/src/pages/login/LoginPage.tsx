@@ -34,11 +34,13 @@ const LoginPage = () => {
     }
   }
   function loginGoogle() {
-   window.open("http://localhost:8000/api/auth/google/callback", "_self")
-    
+    window.open(`${import.meta.env.VITE_API_URL}/auth/google/callback`, "_self")
   }
-  function loginGithub (){
-    window.open("http://localhost:8000/api/auth/github/callback", "_self")
+  function loginGithub() {
+    window.open(
+      `${import.meta.env.VITE_API_URL}/api/auth/github/callback`,
+      "_self"
+    )
   }
   return (
     <div className="flex my-auto">
@@ -108,7 +110,6 @@ const LoginPage = () => {
                     type="submit"
                   >
                     {loading ? "loading..." : "Login"}
-                    
                   </Button>
                   <button
                     className="px-5 py-2.5 border flex justify-center items-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
