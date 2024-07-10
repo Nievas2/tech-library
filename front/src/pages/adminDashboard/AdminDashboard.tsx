@@ -5,14 +5,14 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
-import {
+/* import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/select"
+} from "@/components/ui/select" */
 import { Library } from "@/interfaces/Library"
 import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
@@ -29,7 +29,7 @@ import usePagination from "@/hooks/usePagination"
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
-  const [defaultList, setDefaultList] = useState<Library[]>()
+  //const [defaultList, setDefaultList] = useState<Library[]>()
   const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
   const { currentPage, totalPages, setTotalPages, handlePageChange } =
@@ -39,7 +39,7 @@ const AdminDashboardPage = () => {
     //console.log(response)
 
     setList(response.results)
-    setDefaultList(response.results)
+    //setDefaultList(response.results)
     setTotalPages(Math.ceil(response.total_pages))
   }
   const fetchTags = async () => {
@@ -59,7 +59,7 @@ const AdminDashboardPage = () => {
     fetchTags()
     handlePageChange(1)
   }, [])
- /*  function handleChangeSelect(value: string) {
+  /*  function handleChangeSelect(value: string) {
     let cloneList = [...(defaultList || [])]
 
     if (value === "ALL") {
@@ -150,15 +150,20 @@ const AdminDashboardPage = () => {
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
-        {list &&
-          list?.map((card) => (
-            <StateCardAdmin
-              key={crypto.randomUUID()}
-              card={card}
-            />
-          ))}
-      </section>
+      {loading ? (
+        <span>Loading...</span>
+      ) : (
+        <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
+          {list &&
+            list?.map((card) => (
+              <StateCardAdmin
+                key={crypto.randomUUID()}
+                card={card}
+              />
+            ))}
+        </section>
+      )}
+
       <div className="flex justify-center">
         <Pagination
           currentPage={currentPage}
