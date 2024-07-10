@@ -11,32 +11,38 @@ import EditLibraryAdmin from "./EditLibraryAdmin"
 const StateCardAdmin = ({ card }: { card: Library }) => {
   return (
     <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4">
-      <div className="flex items-end justify-end">
-        <div className="flex items-center gap-2">
-          <span
-            className={`${
+      <div className="flex flex-1 flex-col gap-4">
+        <div className="flex justify-between">
+          <h2 className="text-2xl font-bold">{card.name}</h2>
+          <div
+            className={`flex items-center gap-2 border ${
               card.state === "ACTIVE"
-                ? "text-[#0f0]"
+                ? "border-[#276827]"
                 : card.state === "PENDING"
-                ? "text-[#Ff0]"
-                : "text-[#Ff0000]"
+                ? "border-[#bf9000]"
+                : "border-[#6e0202]"
+            } border-main rounded-full px-4 ${
+              card.state === "ACTIVE"
+                ? "bg-[#a0eba0]"
+                : card.state === "PENDING"
+                ? "bg-[#f0f085]"
+                : "bg-[#fc7b7b]"
             }`}
           >
-            {card.state}
-          </span>
-          <div
-            className={`w-4 h-4 rounded-full ${
-              card.state === "ACTIVE"
-                ? "bg-[#0f0]"
-                : card.state === "PENDING"
-                ? "bg-[#Ff0]"
-                : "bg-[#Ff0000]"
-            }`}
-          ></div>
+            <span
+              className={`font-bold ${
+                card.state === "ACTIVE"
+                  ? "text-[#276827]"
+                  : card.state === "PENDING"
+                  ? "text-[#bf9000]"
+                  : "text-[#6e0202]"
+              }`}
+            >
+              {card.state}
+            </span>
+          </div>
         </div>
-      </div>
-      <div className="flex flex-1 flex-col gap-2">
-        <h2 className="text-2xl font-bold">{card.name}</h2>
+
         <p className="text-base">{card.description}</p>
       </div>
       {card.state === "ACTIVE" ? (

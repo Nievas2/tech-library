@@ -71,7 +71,7 @@ const Navbar = () => {
                     <Link
                       to="/favorites"
                     >
-                      <Icon icon="tdesign:heart-filled" width="40" height="40" />
+                      <Icon className="hover:text-[#E81224] transition-colors duration-150 hover:animate-pulse" icon="tdesign:heart-filled" width="46" height="46" />
                     </Link>
 
                     <div className="flex gap-4">

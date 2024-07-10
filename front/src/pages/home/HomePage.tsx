@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
-import usePagination from "@/hooks/usePagination"
+import usePaginationHome from "@/hooks/usePaginationHome"
 import {
   getLibraries,
   getLibrariesFilter,
@@ -27,18 +27,24 @@ const HomePage = () => {
     totalPages,
     setTotalPages,
     handlePageChange,
-    getInitialPage,
-    searchParams
-  } = usePagination()
+    searchParams,
+    setCurrentPage
+  } = usePaginationHome()
   const search = String(searchParams.get("search"))
+  const searchParamsData = searchParams.get("search")
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [tagsActives, totalPages, searchParamsData, search])
+
+
   useEffect(() => {
     const fetchLibraries = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
         const tagsIds = String(urlParams.get("tags"))
         const tagsIdsParams = String(searchParams.get("tags"))
-        const searchParamsData = searchParams.get("search")
-        const currentPage = getInitialPage()
+        
         let librariesResponse
         if (search == "null" && searchParamsData == null) {
           //No hay search y hay tags
@@ -72,11 +78,14 @@ const HomePage = () => {
         setNotFound(false)
       } catch (err) {
         console.error("Error fetching libraries:", err)
-        if (totalPages > currentPage) {
-          handlePageChange(1)
+        if (currentPage !== undefined && totalPages > currentPage  ) {
+          setCurrentPage(1)
+        }
+        if(currentPage === 1){
+          setNotFound(true)
         }
         setTotalPages(1)
-        setNotFound(true)
+        
         setLoading(false)
       }
     }
@@ -136,7 +145,7 @@ const HomePage = () => {
         <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
           <SearchBar />
           <div>
-            {notFound ? (
+            {notFound && currentPage === 1 ? (
               <NotFound />
             ) : (
               <div>
@@ -157,7 +166,7 @@ const HomePage = () => {
 
           <div>
             <Pagination
-              currentPage={currentPage}
+              currentPage={currentPage!}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
