@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -33,7 +33,7 @@ interface CardProps {
 
 export default function FormAddLibrary({ card }: CardProps) {
   const { toast } = useToast()
-  const [tags, setTags] = useState<any[]>([])
+  const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
   const { authUser } = useAuthContext()
 
@@ -41,6 +41,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     const fetchTags = async () => {
       try {
         const tags = await getTagsApi()
+        
         setTags(tags)
       } catch (error) {
         console.error("Error fetching tags", error)
@@ -66,116 +67,65 @@ export default function FormAddLibrary({ card }: CardProps) {
     },
     validationSchema: librarySchema,
     onSubmit: async (values) => {
-      if (card === undefined) {
-        if (tagsAdded?.length === 0) return setError(true)
-        setError(false)
-        const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
-        const filteredTagsId = tagsId.filter((tag) => tag !== undefined)
+      if (tagsAdded.length === 0) {
+        return setError(true);
+      }
+      setError(false);
 
-        if (tagsAdded) {
-          const valuesDate: LibraryDtoUser = {
-            name: values.name,
-            description: values.description,
-            link: values.link,
-            tags: filteredTagsId as number[]
-          }
-          console.log(valuesDate)
-          postLibraryFunction(valuesDate, authUser!.user.id)
-        }
+      const tagsId = tagsAdded.map(tag => tag.id);
+      console.log(tagsId);
+      
+      const valuesData: LibraryDtoUser = {
+        name: values.name,
+        description: values.description,
+        link: values.link,
+        tags: tagsId
+      };
+
+      if (card) {
+        await handleUpdateLibrary(valuesData, card.id);
       } else {
-        setError(false)
-
-        const tagsId = tagsAdded.filter((tag) => tag.id).map((tag) => tag.id)
-        const tagsIdCard = card.tags
-          ?.filter((tag) => tag.id)
-          .map((tag) => tag.id)
-        tagsIdCard?.forEach((tag) => {
-          tagsId.push(tag)
-        })
-        const filteredTagsId = tagsId.filter((tag) => tag !== undefined)
-
-        if (tagsAdded) {
-          const valuesDate: LibraryDtoUser = {
-            name: values.name,
-            description: values.description,
-            link: values.link,
-            tags: filteredTagsId as number[]
-          }
-          putLibraryFunction(valuesDate, card.id)
-        }
+        await handleCreateLibrary(valuesData);
       }
     }
-  })
+  });
 
-  async function putLibraryFunction(values: LibraryDtoUser, id: number) {
+  const handleUpdateLibrary = async (values: LibraryDtoUser, id: number) => {
     try {
-      let data
-
-      if (values.name === card?.name) {
-        data = {
-          description: values.description,
-          link: values.link,
-          tags: values.tags
-        }
-      } else {
-        data = values
-      }
-
-      const response = await putLibraryUser(data, id)
-      toast({
-        title: response.data.statusMessage
-      })
-      window.location.reload()
+      const response = await putLibraryUser(values, id);
+      toast({ title: response.data.statusMessage });
+      // window.location.reload();
     } catch (error) {
-      toast({
-        title: (error as AxiosError<ResponseSuccess>).response?.data
-          .statusMessage
-      })
+      toast({ title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage });
     }
-  }
+  };
 
-  async function postLibraryFunction(values: LibraryDtoUser, id: string) {
+  const handleCreateLibrary = async (values: LibraryDtoUser) => {
     try {
-      const response = await postLibrary(values, id)
-      toast({
-        title: response.data.statusMessage
-      })
-      window.location.reload()
+      const response = await postLibrary(values, authUser!.user.id);
+      toast({ title: response.data.statusMessage });
+      // window.location.reload();
     } catch (error) {
-      toast({
-        title: (error as AxiosError<ResponseSuccess>).response?.data
-          .statusMessage
-      })
+      toast({ title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage });
     }
-  }
+  };
 
-  const addTag = (value: string) => {
-    if (tagsAdded?.find((tag) => tag.name === value)) return
-    const tagSelected = tags.find((tag) => tag.name === value)
-    if (!tagSelected) return
-    console.log(tagSelected)
+  const addTag = useCallback((value: string) => {
+    if (tagsAdded.find(tag => tag.name === value)) return;
 
-    const tagSelectedFormat = {
-      id: tagSelected.id,
-      name: tagSelected.name,
-      color: tagSelected.color
-    }
-    setTagsAdded([...tagsAdded, tagSelectedFormat])
-    if (error) setError(false)
-  }
+    const tagSelected = tags.find(tag => tag.name === value);
+    if (!tagSelected) return;
 
-  const removeTag = (index: number) => {
-    const clonedTags = [...(tagsAdded || [])]
+    setTagsAdded([...tagsAdded, tagSelected]);
+    if (error) setError(false);
+  }, [tags, tagsAdded, error]);
 
-    clonedTags.splice(index, 1)
-    setTagsAdded(clonedTags)
-  }
+  const removeTag = useCallback((index: number) => {
+    setTagsAdded(tagsAdded.filter((_, i) => i !== index));
+  }, [tagsAdded]);
 
   return (
-    <form
-      className="flex flex-col gap-2 mt-1"
-      onSubmit={formik.handleSubmit}
-    >
+    <form className="flex flex-col gap-2 mt-1" onSubmit={formik.handleSubmit}>
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="name">Name</Label>
         <Input
@@ -188,11 +138,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           className="bg-light"
           maxLength={20}
         />
-        <small
-          className={`${
-            formik.touched.name && formik.errors.name ? "text-[#FF0000]" : ""
-          }`}
-        >
+        <small className={formik.touched.name && formik.errors.name ? "text-[#FF0000]" : ""}>
           {formik.touched.name && formik.errors.name ? formik.errors.name : ""}
         </small>
       </div>
@@ -208,11 +154,7 @@ export default function FormAddLibrary({ card }: CardProps) {
           className="bg-light"
           maxLength={200}
         />
-        <small
-          className={`${
-            formik.touched.link && formik.errors.link ? "text-[#FF0000]" : ""
-          }`}
-        >
+        <small className={formik.touched.link && formik.errors.link ? "text-[#FF0000]" : ""}>
           {formik.touched.link && formik.errors.link ? formik.errors.link : ""}
         </small>
       </div>
@@ -227,55 +169,35 @@ export default function FormAddLibrary({ card }: CardProps) {
           className="bg-light"
           maxLength={200}
         />
-        <small
-          className={`${
-            formik.touched.description && formik.errors.description
-              ? "text-[#FF0000]"
-              : ""
-          }`}
-        >
-          {formik.touched.description && formik.errors.description
-            ? formik.errors.description
-            : ""}
+        <small className={formik.touched.description && formik.errors.description ? "text-[#FF0000]" : ""}>
+          {formik.touched.description && formik.errors.description ? formik.errors.description : ""}
         </small>
       </div>
       <div className="flex w-full items-center gap-1.5">
-        <Select onValueChange={(value) => addTag(value)}>
+        <Select onValueChange={addTag}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a tag" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {tags &&
-                tags?.map((tag) => (
-                  <SelectItem
-                    key={crypto.randomUUID()}
-                    value={tag.name}
-                  >
-                    {tag.name}
-                  </SelectItem>
-                ))}
+              {tags.map(tag => (
+                <SelectItem key={tag.id} value={tag.name}>
+                  {tag.name}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
       </div>
       <div className="flex flex-row flex-wrap gap-2 text-sm mt-1">
-        {tagsAdded?.map((tag, index) => (
+        {tagsAdded.map((tag, index) => (
           <div
-            key={crypto.randomUUID()}
+            key={tag.id}
             className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
           >
             <h4>{tag.name}</h4>
-            <button
-              className="w-[16px]"
-              onClick={() => removeTag(index)}
-            >
-              <Icon
-                icon="material-symbols:close"
-                width="16"
-                height="16"
-                className="text-dark dark:text-light"
-              />
+            <button type="button" className="w-[16px]" onClick={() => removeTag(index)}>
+              <Icon icon="material-symbols:close" width="16" height="16" className="text-dark dark:text-light" />
             </button>
           </div>
         ))}
@@ -283,11 +205,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       <small className="text-[#FF0000]">
         {error ? "Add at least one tag" : ""}
       </small>
-      <Button
-        variant={"marketing"}
-        className="p-1"
-        type="submit"
-      >
+      <Button variant="marketing" className="p-1" type="submit">
         Submit
       </Button>
     </form>

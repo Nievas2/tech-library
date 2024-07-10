@@ -10,6 +10,7 @@ export interface LibraryDtoUser {
   tags: number[]
 }
 export interface LibraryDtoUserPut {
+  name: string
   description: string
   link: string
   tags: number[]
@@ -109,7 +110,7 @@ export async function postLibrary(
     const response = await axiosInstance.post(
       `/library/create/${userId}`,
       {
-        name: library.name,
+        // name: library.name,
         description: library.description,
         link: library.link,
         tags: library.tags
@@ -130,6 +131,7 @@ export function putLibraryUser(
     const response = axiosInstance.put(
       `/library/update/${libraryId}`,
       {
+        name: library.name,
         description: library.description,
         link: library.link,
         tags: library.tags

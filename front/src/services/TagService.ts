@@ -3,8 +3,8 @@ import { Tag } from "@/stores"
 import axios from "axios"
 
 interface TagDto {
-  name: string
-  color: string
+  name  : string
+  color : string
 }
 
 export async function getTagsApi(): Promise<Tag[]> {
