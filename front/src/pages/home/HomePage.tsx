@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
-import usePagination from "@/hooks/usePagination"
+import usePaginationHome from "@/hooks/usePaginationHome"
 import {
   getLibraries,
   getLibrariesFilter,
@@ -29,7 +29,7 @@ const HomePage = () => {
     handlePageChange,
     getInitialPage,
     searchParams
-  } = usePagination()
+  } = usePaginationHome()
   const search = String(searchParams.get("search"))
   useEffect(() => {
     const fetchLibraries = async () => {

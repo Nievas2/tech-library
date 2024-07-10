@@ -1,7 +1,7 @@
 import axiosInstance from "@/api/axiosInstance"
 import { Library } from "@/interfaces/Library"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
-import axios, { AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 
 export interface LibraryDtoUser {
   name: string
@@ -91,10 +91,10 @@ export async function getLibrariesUserDashboard(userId: string) {
   }
 }
 
-export async function getAllLibraries() {
+export async function getAllLibraries(page: number) {
   try {
-    const response = await axios.get(`http://localhost:8000/api/library/all`)
-    return response.data.data.results
+    const response = await axiosInstance.get(`/library/all?page=${page}`)
+    return response.data.data
   } catch (error) {
     return error
   }
@@ -143,8 +143,8 @@ export function putLibraryUser(
 
 export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {
   try {
-    const response = axios.put(
-      `http://localhost:8000/api/library/admin/update/${libraryId}`,
+    const response = axiosInstance.put(
+      `/library/admin/update/${libraryId}`,
       {
         library
       }
