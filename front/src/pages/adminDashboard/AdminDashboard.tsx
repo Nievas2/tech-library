@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
 import { Tag } from "@/interfaces/Tag"
 import { Pagination } from "@/components/shared/Pagination"
-import usePaginationHome from "@/hooks/usePaginationHome"
+import usePagination from "@/hooks/usePagination"
 
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
@@ -32,18 +32,10 @@ const AdminDashboardPage = () => {
   const [defaultList, setDefaultList] = useState<Library[]>()
   const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
-  const {
-    currentPage,
-    totalPages,
-    setTotalPages,
-    handlePageChange,
-    setCurrentPage,
-    searchParams
-  } = usePaginationHome()
+  const { currentPage, totalPages, setTotalPages, handlePageChange } =
+    usePagination()
   async function getLibraries() {
-    const response = await getAllLibraries(
-      Number(searchParams.get("currentPage"))
-    )
+    const response = await getAllLibraries(currentPage)
     //console.log(response)
 
     setList(response.results)
@@ -61,28 +53,29 @@ const AdminDashboardPage = () => {
     }
   }
   useEffect(() => {
-    getLibraries()    
+    getLibraries()
   }, [currentPage])
   useEffect(() => {
     fetchTags()
+    handlePageChange(1)
   }, [])
   function handleChangeSelect(value: string) {
-    let cloneList = [...(defaultList || [])];
-  
+    let cloneList = [...(defaultList || [])]
+
     if (value === "ALL") {
-      setList(defaultList);
-      setCurrentPage(1);
-      return;
+      setList(defaultList)
+      handlePageChange(1)
+      return
     }
-  
+
     cloneList.sort((a, b) => {
-      if (a.state === value) return -1;
-      if (b.state === value) return 1;
-      return 0;
-    });
-    
-    setList(cloneList);
-    setCurrentPage(1);
+      if (a.state === value) return -1
+      if (b.state === value) return 1
+      return 0
+    })
+
+    setList(cloneList)
+    handlePageChange(1)
   }
 
   return (
@@ -104,7 +97,7 @@ const AdminDashboardPage = () => {
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
             </SelectContent>
-           </Select>
+          </Select>
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex items-center">
               <Icon

@@ -79,10 +79,10 @@ export async function getLibrariesSearch(
   }
 }
 
-export async function getLibrariesUserDashboard(userId: string) {
+export async function getLibrariesUserDashboard(userId: string, page: number) {
   try {
     const response = await axiosInstance.get(
-      `/library/all/user/${userId}`
+      `/library/all/user/${userId}?page=${page}`
     )
     return response.data.data
   } catch (error) {

@@ -19,37 +19,47 @@ import { useEffect, useState } from "react"
 import { getLibrariesUserDashboard } from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
 import { useAuthContext } from "@/contexts"
+import usePagination from "@/hooks/usePagination"
+import { Pagination } from "@/components/shared/Pagination"
 
 const UserDashboardPage = () => {
-  const { authUser } = useAuthContext();
+  const { authUser } = useAuthContext()
 
   const [list, setList] = useState<Library[]>()
 
-  const [listClone, setListClone] = useState<Library[]>()
+  //const [listClone, setListClone] = useState<Library[]>()
+  const { currentPage, totalPages, setTotalPages, handlePageChange } =
+    usePagination()
 
   async function getLibrary() {
-    const response = await getLibrariesUserDashboard(authUser!.user.id)
-
-    setList(response.results);
-    setListClone(response.results);
+    const response = await getLibrariesUserDashboard(authUser!.user.id, currentPage)
+    console.log(response);
+    
+    setList(response.results)
+    //setListClone(response.results)
+    setTotalPages(Math.ceil(response.total_pages))
   }
 
   useEffect(() => {
     getLibrary()
+  }, [currentPage])
+
+  useEffect(() => {
+    handlePageChange(1)
   }, [])
 
-  function handleChangeSelect(value: string) {
+  /* function handleChangeSelect(value: string) {
     const cloneList = [...(listClone || [])]
     if (value === "ALL") return setList(cloneList)
     const result = cloneList.filter((item) => item.state === value)
     setList(result)
-  }
+  } */
 
   return (
     <div className="flex flex-1 mx-auto max-w-[1240px] w-screen flex-col relative gap-6 pt-0 p-4 md:pt-0 sm:p-4 sm:pt-0 xl:p-0">
       <div className="flex">
         <div className="flex-1">
-          <Select
+          {/*  <Select
             defaultValue="ALL"
             onValueChange={(value) => handleChangeSelect(value)}
           >
@@ -64,7 +74,7 @@ const UserDashboardPage = () => {
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
 
         <div className="flex justify-end">
@@ -94,6 +104,13 @@ const UserDashboardPage = () => {
           />
         ))}
       </section>
+      <div className="flex justify-center pb-4">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   )
 }
