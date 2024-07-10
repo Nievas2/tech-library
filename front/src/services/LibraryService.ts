@@ -15,7 +15,6 @@ export interface LibraryDtoUserPut {
   tags: number[]
 }
 export interface LibraryDtoAdmin {
-  name: string
   description: string
   link: string
   tags: number[]
@@ -106,15 +105,12 @@ export async function postLibrary(
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = await axiosInstance.post(
-      `/library/create/${userId}`,
-      {
-        name: library.name,
-        description: library.description,
-        link: library.link,
-        tags: library.tags
-      }
-    )
+    const response = await axiosInstance.post(`/library/create/${userId}`, {
+      name: library.name,
+      description: library.description,
+      link: library.link,
+      tags: library.tags
+    })
     return response
   } catch (error) {
     throw error
@@ -127,30 +123,32 @@ export function putLibraryUser(
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
   try {
-    const response = axiosInstance.put(
-      `/library/update/${libraryId}`,
-      {
-        description: library.description,
-        link: library.link,
-        tags: library.tags
-      }
-    )
+    const response = axiosInstance.put(`/library/update/${libraryId}`, {
+      description: library.description,
+      link: library.link,
+      tags: library.tags
+    })
     return response
   } catch (error) {
     throw error
   }
 }
 
-export function putLibraryAdmin(library: LibraryDtoAdmin, libraryId: number) {
+export function putLibraryAdmin(
+  library: LibraryDtoAdmin,
+  libraryId: number
+): Promise<AxiosResponse<ResponseSuccess>> {
+  console.log(library, libraryId);
+  
   try {
-    const response = axiosInstance.put(
-      `/library/admin/update/${libraryId}`,
-      {
-        library
-      }
-    )
+    const response = axiosInstance.put(`/library/admin/update/${libraryId}`, {
+      description: library.description,
+      link: library.link,
+      tags: library.tags,
+      state: library.state
+    })
     return response
   } catch (error) {
-    return error
+    throw error
   }
 }

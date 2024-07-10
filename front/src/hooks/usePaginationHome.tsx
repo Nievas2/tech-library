@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom"
 // Reutilizable para otros componentes
 const usePaginationHome = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState<number | undefined>(undefined)
   const [totalPages, setTotalPages] = useState(1)
   const tagActives = useTagStore((state) => state.tagsActives)
 
@@ -94,7 +94,7 @@ const usePaginationHome = () => {
     handleSearch,
     searchParams,
     sincronizeParams,
-    setCurrentPage
+    setCurrentPage,
   }
 }
 

@@ -59,7 +59,7 @@ const AdminDashboardPage = () => {
     fetchTags()
     handlePageChange(1)
   }, [])
-  function handleChangeSelect(value: string) {
+ /*  function handleChangeSelect(value: string) {
     let cloneList = [...(defaultList || [])]
 
     if (value === "ALL") {
@@ -77,12 +77,12 @@ const AdminDashboardPage = () => {
     setList(cloneList)
     handlePageChange(1)
   }
-
+ */
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
-          <Select
+          {/* <Select
             defaultValue="ALL"
             onValueChange={(value) => handleChangeSelect(value)}
             disabled={loading}
@@ -97,7 +97,7 @@ const AdminDashboardPage = () => {
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select>
+          </Select> */}
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex items-center">
               <Icon
