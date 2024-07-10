@@ -10,6 +10,7 @@ export interface LibraryDtoUser {
   tags: number[]
 }
 export interface LibraryDtoUserPut {
+  name: string
   description: string
   link: string
   tags: number[]

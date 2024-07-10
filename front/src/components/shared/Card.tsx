@@ -17,20 +17,19 @@ const Card = ({ library }: CardProps) => {
   const deleteFavoriteLibrary = useFavoriteStore((state) => state.deleteFavoriteLibrary);
 
   const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
-  const [favoriteActive, setFavoriteActive] = useState(isFavorite);
+  // const [favoriteActive, setFavoriteActive] = useState(isFavorite);
 
   const toggleFavorite = () => {
-    if (favoriteActive) {
+    if (isFavorite) {
       deleteFavoriteLibrary(library.id);
     } else {
       addFavoriteLibrary(library);
     }
-    setFavoriteActive(!favoriteActive);
   };
 
-  useEffect(() => {
-    setFavoriteActive(isFavorite);
-  }, [isFavorite]);
+  // useEffect(() => {
+  //   setFavoriteActive(isFavorite);
+  // }, [isFavorite]);
 
   return (
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
@@ -63,7 +62,7 @@ const Card = ({ library }: CardProps) => {
           </NavLink>
 
           <div onClick={toggleFavorite}>
-            {favoriteActive ? (
+            {isFavorite ? (
               <div className="animate-fade-in-scale mx-auto flex justify-center items-center cursor-pointer border border-[#E81224] px-4 py-2 rounded-lg bg-[#E81224]/35">
                 <Heart className="text-[#E81224]" fill="#E81224" />
               </div>
