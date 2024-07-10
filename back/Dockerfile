@@ -12,7 +12,7 @@ RUN npm install
 
 RUN npm run build
 
-RUN npm run db:create
+#RUN npm run db:create
 
 EXPOSE 8000
 
