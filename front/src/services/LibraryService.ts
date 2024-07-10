@@ -93,13 +93,45 @@ export async function getLibrariesUserDashboard(userId: string, page: number) {
 
 export async function getAllLibraries(page: number) {
   try {
-    const response = await axiosInstance.get(`/library/all?page=${page}`)
+    const response = await axiosInstance.get(`/library/all?currentPage=${page}`)
     return response.data.data
   } catch (error) {
     return error
   }
 }
 
+export async function getLibrariesByStateAdmin(
+  state: string,
+  page: number
+): Promise<AxiosResponse<ResponseSuccess>> {
+  try {
+    let response
+    if (state === "all") {
+      response = await axiosInstance.get(`/library/all?page=${page}`)
+    } else {
+      response = await axiosInstance.get(
+        `/library/all/status/${state}?page=${page}`
+      )
+    }
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+export async function getLibrariesByStateUser(
+  state: string,
+  page: number,
+  userId: string
+): Promise<AxiosResponse<ResponseSuccess>> {
+  try {
+    let response = await axiosInstance.get(
+        `/library/all/user/${userId}?state=${state}&currentPage=${page}`
+      )
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
 export async function postLibrary(
   library: LibraryDtoUser,
   userId: string
@@ -139,8 +171,7 @@ export function putLibraryAdmin(
   library: LibraryDtoAdmin,
   libraryId: number
 ): Promise<AxiosResponse<ResponseSuccess>> {
-  console.log(library, libraryId);
-  
+
   try {
     const response = axiosInstance.put(`/library/admin/update/${libraryId}`, {
       description: library.description,

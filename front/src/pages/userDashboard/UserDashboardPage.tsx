@@ -5,38 +5,48 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
-/* import {
+import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/select" */
+} from "@/components/ui/select"
 import FormAddLibrary from "@/components/shared/FormAddLibrary"
 import StateCard from "./components/StateCard"
 import { useEffect, useState } from "react"
-import { getLibrariesUserDashboard } from "@/services/LibraryService"
+import {
+  getLibrariesByStateUser,
+  getLibrariesUserDashboard
+} from "@/services/LibraryService"
 import { Library } from "@/interfaces/Library"
 import { useAuthContext } from "@/contexts"
 import usePagination from "@/hooks/usePagination"
 import { Pagination } from "@/components/shared/Pagination"
+import { useToast } from "@/components/ui/use-toast"
 
 const UserDashboardPage = () => {
   const { authUser } = useAuthContext()
-
+  const { toast } = useToast()
   const [list, setList] = useState<Library[]>()
 
-  //const [listClone, setListClone] = useState<Library[]>()
-  const { currentPage, totalPages, setTotalPages, handlePageChange } =
-    usePagination()
+  const [state, setState] = useState("all")
+  const {
+    currentPage,
+    totalPages,
+    setTotalPages,
+    handlePageChange,
+    setCurrentPage
+  } = usePagination()
 
   async function getLibrary() {
-    const response = await getLibrariesUserDashboard(authUser!.user.id, currentPage)
-    console.log(response);
-    
+    const response = await getLibrariesUserDashboard(
+      authUser!.user.id,
+      currentPage
+    )
+
     setList(response.results)
-    //setListClone(response.results)
     setTotalPages(Math.ceil(response.total_pages))
   }
 
@@ -47,21 +57,42 @@ const UserDashboardPage = () => {
   useEffect(() => {
     handlePageChange(1)
   }, [])
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [state])
+  useEffect(() => {
+    fethLibraries(state)
+  }, [currentPage, state])
 
-  /* function handleChangeSelect(value: string) {
-    const cloneList = [...(listClone || [])]
-    if (value === "ALL") return setList(cloneList)
-    const result = cloneList.filter((item) => item.state === value)
-    setList(result)
-  } */
+  function handleChangeSelect(value: string) {
+    setState(value.toLocaleLowerCase())
+  }
+
+  async function fethLibraries(state: string) {
+    try {
+      const response = await getLibrariesByStateUser(
+        state.toLocaleLowerCase(),
+        currentPage,
+        authUser!.user.id
+      )
+
+      setList(response.data.results)
+      setTotalPages(response.data.total_pages)
+    } catch (error) {
+      toast({
+        title: "Dont have libraries with this state"
+      })
+      throw error
+    }
+  }
 
   return (
     <div className="flex flex-1 mx-auto max-w-[1240px] w-screen flex-col relative gap-6 pt-0 p-4 md:pt-0 sm:p-4 sm:pt-0 xl:p-0">
       <div className="flex">
         <div className="flex-1">
-          {/*  <Select
+          <Select
             defaultValue="ALL"
-            onValueChange={(value) => handleChangeSelect(value)}
+            onValueChange={handleChangeSelect}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a state" />
@@ -74,7 +105,7 @@ const UserDashboardPage = () => {
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select> */}
+          </Select>
         </div>
 
         <div className="flex justify-end">

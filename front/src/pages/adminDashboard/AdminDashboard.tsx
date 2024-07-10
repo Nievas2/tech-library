@@ -5,43 +5,42 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
-/* import {
+import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/select" */
+} from "@/components/ui/select"
 import { Library } from "@/interfaces/Library"
 import { useEffect, useState } from "react"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import ChangeTag from "./components/ChangeTag"
 import StateCardAdmin from "./components/StateCardAdmin"
 import FormAddLibrary from "../../components/shared/FormAddLibrary"
-import { getAllLibraries } from "@/services/LibraryService"
+import { getLibrariesByStateAdmin } from "@/services/LibraryService"
 import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
 import { Tag } from "@/interfaces/Tag"
 import { Pagination } from "@/components/shared/Pagination"
 import usePagination from "@/hooks/usePagination"
+import { useToast } from "@/components/ui/use-toast"
 
 const AdminDashboardPage = () => {
+  const { toast } = useToast()
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
-  //const [defaultList, setDefaultList] = useState<Library[]>()
   const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
-  const { currentPage, totalPages, setTotalPages, handlePageChange } =
-    usePagination()
-  async function getLibraries() {
-    const response = await getAllLibraries(currentPage)
-    //console.log(response)
-
-    setList(response.results)
-    //setDefaultList(response.results)
-    setTotalPages(Math.ceil(response.total_pages))
-  }
+  const [state, setState] = useState("all")
+  const {
+    currentPage,
+    totalPages,
+    setTotalPages,
+    handlePageChange,
+    setCurrentPage
+  } = usePagination()
   const fetchTags = async () => {
     try {
       const tags = await getTagsApi()
@@ -53,38 +52,44 @@ const AdminDashboardPage = () => {
     }
   }
   useEffect(() => {
-    getLibraries()
-  }, [currentPage])
-  useEffect(() => {
     fetchTags()
     handlePageChange(1)
   }, [])
-  /*  function handleChangeSelect(value: string) {
-    let cloneList = [...(defaultList || [])]
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [state])
+  useEffect(() => {
+    fethLibraries(state)
+  }, [currentPage, state])
 
-    if (value === "ALL") {
-      setList(defaultList)
-      handlePageChange(1)
-      return
-    }
-
-    cloneList.sort((a, b) => {
-      if (a.state === value) return -1
-      if (b.state === value) return 1
-      return 0
-    })
-
-    setList(cloneList)
-    handlePageChange(1)
+  function handleChangeSelect(value: string) {
+    setState(value.toLocaleLowerCase())
   }
- */
+
+  async function fethLibraries(state: string) {
+    try {
+      const response = await getLibrariesByStateAdmin(
+        state.toLocaleLowerCase(),
+        currentPage
+      )
+      console.log(response)
+
+      setList(response.data.results)
+      setTotalPages(response.data.total_pages)
+    } catch (error) {
+      toast({
+        title: "Dont have libraries with this state"
+      })
+      throw error
+    }
+  }
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
-          {/* <Select
+          <Select
             defaultValue="ALL"
-            onValueChange={(value) => handleChangeSelect(value)}
+            onValueChange={handleChangeSelect}
             disabled={loading}
           >
             <SelectTrigger className="w-[180px]">
@@ -93,11 +98,12 @@ const AdminDashboardPage = () => {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="ALL">All</SelectItem>
+                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
                 <SelectItem value="PENDING">PENDING</SelectItem>
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select> */}
+          </Select>
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex items-center">
               <Icon

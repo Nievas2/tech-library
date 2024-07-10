@@ -80,7 +80,6 @@ export default function EditLibraryAdmin({ card }: CardProps) {
     try {
 
       const response = await putLibraryAdmin(valuesDate, card.id)
-      console.log(response);
       
       toast({
         title: response.data.statusMessage
