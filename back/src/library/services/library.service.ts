@@ -169,7 +169,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
       .skip((currentPage - 1) * pageSize);
 
     if (query && query.trim() != "" && query.length > 1) {
-      queryBuilder.andWhere("library.name like :query", {
+      queryBuilder.andWhere("library.name like lower(:query)", {
         query: `%${query}%`,
       });
     }
@@ -234,13 +234,15 @@ export class LibraryService extends BaseService<LibraryEntity> {
    * @param currentPage - Pagina actual
    * @param pageSize - Cantidad de elementos por pagina
    * @param userAuth - Usuario autenticado en el sistema
+   * @param status - Status de la libreria (activa, pendiente, inactiva)
    * @throws {UserNotFoundException}
    */
   async findyAllByUserId(
     id: number,
     currentPage: number,
     pageSize: number,
-    userAuth: UserEntity
+    userAuth: UserEntity,
+    status?: string 
   ): Promise<LibraryPagesDto> {
     const user: UserEntity = await this.findUserById(id, userAuth);
 
@@ -258,6 +260,16 @@ export class LibraryService extends BaseService<LibraryEntity> {
       .orderBy("library.name", "ASC")
       .take(pageSize)
       .skip((currentPage - 1) * pageSize);
+
+    if (status && status !="") {
+      if (status.toLowerCase() === "pending") {
+        query.andWhere("library.state = :state", { state: State.PENDING });
+      } else if (status.toLowerCase() === "active") {
+        query.andWhere("library.state = :state", { state: State.ACTIVE });
+      } else if (status.toLowerCase() === "inactive") {
+        query.andWhere("library.state = :state", { state: State.INACTIVE });
+      }
+    }
 
     const [libraries, total] = await query.getManyAndCount();
 

@@ -51,13 +51,16 @@ export class LibraryRouter extends BaseRouter<
       (req, res, next) => this.middleware.checkAdminRole(req, res, next),
       (req, res) => this.controller.getLibrarysStatusPending(req, res)
     );
-    this.router.get("/library/all/status/inactive", (req, res) =>
-      this.controller.getLibrarysStatusInactive(req, res)
-    );
 
     this.router.get(
-      "/library/all/search/:userid",
-      (req, res) => this.controller.getLibrarysSearch(req, res)
+      "/library/all/status/inactive",
+      this.middleware.passAuth("jwt"),
+      (req, res, next) => this.middleware.checkAdminRole(req, res, next),
+      (req, res) => this.controller.getLibrarysStatusInactive(req, res)
+    );
+
+    this.router.get("/library/all/search/:userid", (req, res) =>
+      this.controller.getLibrarysSearch(req, res)
     );
 
     this.router.get(

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import {  Request, Response } from "express";
 import { LibraryHttpResponse } from "../response/library.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { LibraryService } from "../services/library.service";
@@ -113,13 +113,20 @@ export class LibraryController {
     try {
       const id = Number(req.params.userid);
       const { currentPage, pageSize } = this.getParams(req);
+      const { state } = req.query;
+      let stateQuery!: string | undefined;
 
+      if (state) {
+        stateQuery = state as string;
+      }
+      
       const userAuth = req.user as UserEntity;
       const data = await this.service.findyAllByUserId(
         id,
         currentPage,
         pageSize,
-        userAuth
+        userAuth,
+        stateQuery
       );
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
@@ -162,8 +169,11 @@ export class LibraryController {
       let arrayIds: number[] = [];
 
       if (tags) {
-        if (tags.length > 0 || tags !== "" && tags !== undefined) {
-          arrayIds = tags.split(",").map((id) => parseInt(id)).filter((id) => !isNaN(id));
+        if (tags.length > 0 || (tags !== "" && tags !== undefined)) {
+          arrayIds = tags
+            .split(",")
+            .map((id) => parseInt(id))
+            .filter((id) => !isNaN(id));
         }
       }
 
@@ -175,7 +185,7 @@ export class LibraryController {
         query,
         orderLike
       );
-      
+
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
