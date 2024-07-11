@@ -45,9 +45,6 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
 
         <p className="text-base">{card.description}</p>
       </div>
-      {card.state === "ACTIVE" ? (
-        ""
-      ) : (
         <div className="flex items-center justify-between mt-4">
           <Dialog>
             <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-main/80 text-light py-2 rounded-sm">
@@ -70,7 +67,6 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
             </DialogContent>
           </Dialog>
         </div>
-      )}
     </div>
   )
 }

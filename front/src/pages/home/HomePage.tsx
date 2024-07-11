@@ -90,11 +90,12 @@ const HomePage = () => {
     }
 
     fetchLibraries()
-  }, [setTotalPages, tags, search])
+  }, [setTotalPages, tags, search, currentPage])
 
   useEffect(() => {
     handlePageChange(1)
   }, [tagsActives, totalPages])
+
   const SkeletonCard = () => {
     return (
       <div className="flex w-[322.67px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
@@ -141,35 +142,35 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-7 flex flex-col gap-7 px-4 justify-center items-end md:items-center mb-7">
-          <SearchBar />
-          <div>
-            {notFound && currentPage === 1 ? (
-              <NotFound />
-            ) : (
-              <div>
-                {search ? (
-                  <CardsContainer libraries={libraries} />
-                ) : (
-                  <div>
-                    {loading ? (
-                      renderSkeletons()
-                    ) : (
-                      <CardsContainer libraries={libraries} />
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+        <div className="pt-7 flex flex-col items-center gap-7 px-4 justify-start mb-7">
+          <div className="flex flex-col items-end md:items-center gap-7">
+            <SearchBar />
+            <>
+              {notFound && currentPage === 1 ? (
+                <NotFound />
+              ) : (
+                <div>
+                  {search ? (
+                    <CardsContainer libraries={libraries} />
+                  ) : (
+                    <div>
+                      {loading ? (
+                        renderSkeletons()
+                      ) : (
+                        <CardsContainer libraries={libraries} />
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           </div>
 
-          <div>
-            <Pagination
-              currentPage={currentPage!}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </div>
+          <Pagination
+            currentPage={currentPage!}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       </section>
     </>

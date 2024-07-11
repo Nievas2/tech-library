@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { ModeToggle } from "../mode-toggle"
 import ItemsNavbar from "./Navbar-components/items"
 import { Icon } from "@iconify/react"
@@ -9,8 +8,6 @@ import { Separator } from "../ui/separator"
 import { useLogout } from "@/hooks"
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false)
-
   const { logOut } = useLogout();
   const { authUser } = useAuthContext();
   
@@ -19,36 +16,6 @@ const Navbar = () => {
 
       <div className="mx-auto max-w-7xl p-4">
         <div className="relative flex h-16 items-center justify-between">
-          <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
-            <button
-              type="button"
-              className="relative inline-flex items-center justify-center rounded-md p-2 bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-light"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
-              onClick={() => setOpen(!open)}
-            >
-              <span className="absolute -inset-0.5"></span>
-              <span className="sr-only">Open main menu</span>
-              {authUser && (
-                <div>
-                  {open == true ? (
-                    <Icon
-                      icon="material-symbols:close"
-                      width="26"
-                      height="26"
-                    />
-                  ) : (
-                    <Icon
-                      icon="material-symbols:menu"
-                      width="26"
-                      height="26"
-                    />
-                  )}
-                </div>
-              )}
-            </button>
-          </div>
-
           <div className="flex flex-1 items-center justify-start">
             <Link
               className="flex flex-shrink-0 items-center gap-1"
@@ -114,17 +81,19 @@ const Navbar = () => {
                               <p>Your Dashboard</p>
                             </Link>
 
-                            <Link 
-                              className="cursor-pointer p-[5px] flex items-center flex-row gap-2"
-                              to="/admin-dashboard"
-                            >
-                              <Icon 
-                                icon="fluent:globe-shield-48-filled"
-                                width="24" 
-                                height="24"  
-                              />
-                              <p>Admin Dashboard</p>
-                            </Link>
+                            {authUser?.user.role === "ADMIN" && (
+                              <Link 
+                                className="cursor-pointer p-[5px] flex items-center flex-row gap-2"
+                                to="/admin-dashboard"
+                              >
+                                <Icon 
+                                  icon="fluent:globe-shield-48-filled"
+                                  width="24" 
+                                  height="24"  
+                                />
+                                <p>Admin Dashboard</p>
+                              </Link>
+                            )}
                           </div>
 
                           <Separator className="mt-[10px] mx-[5px] mb-[10px]" />
@@ -148,21 +117,17 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center gap-3">
-                    <div>
-                      <ItemsNavbar
-                        name="LOGIN"
-                        path="/login"
-                        key={crypto.randomUUID()}
-                      />
-                    </div>
+                    <ItemsNavbar
+                      name="LOGIN"
+                      path="/login"
+                      key={crypto.randomUUID()}
+                    />
 
-                    <div>
-                      <ItemsNavbar
-                        name="SIGNUP"
-                        path="/signup"
-                        key={crypto.randomUUID()}
-                      />
-                    </div>
+                    <ItemsNavbar
+                      name="SIGNUP"
+                      path="/signup"
+                      key={crypto.randomUUID()}
+                    />
 
                     <div className="text-black flex rounded-md text-sm font-medium">
                       <ModeToggle />
