@@ -22,7 +22,7 @@ export class TagEntity extends BaseEntity {
     @Column({ type: "varchar", length: 15, nullable: false })
     name!: string
 
-    @Column({ type: "varchar", length: 7, nullable: false })
+    @Column({ type: "varchar", length: 8, nullable: false })
     color!: string
 
     @ManyToMany(() => LibraryEntity, (library) => library.tags)
