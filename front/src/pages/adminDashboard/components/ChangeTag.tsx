@@ -1,27 +1,38 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useToast } from "@/components/ui/use-toast"
 import { deleteTag, postTag, putTag } from "@/services/TagService"
 import { Tag } from "@/stores"
 import { tagSchema } from "@/utils/schemas/Tag"
 import { Label } from "@radix-ui/react-label"
 import { useFormik } from "formik"
-
+import InputColor from "react-input-color"
 interface ChangeTagProps {
   tag: Tag | undefined
 }
 const ChangeTag = ({ tag }: ChangeTagProps) => {
+  const { toast } = useToast()
   const formik = useFormik({
     initialValues: {
       name: tag ? tag.name : "",
       color: tag ? tag.color : "#f00"
     },
     validationSchema: tagSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (tag === undefined) {
-        postTag(values)
+        const response = await postTag(values)
+        toast({
+          title: response.data.statusMessage
+        })
+        if(response.data.status){
+          window.location.reload()
+        }
       }
       if (tag != undefined) {
-        putTag(values, tag?.id)
+        const response = await putTag(values, tag?.id)
+        toast({
+          title: response.data.statusMessage
+        })
       }
     }
   })
@@ -46,11 +57,12 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         </div>
         <div className="grid items-center gap-1.5">
           <Label>Background Color</Label>
-          <input
-            type="color"
-            className="bg-dark dark:bg-light"
-            {...formik.getFieldProps("color")}
+          <InputColor
+            onChange={(value) => formik.setFieldValue("color", value.hex)}
+            initialValue={formik.values.color}
+            placement="top"
           />
+          <span>{formik.values.color}</span>
         </div>
         <div>
           <div className="flex mt-1">
@@ -66,13 +78,16 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             </h4>
           </div>
         </div>
-        <Button
-          variant={"destructive"}
-          onClick={handleDeleteTag}
-          type="button"
-        >
-          Delete
-        </Button>
+        {tag && (
+          <Button
+            variant={"destructive"}
+            onClick={handleDeleteTag}
+            type="button"
+          >
+            Delete
+          </Button>
+        )}
+
         <Button
           variant={"marketing"}
           className="p-1 mt-4"

@@ -33,23 +33,23 @@ export default function EditLibraryAdmin({ card }: CardProps) {
   )
   const [error, setError] = useState(false)
 
-  const [tags, setTags] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [tags, setTags] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const tags = await getTagsApi();
-        setTags(tags);
+        const tags = await getTagsApi()
+        setTags(tags)
       } catch (error) {
-        console.error("Error fetching tags", error);
+        console.error("Error fetching tags", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchTags();
-  }, []);
+    fetchTags()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -78,9 +78,8 @@ export default function EditLibraryAdmin({ card }: CardProps) {
   })
   async function putLibraryFunction(valuesDate: LibraryDtoAdmin) {
     try {
-
       const response = await putLibraryAdmin(valuesDate, card.id)
-      
+
       toast({
         title: response.data.statusMessage
       })
@@ -191,7 +190,10 @@ export default function EditLibraryAdmin({ card }: CardProps) {
         </small>
       </div>
       <div className="flex w-full items-center gap-1.5 justify-between">
-        <Select onValueChange={(value) => addTag(value)} disabled={loading}>
+        <Select
+          onValueChange={(value) => addTag(value)}
+          disabled={loading}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a tag" />
           </SelectTrigger>
@@ -208,7 +210,11 @@ export default function EditLibraryAdmin({ card }: CardProps) {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select onValueChange={(value) => editState(value)} disabled={loading}>
+        <Select
+          onValueChange={(value) => editState(value)}
+          disabled={loading}
+          defaultValue={formik.values.state}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a State" />
           </SelectTrigger>

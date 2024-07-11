@@ -13,7 +13,7 @@ export class TagDto extends BaseDTO {
   name!: string;
 
   @IsNotEmpty()
-  @Matches(/#[A-Fa-f0-9]{6}/)
+  @Matches(/#[A-Fa-f0-9]{8}/)
   color!: string;
   
 }
@@ -31,7 +31,7 @@ export class TagUpdateDto extends BaseDTO {
 
   @IsOptional()
   @IsNotEmpty()
-  @Matches(/#[A-Fa-f0-9]{6}/)
+  @Matches(/#[A-Fa-f0-9]{8}/)
   color!: string;
 }
 
