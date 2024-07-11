@@ -1,6 +1,5 @@
 import axiosInstance from "@/api/axiosInstance"
 import { Tag } from "@/stores"
-import axios from "axios"
 
 interface TagDto {
   name  : string
@@ -18,36 +17,35 @@ export async function getTagsApi(): Promise<Tag[]> {
 }
 
 export function postTag(tag: TagDto) {
-  axios
-    .post("http://localhost:8000/api/tag/create", {
+  try {
+    const response = axiosInstance
+    .post("/tag/create", {
       name: tag.name,
       color: tag.color
     })
-    .then((response) => {
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+    return response
+  } catch (error) {
+    throw error
+  }
+  
 }
 
 export function putTag(tag: TagDto, tagId: number) {
-  axios
-    .put(`http://localhost:8000/api/tag/update/${tagId}`, {
+  try {
+    const response = axiosInstance.put(`/tag/update/${tagId}`, {
       tag
     })
-    .then((response) => {
-      return response.data.data
-    })
-    .catch((error) => {
-      console.log(error)
-      return null
-    })
+    return response
+  } catch (error) {
+    throw error
+  }
+  axiosInstance
+    
 }
 
 export function deleteTag(tagId: number) {
-  axios
-    .delete(`http://localhost:8000/api/tag/delete/${tagId}`)
+  axiosInstance
+    .delete(`/tag/delete/${tagId}`)
     .then((response) => {
       return response.data.data
     })
