@@ -118,21 +118,17 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center gap-3">
-                    <div>
-                      <ItemsNavbar
-                        name="LOGIN"
-                        path="/login"
-                        key={crypto.randomUUID()}
-                      />
-                    </div>
+                    <ItemsNavbar
+                      name="LOGIN"
+                      path="/login"
+                      key={crypto.randomUUID()}
+                    />
 
-                    <div>
-                      <ItemsNavbar
-                        name="SIGNUP"
-                        path="/signup"
-                        key={crypto.randomUUID()}
-                      />
-                    </div>
+                    <ItemsNavbar
+                      name="SIGNUP"
+                      path="/signup"
+                      key={crypto.randomUUID()}
+                    />
 
                     <div className="text-black flex rounded-md text-sm font-medium">
                       <ModeToggle />

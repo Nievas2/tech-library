@@ -8,6 +8,7 @@ const SearchBar = () => {
   const { handleSearch, searchParams } = usePaginationHome()
   const [text, setText] = useState("")
   const [value] = useDebounce(text, 350)
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const search = urlParams.get("search")
@@ -18,6 +19,7 @@ const SearchBar = () => {
       ? setText(searchParamsData)
       : setText("")
   }, [])
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const search = urlParams.get("search")
@@ -27,9 +29,9 @@ const SearchBar = () => {
     }
     handleSearch(value)
   }, [value])
-
+  
   return (
-    <div className="w-[80%] sticky z-0 top-28 flex h-10 ">
+    <div className="w-[80%] sticky z-0 top-[125px] flex h-10 ">
       <div className="bg-light dark:bg-dark rounded-md border rounded-r-none w-10 grid place-content-center border-dark dark:border-light">
         <Icon
           icon="material-symbols:search"
@@ -37,6 +39,7 @@ const SearchBar = () => {
           height="24"
         />
       </div>
+
       <div className="w-full relative">
         <Input
           placeholder="Search library"
@@ -46,6 +49,7 @@ const SearchBar = () => {
           }}
           className="w-full bg-light focus:ring-0 disabled:focus:ring text-dark dark:text-light dark:bg-dark rounded-l-none h-full border border-dark dark:border-light"
         />
+        
         {text && (
           <button
             className="absolute right-2 top-1/2 -translate-y-1/2 z-0"

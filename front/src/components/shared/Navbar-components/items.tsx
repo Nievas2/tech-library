@@ -7,12 +7,12 @@ interface ItemsNavbarProps {
 }
 export default function ItemsNavbar({ name, path }: ItemsNavbarProps) {
   return (
-    <Button variant="authButton">
-      <Link
-        to={path}
-      >
+    <Link
+      to={path}
+    >
+      <Button variant="authButton">
         {name}
-      </Link>
-    </Button>
+      </Button>
+    </Link>
   )
 }

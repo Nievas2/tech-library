@@ -12,6 +12,7 @@ export default function SideBar() {
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
   const { searchParams } = usePaginationHome()
+  
   useEffect(() => {
     const handleResize = () => {
       setOpen(window.innerWidth > 768)
@@ -55,14 +56,15 @@ export default function SideBar() {
 
   return (
     <section
-      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
-        open ? "w-60" : "w-0"
+      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static border border-dark dark:border-light bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
+        open ? "w-60" : "w-0 border-none"
       } `}
     >
+      {/* border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light */}
       <div
         className={`w-full h-full relative ${
           open
-            ? "px-4 pt-[34px] border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light"
+            ? "px-4 pt-[34px]"
             : "pt-0"
         }`}
       >
@@ -87,12 +89,12 @@ export default function SideBar() {
         </div>
 
         <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
-          <h2 className="text-xl font-bold">TECNOLOGIES</h2>
+          <h2 className="text-xl font-bold">CATEGORIES</h2>
           <ul className="flex flex-col gap-1">
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <div>
+              <div className="flex flex-col gap-3">
                 {tags &&
                   tags?.map((tag: Tag) => (
                     <ItemsSideBar

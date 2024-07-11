@@ -33,15 +33,18 @@ const LoginPage = () => {
       throw error
     }
   }
+
   function loginGoogle() {
     window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self")
   }
+  
   function loginGithub() {
     window.open(
       `${import.meta.env.VITE_API_URL}/login/github`,
       "_self"
     )
   }
+
   return (
     <div className="flex my-auto">
       <form
@@ -73,10 +76,6 @@ const LoginPage = () => {
                     type="Username"
                     placeholder="username"
                     {...getFieldProps("username")}
-                    // name="username"
-                    // onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // value={values.username}
                   />
                   {touched.username && errors.username && (
                     <small className="font-bold text-[#ff4444]">
@@ -91,10 +90,6 @@ const LoginPage = () => {
                     type="password"
                     placeholder="•••••••••••••••"
                     {...getFieldProps("password")}
-                    // name="password"
-                    // onChange={handleChange}
-                    // onBlur={handleBlur}
-                    // value={values.password}
                   />
                   {touched.password && errors.password && (
                     <small className="font-bold text-[#ff4444]">
