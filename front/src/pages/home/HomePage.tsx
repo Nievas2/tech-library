@@ -90,7 +90,7 @@ const HomePage = () => {
     }
 
     fetchLibraries()
-  }, [setTotalPages, tags, search])
+  }, [setTotalPages, tags, search, currentPage])
 
   useEffect(() => {
     handlePageChange(1)
