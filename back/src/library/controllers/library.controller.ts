@@ -3,7 +3,6 @@ import { LibraryHttpResponse } from "../response/library.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { LibraryService } from "../services/library.service";
 import { getValidNumber } from "../../shared/utils/utils";
-import { UserEntity } from "../../user/entities/user.entity";
 import { PayloadToken } from "../../auth/interfaces/auth.interface";
 
 /**
@@ -114,7 +113,15 @@ export class LibraryController {
       const id = Number(req.params.userid);
       const { currentPage, pageSize } = this.getParams(req);
 
+<<<<<<< HEAD
+      if (state) {
+        stateQuery = state as string;
+      }
+      
+      const userAuth = req.user as PayloadToken;
+=======
       const userAuth = req.user as UserEntity;
+>>>>>>> 29dbbcac4e0aa33efb3b8fa3dfd7ed96869d0747
       const data = await this.service.findyAllByUserId(
         id,
         currentPage,

@@ -240,7 +240,12 @@ export class LibraryService extends BaseService<LibraryEntity> {
     id: number,
     currentPage: number,
     pageSize: number,
+<<<<<<< HEAD
+    userAuth: PayloadToken,
+    status?: string 
+=======
     userAuth: UserEntity
+>>>>>>> 29dbbcac4e0aa33efb3b8fa3dfd7ed96869d0747
   ): Promise<LibraryPagesDto> {
     const user: UserEntity = await this.findUserById(id, userAuth);
 
@@ -388,11 +393,13 @@ export class LibraryService extends BaseService<LibraryEntity> {
     if (library.name && libraryUpdate.name !== library.name) {
       await this.existsByName(library.name);
     }
-
+    
     if (
-      libraryUpdate.createdBy.id === Number(payload.sub) ||
+      libraryUpdate.createdBy.id == Number(payload.sub) ||
       payload.role === RoleType.ADMIN
     ) {
+      console.log("success");
+      
       let tags: TagEntity[] = [];
       if (library.tags) tags = await this.getTags(library.tags);
       if(library.name) libraryUpdate.name = library.name;
@@ -413,10 +420,10 @@ export class LibraryService extends BaseService<LibraryEntity> {
       }
 
       return new LibraryResponseDTO(libraryUpdate);
-    }
-
+    } 
+    console.log("error");
+    
     throw new UnauthorizedException("User is not authorized to update this library");
-   
   }
 
   /**
@@ -582,7 +589,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   private async findUserById(
     id: number,
-    userAuth: UserEntity
+    userAuth: PayloadToken
   ): Promise<UserEntity> {
     const user = await this.userService.findById(id, userAuth);
     if (user !== null) return user;
