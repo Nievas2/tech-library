@@ -112,21 +112,20 @@ export class LibraryController {
     try {
       const id = Number(req.params.userid);
       const { currentPage, pageSize } = this.getParams(req);
+      const { state } = req.query;
+      let stateQuery!: string | undefined;
 
-<<<<<<< HEAD
       if (state) {
         stateQuery = state as string;
       }
       
       const userAuth = req.user as PayloadToken;
-=======
-      const userAuth = req.user as UserEntity;
->>>>>>> 29dbbcac4e0aa33efb3b8fa3dfd7ed96869d0747
       const data = await this.service.findyAllByUserId(
         id,
         currentPage,
         pageSize,
-        userAuth
+        userAuth,
+        stateQuery
       );
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);

@@ -240,12 +240,8 @@ export class LibraryService extends BaseService<LibraryEntity> {
     id: number,
     currentPage: number,
     pageSize: number,
-<<<<<<< HEAD
     userAuth: PayloadToken,
     status?: string 
-=======
-    userAuth: UserEntity
->>>>>>> 29dbbcac4e0aa33efb3b8fa3dfd7ed96869d0747
   ): Promise<LibraryPagesDto> {
     const user: UserEntity = await this.findUserById(id, userAuth);
 
@@ -263,6 +259,16 @@ export class LibraryService extends BaseService<LibraryEntity> {
       .orderBy("library.name", "ASC")
       .take(pageSize)
       .skip((currentPage - 1) * pageSize);
+
+    if (status && status !="") {
+      if (status.toLowerCase() === "pending") {
+        query.andWhere("library.state = :state", { state: State.PENDING });
+      } else if (status.toLowerCase() === "active") {
+        query.andWhere("library.state = :state", { state: State.ACTIVE });
+      } else if (status.toLowerCase() === "inactive") {
+        query.andWhere("library.state = :state", { state: State.INACTIVE });
+      }
+    }
 
     const [libraries, total] = await query.getManyAndCount();
 
