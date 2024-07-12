@@ -12,7 +12,7 @@
     "typeorm": "typeorm-ts-node-commonjs -d ./src/config/data.source.ts",
     "m:gen": "npm run typeorm migration:generate",
     "m:run": "npm run typeorm migration:run",
-    "db:create": "npm run m:gen -- src/migrations/CreateDb && npm run m:run"
+    "db:create": "rimraf ./src/migrations && npm run m:gen -- src/migrations/CreateDb && npm run m:run"
   },
   "author": "",
   "license": "ISC",

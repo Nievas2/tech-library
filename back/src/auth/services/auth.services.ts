@@ -6,6 +6,7 @@ import { UserEntity } from "../../user/entities/user.entity";
 import { PayloadToken } from "../interfaces/auth.interface";
 import { UserDTO, UserResponseDTO } from "../../user/entities/user.dto";
 import { Request, Response } from "express";
+import { UserAuthValidate } from "../interfaces/user.auth.validate";
 
 /**
  * @class AuthService
@@ -34,17 +35,24 @@ export class AuthService extends ConfigServer {
   public async validateUser(
     username: string,
     password: string
-  ): Promise<UserEntity | null> {
+  ): Promise<UserAuthValidate> {
     const userByUsername = await this.userService.findUserByUsername(username);
-
-    if (userByUsername) {
-      const isMatch = await bcrypt.compare(password, userByUsername.password);
-      if (!isMatch) return null;
-      
-      return userByUsername;
+    const authUSer: UserAuthValidate = {
+      existUser: false,
+      passwordOk: false,
+      user: userByUsername,
     }
 
-    return null;
+    if (userByUsername) {
+      authUSer.existUser = true;
+      const isMatch = await bcrypt.compare(password, userByUsername.password);
+      if (isMatch) {
+        authUSer.passwordOk = true;
+        return authUSer;
+      };
+    }
+
+    return authUSer;
   }
 
   /**
