@@ -2,12 +2,28 @@ import passport from "passport";
 import { Request, Response, NextFunction } from "express";
 import { UserEntity } from "../../user/entities/user.entity";
 import { RoleType } from "../../user/entities/role";
+import { AuthErrorResponse } from "../../auth/interfaces/auth.error.response.interface";
 
 export class SharedMiddleware {
   constructor() {}
 
   passAuth(typeStrategy: string) {
-    return passport.authenticate(typeStrategy, { session: false, failWithError: false });
+    return (req: Request, res: Response, next: NextFunction) => {
+      passport.authenticate(typeStrategy, { session: false }, (err: any, user: any, info: AuthErrorResponse) => {
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          return res.status(401).json(info);
+        }
+        req.logIn(user, { session: false }, (err) => {
+          if (err) {
+            return next(err);
+          }
+          next();
+        });
+      })(req, res, next);
+    };
   }
 
   checkAdminRole(req: Request, res: Response, next: NextFunction) {
