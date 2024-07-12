@@ -25,15 +25,15 @@ import { getTagsApi } from "@/services/TagService"
 import { Tag } from "@/interfaces/Tag"
 import { Pagination } from "@/components/shared/Pagination"
 import usePagination from "@/hooks/usePagination"
-import { useToast } from "@/components/ui/use-toast"
+import { renderSkeletonsAdminDashboard } from "./skeletons/SkeletonAdminDashboard"
 
 const AdminDashboardPage = () => {
-  const { toast } = useToast()
   const [list, setList] = useState<Library[]>()
   const [showTags, setShowTags] = useState(true)
   const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
   const [state, setState] = useState("all")
+  const [filterError, setFilterError] = useState<string>("")
   const {
     currentPage,
     totalPages,
@@ -52,6 +52,7 @@ const AdminDashboardPage = () => {
     }
   }
   useEffect(() => {
+    setLoading(true)
     fetchTags()
     handlePageChange(1)
   }, [])
@@ -67,22 +68,19 @@ const AdminDashboardPage = () => {
   }
 
   async function fethLibraries(state: string) {
-    setLoading(true)
     try {
       const response = await getLibrariesByStateAdmin(
         state.toLocaleLowerCase(),
         currentPage
       )
-
+      setFilterError("")
       setList(response.data.results)
       setTotalPages(response.data.total_pages)
     } catch (error) {
-      toast({
-        title: "Dont have libraries with this state"
-      })
+      setFilterError("No libraries were found with that status")
       throw error
     }
-    setLoading(false)
+    if (list) setLoading(false)
   }
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
@@ -158,26 +156,36 @@ const AdminDashboardPage = () => {
       </div>
 
       {loading ? (
-        <span className="text-center text-2xl font-bold">Loading...</span>
+        renderSkeletonsAdminDashboard()
       ) : (
         <>
-          <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
-            {list &&
-              list?.map((card) => (
-                <StateCardAdmin
-                  key={crypto.randomUUID()}
-                  card={card}
-                />
-              ))}
-          </section>
-          <section className="pb-4">
-           <div className="flex justify-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </div>
+          {filterError ? (
+            <div className="h-[40vh] flex text-center items-center justify-center">
+              <span className=" text-2xl font-bold">{filterError}</span>
+            </div>
+          ) : (
+            <>
+              <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
+                {list &&
+                  list?.map((card) => (
+                    <StateCardAdmin
+                      key={crypto.randomUUID()}
+                      card={card}
+                    />
+                  ))}
+              </section>
+              <section className="pb-4">
+                <div className="flex justify-center">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              </section>
+            </>
+          )}
+
           {showTags && (
             <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1 pb-4">
               {tags?.map((tag: any) => (
@@ -200,9 +208,7 @@ const AdminDashboardPage = () => {
                 </div>
               ))}
             </section>
-          )} 
-          </section>
-          
+          )}
         </>
       )}
     </div>

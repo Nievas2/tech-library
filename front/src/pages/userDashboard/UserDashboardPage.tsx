@@ -24,14 +24,14 @@ import { Library } from "@/interfaces/Library"
 import { useAuthContext } from "@/contexts"
 import usePagination from "@/hooks/usePagination"
 import { Pagination } from "@/components/shared/Pagination"
-import { useToast } from "@/components/ui/use-toast"
+import { renderSkeletonsUserDashboard } from "./skeletons/SkeletonUserDashboard"
 
 const UserDashboardPage = () => {
   const { authUser } = useAuthContext()
-  const { toast } = useToast()
   const [list, setList] = useState<Library[]>()
   const [loading, setLoading] = useState(false)
   const [state, setState] = useState("all")
+  const [filterError, setFilterError] = useState<string>()
   const {
     currentPage,
     totalPages,
@@ -55,6 +55,7 @@ const UserDashboardPage = () => {
   }, [currentPage])
 
   useEffect(() => {
+    setLoading(true)
     handlePageChange(1)
   }, [])
   useEffect(() => {
@@ -69,7 +70,6 @@ const UserDashboardPage = () => {
   }
 
   async function fethLibraries(state: string) {
-    setLoading(true)
     try {
       const response = await getLibrariesByStateUser(
         state.toLocaleLowerCase(),
@@ -79,10 +79,10 @@ const UserDashboardPage = () => {
 
       setList(response.data.results)
       setTotalPages(response.data.total_pages)
+      setFilterError("")
     } catch (error) {
-      toast({
-        title: "Dont have libraries with this state"
-      })
+      setFilterError("No libraries were found with that state")
+
       throw error
     }
     setLoading(false)
@@ -129,24 +129,32 @@ const UserDashboardPage = () => {
         </div>
       </div>
       {loading ? (
-        <span className="text-center text-2xl font-bold">Loading...</span>
+        renderSkeletonsUserDashboard()
       ) : (
         <>
-          <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
-            {list?.map((card) => (
-              <StateCard
-                key={crypto.randomUUID()}
-                card={card}
-              />
-            ))}
-          </section>
-          <div className="flex justify-center pb-4">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </div>
+          {filterError ? (
+            <div className="h-[40vh] flex text-center items-center justify-center">
+              <span className=" text-2xl font-bold">{filterError}</span>
+            </div>
+          ) : (
+            <>
+              <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
+                {list?.map((card) => (
+                  <StateCard
+                    key={crypto.randomUUID()}
+                    card={card}
+                  />
+                ))}
+              </section>
+              <div className="flex justify-center pb-4">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
