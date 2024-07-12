@@ -68,110 +68,122 @@ export default function FormAddLibrary({ card }: CardProps) {
     validationSchema: librarySchema,
     onSubmit: async (values) => {
       if (tagsAdded.length === 0) {
-        return setError(true);
+        return setError(true)
       }
-      setError(false);
+      setError(false)
 
-      const tagsId = tagsAdded.map(tag => tag.id);
+      const tagsId = tagsAdded.map((tag) => tag.id)
       const valuesData: LibraryDtoUser = {
         name: values.name,
         description: values.description,
         link: values.link,
         tags: tagsId
-      };
+      }
 
       if (card) {
-        await handleUpdateLibrary(valuesData, card.id);
+        await handleUpdateLibrary(valuesData, card.id)
       } else {
-        await handleCreateLibrary(valuesData);
+        await handleCreateLibrary(valuesData)
       }
     }
-  });
+  })
 
   const handleUpdateLibrary = async (values: LibraryDtoUser, id: number) => {
     try {
-      const response = await putLibraryUser(values, id);
-      toast({ title: response.data.statusMessage });
-      window.location.reload();
+      const response = await putLibraryUser(values, id)
+      toast({ title: response.data.statusMessage })
+      window.location.reload()
     } catch (error) {
-      toast({ title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage });
+      toast({
+        title: (error as AxiosError<ResponseSuccess>).response?.data
+          .statusMessage
+      })
     }
-  };
+  }
 
   const handleCreateLibrary = async (values: LibraryDtoUser) => {
     try {
-      const response = await postLibrary(values, authUser!.user.id);
-      toast({ title: response.data.statusMessage });
-      window.location.reload();
+      const response = await postLibrary(values, authUser!.user.id)
+      toast({ title: response.data.statusMessage })
+      window.location.reload()
     } catch (error) {
-      toast({ title: (error as AxiosError<ResponseSuccess>).response?.data.statusMessage });
+      toast({
+        title: (error as AxiosError<ResponseSuccess>).response?.data
+          .statusMessage
+      })
     }
-  };
+  }
 
-  const addTag = useCallback((value: string) => {
-    if (tagsAdded.find(tag => tag.name === value)) return;
+  const addTag = useCallback(
+    (value: string) => {
+      if (tagsAdded.find((tag) => tag.name === value)) return
 
-    const tagSelected = tags.find(tag => tag.name === value);
-    if (!tagSelected) return;
+      const tagSelected = tags.find((tag) => tag.name === value)
+      if (!tagSelected) return
 
-    setTagsAdded([...tagsAdded, tagSelected]);
-    if (error) setError(false);
-  }, [tags, tagsAdded, error]);
+      setTagsAdded([...tagsAdded, tagSelected])
+      if (error) setError(false)
+    },
+    [tags, tagsAdded, error]
+  )
 
-  const removeTag = useCallback((index: number) => {
-    setTagsAdded(tagsAdded.filter((_, i) => i !== index));
-  }, [tagsAdded]);
+  const removeTag = useCallback(
+    (index: number) => {
+      setTagsAdded(tagsAdded.filter((_, i) => i !== index))
+    },
+    [tagsAdded]
+  )
 
   return (
-    <form className="flex flex-col gap-2 mt-1" onSubmit={formik.handleSubmit}>
+    <form
+      className="flex flex-col gap-2 mt-1"
+      onSubmit={formik.handleSubmit}
+    >
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="name">Name</Label>
         <Input
-          id="name"
-          name="name"
           type="text"
           placeholder="React"
-          onChange={formik.handleChange}
-          value={formik.values.name}
+          {...formik.getFieldProps("name")}
           className="bg-light"
           maxLength={20}
           disabled={loading}
         />
-        <small className={formik.touched.name && formik.errors.name ? "text-[#FF0000]" : ""}>
-          {formik.touched.name && formik.errors.name ? formik.errors.name : ""}
-        </small>
+        {formik.touched.name && formik.errors.name && (
+          <small className="font-bold text-[#ff4444]">
+            {formik.errors.name}
+          </small>
+        )}
       </div>
       <div className="grid w-full items-center gap-1.5">
         <Label>Link</Label>
         <Input
-          id="link"
-          name="link"
           type="text"
           placeholder="https://es.react.dev/"
-          onChange={formik.handleChange}
-          value={formik.values.link}
+          {...formik.getFieldProps("link")}
           className="bg-light"
           maxLength={200}
           disabled={loading}
         />
-        <small className={formik.touched.link && formik.errors.link ? "text-[#FF0000]" : ""}>
-          {formik.touched.link && formik.errors.link ? formik.errors.link : ""}
-        </small>
+        {formik.touched.link && formik.errors.link && (
+          <small className="font-bold text-[#ff4444]">
+            {formik.errors.link}
+          </small>
+        )}
       </div>
       <div className="grid w-full items-center gap-1.5">
         <Label>Description</Label>
         <Textarea
-          id="description"
-          name="description"
           placeholder="Description"
-          onChange={formik.handleChange}
-          value={formik.values.description}
+          {...formik.getFieldProps("description")}
           className="bg-light"
           maxLength={200}
         />
-        <small className={formik.touched.description && formik.errors.description ? "text-[#FF0000]" : ""}>
-          {formik.touched.description && formik.errors.description ? formik.errors.description : ""}
-        </small>
+        {formik.touched.description && formik.errors.description && (
+          <small className="font-bold text-[#ff4444]">
+            {formik.errors.description}
+          </small>
+        )}
       </div>
       <div className="flex w-full items-center gap-1.5">
         <Select onValueChange={addTag}>
@@ -180,8 +192,11 @@ export default function FormAddLibrary({ card }: CardProps) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {tags.map(tag => (
-                <SelectItem key={tag.id} value={tag.name}>
+              {tags.map((tag) => (
+                <SelectItem
+                  key={tag.id}
+                  value={tag.name}
+                >
                   {tag.name}
                 </SelectItem>
               ))}
@@ -196,8 +211,17 @@ export default function FormAddLibrary({ card }: CardProps) {
             className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
           >
             <h4>{tag.name}</h4>
-            <button type="button" className="w-[16px]" onClick={() => removeTag(index)}>
-              <Icon icon="material-symbols:close" width="16" height="16" className="text-dark dark:text-light" />
+            <button
+              type="button"
+              className="w-[16px]"
+              onClick={() => removeTag(index)}
+            >
+              <Icon
+                icon="material-symbols:close"
+                width="16"
+                height="16"
+                className="text-dark dark:text-light"
+              />
             </button>
           </div>
         ))}
@@ -205,7 +229,11 @@ export default function FormAddLibrary({ card }: CardProps) {
       <small className="text-[#FF0000]">
         {error ? "Add at least one tag" : ""}
       </small>
-      <Button variant="marketing" className="p-1" type="submit">
+      <Button
+        variant="marketing"
+        className="p-1"
+        type="submit"
+      >
         Submit
       </Button>
     </form>

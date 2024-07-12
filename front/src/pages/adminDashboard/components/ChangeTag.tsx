@@ -24,7 +24,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         toast({
           title: response.data.statusMessage
         })
-        if(response.data.status){
+        if (response.data.status) {
           window.location.reload()
         }
       }
@@ -52,6 +52,11 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             className="dark:text-[#000] dark:bg-light "
             {...formik.getFieldProps("name")}
           />
+          {formik.touched.name && formik.errors.name && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.name}
+            </small>
+          )}
         </div>
         <div className="grid items-center gap-1.5">
           <Label>Background Color</Label>
@@ -60,6 +65,11 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             initialValue={formik.values.color}
             placement="top"
           />
+          {formik.touched.color && formik.errors.color && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.color}
+            </small>
+          )}
         </div>
         <div>
           <div className="flex mt-1">
