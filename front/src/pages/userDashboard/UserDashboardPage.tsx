@@ -30,7 +30,7 @@ const UserDashboardPage = () => {
   const { authUser } = useAuthContext()
   const { toast } = useToast()
   const [list, setList] = useState<Library[]>()
-
+  const [loading, setLoading] = useState(false)
   const [state, setState] = useState("all")
   const {
     currentPage,
@@ -69,6 +69,7 @@ const UserDashboardPage = () => {
   }
 
   async function fethLibraries(state: string) {
+    setLoading(true)
     try {
       const response = await getLibrariesByStateUser(
         state.toLocaleLowerCase(),
@@ -84,6 +85,7 @@ const UserDashboardPage = () => {
       })
       throw error
     }
+    setLoading(false)
   }
 
   return (
@@ -126,22 +128,27 @@ const UserDashboardPage = () => {
           </Dialog>
         </div>
       </div>
-
-      <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
-        {list?.map((card) => (
-          <StateCard
-            key={crypto.randomUUID()}
-            card={card}
-          />
-        ))}
-      </section>
-      <div className="flex justify-center pb-4">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      {loading ? (
+        <span className="text-center text-2xl font-bold">Loading...</span>
+      ) : (
+        <>
+          <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
+            {list?.map((card) => (
+              <StateCard
+                key={crypto.randomUUID()}
+                card={card}
+              />
+            ))}
+          </section>
+          <div className="flex justify-center pb-4">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </>
+      )}
     </div>
   )
 }

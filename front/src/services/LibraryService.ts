@@ -157,6 +157,7 @@ export function putLibraryUser(
   // eslint-disable-next-line no-useless-catch
   try {
     const response = axiosInstance.put(`/library/update/${libraryId}`, {
+      name: library.name,
       description: library.description,
       link: library.link,
       tags: library.tags
@@ -174,6 +175,7 @@ export function putLibraryAdmin(
 
   try {
     const response = axiosInstance.put(`/library/admin/update/${libraryId}`, {
+      name: library.name,
       description: library.description,
       link: library.link,
       tags: library.tags,

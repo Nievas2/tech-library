@@ -134,7 +134,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           value={formik.values.name}
           className="bg-light"
           maxLength={20}
-          disabled={true}
+          disabled={loading}
         />
         <small
           className={`${

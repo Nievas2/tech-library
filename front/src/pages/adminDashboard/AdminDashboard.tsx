@@ -67,12 +67,12 @@ const AdminDashboardPage = () => {
   }
 
   async function fethLibraries(state: string) {
+    setLoading(true)
     try {
       const response = await getLibrariesByStateAdmin(
         state.toLocaleLowerCase(),
         currentPage
       )
-      console.log(response)
 
       setList(response.data.results)
       setTotalPages(response.data.total_pages)
@@ -82,6 +82,7 @@ const AdminDashboardPage = () => {
       })
       throw error
     }
+    setLoading(false)
   }
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
@@ -157,48 +158,52 @@ const AdminDashboardPage = () => {
       </div>
 
       {loading ? (
-        <span>Loading...</span>
+        <span className="text-center text-2xl font-bold">Loading...</span>
       ) : (
-        <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
-          {list &&
-            list?.map((card) => (
-              <StateCardAdmin
-                key={crypto.randomUUID()}
-                card={card}
-              />
-            ))}
-        </section>
-      )}
-
-      <div className="flex justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
-      {showTags && (
-        <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1 pb-4">
-          {tags?.map((tag: any) => (
-            <div key={crypto.randomUUID()}>
-              <Dialog>
-                <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
-                  {tag.name}
-                </DialogTrigger>
-                <DialogContent className="bg-light dark:bg-dark ">
-                  <DialogHeader className="">
-                    <DialogTitle>
-                      <strong className="text-dark dark:text-light ">
-                        Update Tag
-                      </strong>
-                    </DialogTitle>
-                  </DialogHeader>
-                  <ChangeTag tag={tag} />
-                </DialogContent>
-              </Dialog>
-            </div>
-          ))}
-        </section>
+        <>
+          <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
+            {list &&
+              list?.map((card) => (
+                <StateCardAdmin
+                  key={crypto.randomUUID()}
+                  card={card}
+                />
+              ))}
+          </section>
+          <section className="pb-4">
+           <div className="flex justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+          {showTags && (
+            <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1 pb-4">
+              {tags?.map((tag: any) => (
+                <div key={crypto.randomUUID()}>
+                  <Dialog>
+                    <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
+                      {tag.name}
+                    </DialogTrigger>
+                    <DialogContent className="bg-light dark:bg-dark ">
+                      <DialogHeader className="">
+                        <DialogTitle>
+                          <strong className="text-dark dark:text-light ">
+                            Update Tag
+                          </strong>
+                        </DialogTitle>
+                      </DialogHeader>
+                      <ChangeTag tag={tag} />
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              ))}
+            </section>
+          )} 
+          </section>
+          
+        </>
       )}
     </div>
   )

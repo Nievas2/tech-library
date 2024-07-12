@@ -11,7 +11,7 @@ import FormAddLibrary from "../../../components/shared/FormAddLibrary"
 
 const StateCard = ({ card }: { card: Library }) => {
   return (
-    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4">
+    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4 min-w-[300px] sm:min-w-[300px] md:min-w-[320px]">
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold">{card.name}</h2>
@@ -44,7 +44,7 @@ const StateCard = ({ card }: { card: Library }) => {
           </div>
         </div>
 
-        <p className="text-base">{card.description}</p>
+        <p className="text-base truncate">{card.description}</p>
       </div>
       {card.state === "ACTIVE" ? (
         ""

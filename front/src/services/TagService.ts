@@ -33,7 +33,8 @@ export function postTag(tag: TagDto) {
 export function putTag(tag: TagDto, tagId: number) {
   try {
     const response = axiosInstance.put(`/tag/update/${tagId}`, {
-      tag
+      name: tag.name,
+      color: tag.color
     })
     return response
   } catch (error) {

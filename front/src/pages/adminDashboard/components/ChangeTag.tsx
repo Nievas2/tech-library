@@ -15,7 +15,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
   const formik = useFormik({
     initialValues: {
       name: tag ? tag.name : "",
-      color: tag ? tag.color : "#f00"
+      color: tag ? tag.color : "#ff0000ff"
     },
     validationSchema: tagSchema,
     onSubmit: async (values) => {
@@ -29,10 +29,8 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         }
       }
       if (tag != undefined) {
-        const response = await putTag(values, tag?.id)
-        toast({
-          title: response.data.statusMessage
-        })
+        await putTag(values, tag?.id)
+        window.location.reload()
       }
     }
   })
@@ -62,7 +60,6 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             initialValue={formik.values.color}
             placement="top"
           />
-          <span>{formik.values.color}</span>
         </div>
         <div>
           <div className="flex mt-1">
@@ -71,7 +68,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
               className={`px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light`}
               style={{
                 backgroundColor:
-                  formik.values.color == "" ? "#FF0000" : formik.values.color
+                  formik.values.color == "" ? "#ff0000ff" : formik.values.color
               }}
             >
               {formik.values.name == "" ? "Javascript" : formik.values.name}
