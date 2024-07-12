@@ -67,6 +67,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       if (tagsId === undefined) return
       if (tagsAdded) {
         const valuesDate: LibraryDtoAdmin = {
+          name: values.name,
           description: values.description,
           link: values.link,
           tags: filteredTagsId as number[],

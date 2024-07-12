@@ -16,6 +16,7 @@ export interface LibraryDtoUserPut {
   tags: number[]
 }
 export interface LibraryDtoAdmin {
+  name: string
   description: string
   link: string
   tags: number[]
