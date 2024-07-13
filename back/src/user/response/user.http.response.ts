@@ -36,4 +36,12 @@ export class UserHttpResponse extends BaseHttpResponse {
     return this.BadRequest(res, "UPDATED_USER_BAD_REQUEST", _data);
   }
 
+  BadRequestUserUsernameInvalid(res: Response, data?: any): Response {
+    return this.BadRequest(res, "USER_USERNAME_INVALID", data);
+  }
+
+  BadRequestUserEmailInvalid(res: Response, data?: any): Response {
+    return this.BadRequest(res, "USER_EMAIL_INVALID", data);
+  }
+
 }

@@ -99,6 +99,41 @@ export class UserController {
       if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
+
+  /**
+   * @method existUser - Retorna si existe un usuario en la base de datos
+   * @param username - Nombre de usuario
+   * @returns Status 200 true si el usuario existe, false si no existe
+   * @returns Status 500 si hay un error en el servidor
+   */
+  public async existUser(req: Request, res: Response) {
+    try {
+      const username = req.params.username as string;
+      if(!username) return this.userHttpResponse.BadRequestUserUsernameInvalid(res);
+      const data = await this.service.existUserByUsername(username);
+      this.userHttpResponse.Ok(res, data);
+    } catch (error) {
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+    }
+  }
+
+  /**
+   * @method existEmail - Retorna si existe un email en la base de datos
+   * @param email - Email del usuario
+   * @returns Status 200 true si el email existe, false si no existe
+   * @returns Status 500 si hay un error en el servidor
+   */
+  public async existEmail(req: Request, res: Response) {
+    try {
+      const email = req.params.email as string;
+      if(!email) return this.userHttpResponse.BadRequestUserEmailInvalid(res);
+      const data = await this.service.existUserByEmail(email);
+      this.userHttpResponse.Ok(res, data);
+    } catch (error) {
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+  }
+}
+
   /**
    * @method createUser - Crea un nuevo usuario
    * @param user - DTO del usuario

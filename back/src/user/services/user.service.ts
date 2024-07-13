@@ -93,6 +93,18 @@ export class UserService extends BaseService<UserEntity> {
     return new UserResponseDTO(data);
   }
 
+  async existUserByUsername(username: string): Promise<boolean> {
+    const data = await (await this.execRepository).findOneBy({ username });
+    if (data === null) return false;
+    return true;
+  }
+
+  async existUserByEmail(email: string): Promise<boolean> {
+    const data = await (await this.execRepository).findOneBy({ email });
+    if (data === null) return false;
+    return true;
+  }
+
   /**
    * @method findByIdActive - Retorna un usuario activo por su id
    * @param id - Id del usuario
