@@ -48,6 +48,14 @@ export class UserRouter extends BaseRouter<UserController, UserMiddleware> {
       (req, res) => this.controller.getUserActive(req, res)
     );
 
+    this.router.get("/user/checkuser/:username", (req, res) =>
+      this.controller.existUser(req, res)
+    );
+
+    this.router.get("/user/checkemail/:email", (req, res) =>
+      this.controller.existEmail(req, res)
+    );
+
     //--------------------POST--------------------
     this.router.post(
       "/user/create",
