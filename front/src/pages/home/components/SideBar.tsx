@@ -88,7 +88,7 @@ export default function SideBar() {
         }}
       >
         <div className={`${open ? "flex flex-col gap-4" : "hidden"} `}>
-          <h2 className="text-xl font-bold">CATEGORIES</h2>
+          <h2 className="text-xl font-bold text-[#fff]">CATEGORIES</h2>
           <ul className="flex flex-col gap-1">
             {loading ? (
               <p>Loading...</p>

@@ -98,10 +98,10 @@ const HomePage = () => {
 
   const SkeletonCard = () => {
     return (
-      <div className="flex w-[322.67px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
+      <div className="flex w-[300px] md:w-[250px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
         <div className="flex flex-col gap-2">
           <Skeleton className="h-8 w-3/4 rounded-md" />
-          <Skeleton className="h-4 w-full rounded-md" />
+          <Skeleton className="h-4 w-full sm:w-3/4 rounded-md" />
           <Skeleton className="h-4 w-5/6 rounded-md" />
           <div className="flex flex-row flex-wrap gap-2 text-sm">
             {Array.from({ length: 3 }).map((_, index) => (
@@ -113,8 +113,8 @@ const HomePage = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-row gap-4 justify-center items-center">
-            <Skeleton className="h-10 w-full rounded-md" />
+          <div className="flex flex-row gap-4 justify-start items-center">
+            <Skeleton className="h-10 w-full sm:w-3/4 rounded-md" />
           </div>
           <div className="flex flex-row items-center justify-end gap-2">
             <Skeleton className="h-4 w-24 rounded-md" />
@@ -142,7 +142,7 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-7 flex flex-col items-center gap-7 px-4 justify-start mb-7">
+        <div className="pt-7 flex flex-col items-center gap-7 px-1 sm:px-4 justify-start mb-7">
           <div className="flex flex-col items-end md:items-center gap-7">
             <SearchBar />
             <>

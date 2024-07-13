@@ -7,23 +7,31 @@ import { formatDate } from "@/utils"
 import { useFavoriteStore } from "@/stores"
 
 interface CardProps {
-  library : Library
+  library: Library
+}
+export const removeNumbers = (username: string): string => {
+  const cleanedName = username.replace(/-\d+/, "")
+  return cleanedName
 }
 
 const Card = ({ library }: CardProps) => {
-  const favorites             = useFavoriteStore((state) => state.favorites);
-  const addFavoriteLibrary    = useFavoriteStore((state) => state.addFavoriteLibrary);
-  const deleteFavoriteLibrary = useFavoriteStore((state) => state.deleteFavoriteLibrary);
+  const favorites = useFavoriteStore((state) => state.favorites)
+  const addFavoriteLibrary = useFavoriteStore(
+    (state) => state.addFavoriteLibrary
+  )
+  const deleteFavoriteLibrary = useFavoriteStore(
+    (state) => state.deleteFavoriteLibrary
+  )
 
-  const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
+  const isFavorite = favorites?.some((favorite) => favorite.id === library.id)
 
   const toggleFavorite = () => {
     if (isFavorite) {
-      deleteFavoriteLibrary(library.id);
+      deleteFavoriteLibrary(library.id)
     } else {
-      addFavoriteLibrary(library);
+      addFavoriteLibrary(library)
     }
-  };
+  }
 
   return (
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
@@ -45,7 +53,11 @@ const Card = ({ library }: CardProps) => {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-row gap-4 justify-center items-center">
-          <NavLink className="flex flex-grow" to={library.link}>
+          <NavLink
+            className="flex flex-grow"
+            target="_blank"
+            to={library.link}
+          >
             <Button
               variant="directLink"
               className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointer"
@@ -57,8 +69,11 @@ const Card = ({ library }: CardProps) => {
 
           <div onClick={toggleFavorite}>
             {isFavorite ? (
-              <div className="animate-fade-in-scale mx-auto flex justify-center items-center cursor-pointer border border-[#E81224] px-4 py-2 rounded-lg bg-[#E81224]/35">
-                <Heart className="text-[#E81224]" fill="#E81224" />
+              <div className="animate-fade-in-scale mx-auto flex justify-center items-center cursor-pointer border border-dark dark:border-light px-4 py-2 rounded-lg">
+                <Heart
+                  className="text-[#E81224]"
+                  fill="#E81224"
+                />
               </div>
             ) : (
               <div className="mx-auto flex justify-center items-center cursor-pointer border border-dark dark:border-light px-4 py-2 rounded-lg hover:bg-[#E81224]/20  transition-colors duration-300">
@@ -70,7 +85,11 @@ const Card = ({ library }: CardProps) => {
 
         <div className="flex justify-end flex-row items-center">
           <small>
-            Suggested by <span className="font-semibold text-main">@{library.createdBy.username}</span> on {formatDate(library.createdAt)}
+            Suggested by{" "}
+            <span className="font-semibold text-main">
+              @{removeNumbers(library.createdBy.username)}
+            </span>{" "}
+            on {formatDate(library.createdAt)}
           </small>
         </div>
       </div>
