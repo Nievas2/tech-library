@@ -14,6 +14,7 @@ import { GithubStrategy } from "./auth/strategies/github.strategy";
 import { GoogleStrategy } from "./auth/strategies/google.strategy";
 import path from "path";
 import { AuthErrorResponse } from "./auth/interfaces/auth.error.response.interface";
+import  limiter from "./config/rate.limiter";
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -49,7 +50,7 @@ class ServerBootstrap extends ConfigServer {
     );
 
     this.dbConnect();
-    this.app.use("/api", this.routers());
+    this.app.use("/api", limiter, this.routers());
 
     // Middleware para manejar rutas no encontradas (404)
     this.app.use((_req, res, ) => {
