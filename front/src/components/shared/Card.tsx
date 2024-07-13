@@ -5,6 +5,10 @@ import { Library } from "@/interfaces/Library"
 import { Tag } from "@/interfaces/Tag"
 import { formatDate } from "@/utils"
 import { useFavoriteStore } from "@/stores"
+import { Icon } from "@iconify/react/dist/iconify.js"
+import { deleteLibraryLike, postLibraryLike } from "@/services/LibraryService"
+import { useAuthContext } from "@/contexts"
+import { useState } from "react"
 
 interface CardProps {
   library: Library
@@ -15,7 +19,9 @@ export const removeNumbers = (username: string): string => {
 }
 
 const Card = ({ library }: CardProps) => {
+  const { authUser } = useAuthContext()
   const favorites = useFavoriteStore((state) => state.favorites)
+  const [liked, setLiked] = useState(library.liked)
   const addFavoriteLibrary = useFavoriteStore(
     (state) => state.addFavoriteLibrary
   )
@@ -30,6 +36,25 @@ const Card = ({ library }: CardProps) => {
       deleteFavoriteLibrary(library.id)
     } else {
       addFavoriteLibrary(library)
+    }
+  }
+  async function toggleLike() {
+    try {
+      if (!liked) {
+        const response = await postLibraryLike(
+          String(library.id),
+          authUser!.user.id
+        )
+        if (response.status === 200) setLiked(true)
+      } else {
+        const response = await deleteLibraryLike(
+          String(library.id),
+          authUser!.user.id
+        )
+        if (response.status === 200) setLiked(false)
+      }
+    } catch (error) {
+      throw error
     }
   }
 
@@ -82,15 +107,45 @@ const Card = ({ library }: CardProps) => {
             )}
           </div>
         </div>
+        {/* <small>{library.likesCount}</small> */}
 
-        <div className="flex justify-end flex-row items-center">
-          <small>
+        <div className="flex flex-row ">
+          {/* <small>
             Suggested by{" "}
             <span className="font-semibold text-main">
               @{removeNumbers(library.createdBy.username)}
             </span>{" "}
             on {formatDate(library.createdAt)}
-          </small>
+          </small> */}
+          <div className="flex items-center">
+            <Button
+              className="flex items-center p-0 px-2 focus:bg-[transparent]"
+              variant="ghost"
+              onClick={toggleLike}
+            >
+              <Icon
+                icon="ei:like"
+                width="30"
+                height="30"
+                className={`rounded-full transition-colors duration-100 ${
+                  liked ? "bg-[#00f]" : "bg-[transparent]"
+                }`}
+              />
+
+              <small className="pl-2">{library.likesCount}</small>
+            </Button>
+          </div>
+          <div className="flex flex-col flex-1 items-end justify-center">
+            <small>Suggested by </small>
+            <small>
+              <span className="font-semibold text-main flex">
+                @{removeNumbers(library.createdBy.username)}
+              </span>{" "}
+            </small>
+            <small>
+              <span className="flex">{formatDate(library.createdAt)}</span>
+            </small>
+          </div>
         </div>
       </div>
     </div>

@@ -43,12 +43,13 @@ export async function getLibraries(
 
 export async function getLibrariesFilter(
   page: number,
-  userId: number,
-  tags: string | undefined
+  userId: string,
+  tags: string | undefined,
+  orderLikes: "asc" | "desc"
 ): Promise<{ libraries: Library[]; totalPages: number }> {
   try {
     const response = await axiosInstance.get(
-      `/library/all/search/${userId}?page=${page}&tags=${tags}`
+      `/library/all/search/${userId}?page=${page}&tags=${tags}&orderLikes=${orderLikes}`
     )
     return {
       libraries: response.data.data.results,
@@ -62,13 +63,14 @@ export async function getLibrariesFilter(
 
 export async function getLibrariesSearch(
   page: number,
-  userId: number,
+  userId: string,
   tags: string | undefined,
-  search: string
+  search: string | undefined,
+  orderLikes: "asc" | "desc"
 ): Promise<{ libraries: Library[]; totalPages: number }> {
   try {
     const response = await axiosInstance.get(
-      `/library/all/search/${userId}?page=${page}&tags=${tags}&q=${search}`
+      `/library/all/search/${userId}?page=${page}&tags=${tags}&q=${search}&like=${orderLikes}`
     )
     return {
       libraries: response.data.data.results,
@@ -145,6 +147,31 @@ export async function postLibrary(
       link: library.link,
       tags: library.tags
     })
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function postLibraryLike(
+  libraryId: string,
+  userId: string
+): Promise<AxiosResponse<ResponseSuccess>> {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const response = await axiosInstance.post(`/library/like/${userId}/${libraryId}`)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+export async function deleteLibraryLike(
+  libraryId: string,
+  userId: string
+): Promise<AxiosResponse<ResponseSuccess>> {
+  // eslint-disable-next-line no-useless-catch
+  try {
+    const response = await axiosInstance.delete(`/library/unlike/${userId}/${libraryId}`)
     return response
   } catch (error) {
     throw error
