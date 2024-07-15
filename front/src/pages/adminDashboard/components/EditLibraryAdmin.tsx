@@ -67,6 +67,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       if (tagsId === undefined) return
       if (tagsAdded) {
         const valuesDate: LibraryDtoAdmin = {
+          name: values.name,
           description: values.description,
           link: values.link,
           tags: filteredTagsId as number[],
@@ -126,68 +127,51 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="name">Name</Label>
         <Input
-          id="name"
-          name="name"
+          {...formik.getFieldProps("name")}
           type="text"
           placeholder="React"
           onChange={formik.handleChange}
           value={formik.values.name}
           className="bg-light"
           maxLength={20}
-          disabled={true}
+          disabled={loading}
         />
-        <small
-          className={`${
-            formik.touched.name && formik.errors.name ? "text-[#FF0000]" : ""
-          }`}
-        >
-          {formik.touched.name && formik.errors.name ? formik.errors.name : ""}
-        </small>
+        {formik.touched.name && formik.errors.name && (
+          <small className="font-bold text-[#ff4444]">
+            {formik.errors.name}
+          </small>
+        )}
       </div>
       <div className="grid w-full items-center gap-1.5">
         <Label>Link</Label>
         <Input
-          id="link"
-          name="link"
           type="text"
           placeholder="https://es.react.dev/"
-          onChange={formik.handleChange}
-          value={formik.values.link}
+          {...formik.getFieldProps("link")}
           className="bg-light"
           maxLength={200}
           disabled={loading}
         />
-        <small
-          className={`${
-            formik.touched.link && formik.errors.link ? "text-[#FF0000]" : ""
-          }`}
-        >
-          {formik.touched.link && formik.errors.link ? formik.errors.link : ""}
-        </small>
+        {formik.touched.link && formik.errors.link && (
+          <small className="font-bold text-[#ff4444]">
+            {formik.errors.link}
+          </small>
+        )}
       </div>
       <div className="grid w-full items-center gap-1.5">
         <Label>Description</Label>
         <Textarea
-          id="description"
-          name="description"
+          {...formik.getFieldProps("description")}
           placeholder="Description"
-          onChange={formik.handleChange}
-          value={formik.values.description}
           className="bg-light"
           maxLength={200}
           disabled={loading}
         />
-        <small
-          className={`${
-            formik.touched.description && formik.errors.description
-              ? "text-[#FF0000]"
-              : ""
-          }`}
-        >
-          {formik.touched.description && formik.errors.description
-            ? formik.errors.description
-            : ""}
-        </small>
+        {formik.touched.description && formik.errors.description && (
+          <small className="font-bold text-[#ff4444]">
+            {formik.errors.description}
+          </small>
+        )}
       </div>
       <div className="flex w-full items-center gap-1.5 justify-between">
         <Select

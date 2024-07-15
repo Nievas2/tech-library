@@ -11,6 +11,7 @@ import {
 } from "../exceptions/user.alreadyexist.exception";
 import { RoleType } from "../entities/role";
 import { UnauthorizedException } from "../../shared/exception/unauthorized.exception";
+import { PayloadToken } from "../../auth/interfaces/auth.interface";
 
 /**
  * @version 1.0.0
@@ -63,14 +64,14 @@ export class UserService extends BaseService<UserEntity> {
    * @param id - Id del usuario
    * @returns Promise<UserResponseDTO>
    */
-  async findById(iduser: number, userAuth: UserEntity): Promise<UserEntity> {
+  async findById(iduser: number, userAuth: PayloadToken): Promise<UserEntity> {
     const data = await (await this.execRepository).findOneBy({ id: iduser });
     if (data === null) throw new UserNotFoundException("User not found");
     if (userAuth.role === RoleType.ADMIN) return data;
-    if (userAuth.role === RoleType.USER && userAuth.id !== iduser)
+    if (userAuth.role === RoleType.USER && Number(userAuth.sub) !== iduser){
       throw new UnauthorizedException(
         "You are not authorized to perform this action"
-      );
+      )}
     return data;
   }
 
@@ -86,10 +87,22 @@ export class UserService extends BaseService<UserEntity> {
    */
   async findByIdDTO(
     iduser: number,
-    userAuth: UserEntity
+    userAuth: PayloadToken
   ): Promise<UserResponseDTO> {
     const data = await this.findById(iduser, userAuth);
     return new UserResponseDTO(data);
+  }
+
+  async existUserByUsername(username: string): Promise<boolean> {
+    const data = await (await this.execRepository).findOneBy({ username });
+    if (data === null) return false;
+    return true;
+  }
+
+  async existUserByEmail(email: string): Promise<boolean> {
+    const data = await (await this.execRepository).findOneBy({ email });
+    if (data === null) return false;
+    return true;
   }
 
   /**
@@ -184,7 +197,7 @@ export class UserService extends BaseService<UserEntity> {
   async update(
     id: number,
     user: UserUpdateDTO,
-    userAuth: UserEntity
+    userAuth: PayloadToken
   ): Promise<UserResponseDTO> {
     const userEntity: UserEntity = await this.findById(id, userAuth);
 

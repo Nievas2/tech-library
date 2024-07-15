@@ -4,6 +4,7 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { UserHttpResponse } from "../response/user.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { UserEntity } from "../entities/user.entity";
+import { PayloadToken } from "../../auth/interfaces/auth.interface";
 
 /**
  * @version 1.0.0
@@ -72,7 +73,7 @@ export class UserController {
    */
   public async getUser(req: Request, res: Response) {
     try {
-      const userAuth = req.user as UserEntity;
+      const userAuth = req.user as PayloadToken;
       const id = Number(req.params.id);
       const data = await this.service.findById(id, userAuth);
       this.userHttpResponse.Ok(res, data);
@@ -98,6 +99,41 @@ export class UserController {
       if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
   }
+
+  /**
+   * @method existUser - Retorna si existe un usuario en la base de datos
+   * @param username - Nombre de usuario
+   * @returns Status 200 true si el usuario existe, false si no existe
+   * @returns Status 500 si hay un error en el servidor
+   */
+  public async existUser(req: Request, res: Response) {
+    try {
+      const username = req.params.username as string;
+      if(!username) return this.userHttpResponse.BadRequestUserUsernameInvalid(res);
+      const data = await this.service.existUserByUsername(username);
+      this.userHttpResponse.Ok(res, data);
+    } catch (error) {
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+    }
+  }
+
+  /**
+   * @method existEmail - Retorna si existe un email en la base de datos
+   * @param email - Email del usuario
+   * @returns Status 200 true si el email existe, false si no existe
+   * @returns Status 500 si hay un error en el servidor
+   */
+  public async existEmail(req: Request, res: Response) {
+    try {
+      const email = req.params.email as string;
+      if(!email) return this.userHttpResponse.BadRequestUserEmailInvalid(res);
+      const data = await this.service.existUserByEmail(email);
+      this.userHttpResponse.Ok(res, data);
+    } catch (error) {
+      if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
+  }
+}
+
   /**
    * @method createUser - Crea un nuevo usuario
    * @param user - DTO del usuario
@@ -127,7 +163,7 @@ export class UserController {
   public async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const userAuth = req.user as UserEntity;
+      const userAuth = req.user as PayloadToken;
       const data = await this.service.update(id, req.body, userAuth);
       this.userHttpResponse.Ok(res, data);
     } catch (e) {
@@ -165,7 +201,7 @@ export class UserController {
    */
   public async deleteLogicalUser(req: Request, res: Response) {
     try {
-      const userAuth = req.user as UserEntity;
+      const userAuth = req.user as PayloadToken;
       const id = Number(req.params.id);
       const user = await this.service.findById(id, userAuth);
 
@@ -190,7 +226,7 @@ export class UserController {
   public async restoreUser(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const userAuth = req.user as UserEntity;
+      const userAuth = req.user as PayloadToken;
       const user = await this.service.findById(id, userAuth);
 
       if (user?.isActive) return this.userHttpResponse.BadRequestUserAlreadyActive(res, user);

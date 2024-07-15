@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { ModeToggle } from "../mode-toggle"
 import ItemsNavbar from "./Navbar-components/items"
 import { Icon } from "@iconify/react"
@@ -9,8 +8,6 @@ import { Separator } from "../ui/separator"
 import { useLogout } from "@/hooks"
 
 const Navbar = () => {
-  const [open, setOpen] = useState(false)
-
   const { logOut } = useLogout();
   const { authUser } = useAuthContext();
   

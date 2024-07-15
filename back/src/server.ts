@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { UserRouter } from "./user/user.router";
@@ -13,6 +13,8 @@ import { AuthRouter } from "./auth/auth.routher";
 import { GithubStrategy } from "./auth/strategies/github.strategy";
 import { GoogleStrategy } from "./auth/strategies/google.strategy";
 import path from "path";
+import { AuthErrorResponse } from "./auth/interfaces/auth.error.response.interface";
+import  limiter from "./config/rate.limiter";
 /**
  * @version 1.0.0
  * @author Emiliano Gonzalez
@@ -48,11 +50,23 @@ class ServerBootstrap extends ConfigServer {
     );
 
     this.dbConnect();
-    this.app.use("/api", this.routers());
+    this.app.use("/api", limiter, this.routers());
 
     // Middleware para manejar rutas no encontradas (404)
     this.app.use((_req, res, ) => {
       res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
+    });
+
+    // Middleware para manejar errores de autenticación 
+    this.app.use((err : any, _req : Request, res: Response, next: NextFunction) => {
+      if (err) {
+        const {status, statusMessage} = err as AuthErrorResponse
+        return res.status(err.status || 500).json({
+          status: status || 500,
+          message: statusMessage || "Internal Server Error",
+        });
+      }
+      next();
     });
 
     this.listen();

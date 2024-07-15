@@ -10,7 +10,7 @@ import {
 import EditLibraryAdmin from "./EditLibraryAdmin"
 const StateCardAdmin = ({ card }: { card: Library }) => {
   return (
-    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4">
+    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4 min-w-[300px] sm:min-w-[300px] md:min-w-[320px]">
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold">{card.name}</h2>
@@ -43,30 +43,28 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
           </div>
         </div>
 
-        <p className="text-base">{card.description}</p>
+        <p className="text-base truncate">{card.description}</p>
       </div>
-        <div className="flex items-center justify-between mt-4">
-          <Dialog>
-            <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-main/80 text-light py-2 rounded-sm">
-              Edit
-              <Icon
-                icon="fluent:edit-24-filled"
-                width="16"
-                height="16"
-              />
-            </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
-              <DialogHeader className="">
-                <DialogTitle>
-                  <strong className="text-dark dark:text-light ">
-                    Sugerir
-                  </strong>
-                </DialogTitle>
-              </DialogHeader>
-              <EditLibraryAdmin card={card} />
-            </DialogContent>
-          </Dialog>
-        </div>
+      <div className="flex items-center justify-between mt-4">
+        <Dialog>
+          <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-main/80 text-light py-2 rounded-sm">
+            Edit
+            <Icon
+              icon="fluent:edit-24-filled"
+              width="16"
+              height="16"
+            />
+          </DialogTrigger>
+          <DialogContent className="bg-light dark:bg-dark ">
+            <DialogHeader className="">
+              <DialogTitle>
+                <strong className="text-dark dark:text-light ">Sugerir</strong>
+              </DialogTitle>
+            </DialogHeader>
+            <EditLibraryAdmin card={card} />
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   )
 }
