@@ -16,13 +16,21 @@ const useLogin = () => {
 
     try {
       const response = await axiosInstance.post("/login", {username, password});
+      console.log(response.data);
+      
       const data = response.data;
       
       localStorage.setItem("library-user", JSON.stringify(data));
       localStorage.setItem("user-token", data.accesToken);
-      setAuthUser(data)
-    } catch (error) {
-      
+      setAuthUser(data);
+
+      return null;
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        throw new Error("Incorrect credentials. Please try again.");
+      } else {
+        throw new Error("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

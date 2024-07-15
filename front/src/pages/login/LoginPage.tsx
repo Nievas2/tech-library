@@ -8,29 +8,34 @@ import { loginSchema } from "@/utils"
 import { Login } from "@/services/AuthService"
 import { useToast } from "@/components/ui/use-toast"
 import useLogin from "@/hooks/useLogin"
+import { useState } from "react"
 
 const LoginPage = () => {
   const { loading, login } = useLogin()
   const { toast } = useToast()
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
   const { handleSubmit, errors, touched, getFieldProps } = useFormik({
     initialValues: {
       username: "",
       password: ""
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      loginFunction(values)
-    }
+    onSubmit: async (values) => {
+      loginFunction(values);
+    },
   })
 
   async function loginFunction(values: Login) {
     try {
-      await login(values)
-    } catch (error) {
-      toast({
-        title: "Any of the fields are incorrect"
-      })
-      throw error
+      await login(values);
+    } catch (error: any) {
+      setLoginError(error.message);
     }
   }
 
@@ -69,14 +74,20 @@ const LoginPage = () => {
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Login to your account
               </h1>
+
               <div className="flex flex-col gap-4 md:gap-6">
+                
                 <div className="flex flex-col gap-2">
-                  <Label>username</Label>
+                  <Label>Username</Label>
+                  
                   <Input
+                    className="bg-light"
                     type="Username"
-                    placeholder="username"
+                    placeholder="randomuser"
                     {...getFieldProps("username")}
+                    disabled={loading}
                   />
+
                   {touched.username && errors.username && (
                     <small className="font-bold text-[#ff4444]">
                       {errors.username}
@@ -86,11 +97,32 @@ const LoginPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <Label>Password</Label>
-                  <Input
-                    type="password"
-                    placeholder="•••••••••••••••"
-                    {...getFieldProps("password")}
-                  />
+
+                  <div className="relative">
+                    <Input
+                      className="bg-light"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="•••••••••••••"
+                      {...getFieldProps('password')}
+                      disabled={loading}
+                    />
+
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={togglePasswordVisibility}
+                    >
+                      <Icon
+                        className={`h-5 w-5 text-main transition-opacity duration-200 ${showPassword ? 'opacity-100' : 'opacity-0'}`}
+                        icon='ph:eye-bold'
+                      />
+                      <Icon
+                        className={`h-5 w-5 text-main transition-opacity duration-200 absolute ${showPassword ? 'opacity-0' : 'opacity-100'}`}
+                        icon='ph:eye-closed-bold'
+                      />
+                    </button>
+                  </div>
+
                   {touched.password && errors.password && (
                     <small className="font-bold text-[#ff4444]">
                       {errors.password}
@@ -98,7 +130,11 @@ const LoginPage = () => {
                   )}
                 </div>
 
-                <div className="flex flex-col gap-2">
+                {loginError && (
+                  <small className="font-bold text-center text-[#ff4444]">{loginError}</small>
+                )}
+
+                <div className="flex flex-col gap-5">
                   <Button
                     variant="authButton"
                     className="w-full rounded-lg"
@@ -106,28 +142,37 @@ const LoginPage = () => {
                   >
                     {loading ? "loading..." : "Login"}
                   </Button>
-                  <button
-                    className="px-5 py-2.5 border flex justify-center items-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
-                    type="button"
-                    onClick={loginGoogle}
-                  >
-                    <Icon
-                      className="h-6 w-6"
-                      icon="logos:google-icon"
-                    />
-                    <span className="text-sm">Continue with Google</span>
-                  </button>
-                  <button
-                    className="px-5 py-2.5 border flex justify-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
-                    type="button"
-                    onClick={loginGithub}
-                  >
-                    <Icon
-                      className="h-6 w-6"
-                      icon="bi:github"
-                    />
-                    <span className="text-sm">Continue with Github</span>
-                  </button>
+
+                  <div
+                    className="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-main after:mt-0.5 after:flex-1 after:border-t after:border-main dark:before:border-light dark:after:border-light">
+                    <p className="mx-4 mb-0 text-center dark:text-white">or</p>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <button
+                      className="px-5 py-2.5 border flex justify-center items-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
+                      type="button"
+                      onClick={loginGoogle}
+                    >
+                      <Icon
+                        className="h-6 w-6"
+                        icon="logos:google-icon"
+                      />
+                      <span className="text-sm">Continue with Google</span>
+                    </button>
+
+                    <button
+                      className="px-5 py-2.5 border flex justify-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
+                      type="button"
+                      onClick={loginGithub}
+                    >
+                      <Icon
+                        className="h-6 w-6"
+                        icon="bi:github"
+                      />
+                      <span className="text-sm">Continue with Github</span>
+                    </button>
+                  </div>
                 </div>
 
                 <p className="text-sm font-light text-center">
