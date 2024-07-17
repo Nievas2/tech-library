@@ -15,7 +15,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
   const formik = useFormik({
     initialValues: {
       name: tag ? tag.name : "",
-      color: tag ? tag.color : "#f00"
+      color: tag ? tag.color : "#ff0000ff"
     },
     validationSchema: tagSchema,
     onSubmit: async (values) => {
@@ -24,15 +24,13 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         toast({
           title: response.data.statusMessage
         })
-        if(response.data.status){
+        if (response.data.status) {
           window.location.reload()
         }
       }
       if (tag != undefined) {
-        const response = await putTag(values, tag?.id)
-        toast({
-          title: response.data.statusMessage
-        })
+        await putTag(values, tag?.id)
+        window.location.reload()
       }
     }
   })
@@ -54,6 +52,11 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             className="dark:text-[#000] dark:bg-light "
             {...formik.getFieldProps("name")}
           />
+          {formik.touched.name && formik.errors.name && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.name}
+            </small>
+          )}
         </div>
         <div className="grid items-center gap-1.5">
           <Label>Background Color</Label>
@@ -62,7 +65,11 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             initialValue={formik.values.color}
             placement="top"
           />
-          <span>{formik.values.color}</span>
+          {formik.touched.color && formik.errors.color && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.color}
+            </small>
+          )}
         </div>
         <div>
           <div className="flex mt-1">
@@ -71,7 +78,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
               className={`px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light`}
               style={{
                 backgroundColor:
-                  formik.values.color == "" ? "#FF0000" : formik.values.color
+                  formik.values.color == "" ? "#ff0000ff" : formik.values.color
               }}
             >
               {formik.values.name == "" ? "Javascript" : formik.values.name}

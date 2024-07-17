@@ -6,20 +6,19 @@ import { Library } from "@/interfaces/Library"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
 import usePaginationHome from "@/hooks/usePaginationHome"
-import {
-  getLibraries,
-  getLibrariesFilter,
-  getLibrariesSearch
-} from "@/services/LibraryService"
+import { getLibrariesSearch } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 import { useAuthContext } from "@/contexts"
 import NotFound from "@/components/shared/NotFound"
+import { Button } from "@/components/ui/button"
+import { Icon } from "@iconify/react/dist/iconify.js"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
   const [loading, setLoading] = useState(true)
   const { authUser } = useAuthContext()
   const [notFound, setNotFound] = useState(false)
+  const [morePopular, setMorePopular] = useState(false)
   const tagsActives = useTagStore((state) => state.tagsActives)
   const tags = useTagStore((state) => state.tags)
   const {
@@ -45,32 +44,19 @@ const HomePage = () => {
         const tagsIdsParams = String(searchParams.get("tags"))
 
         let librariesResponse
-        if (search == "null" && searchParamsData == null) {
-          //No hay search y hay tags
-          if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
-            librariesResponse = await getLibrariesFilter(
-              currentPage || 1,
-              1,
-              tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined
-            )
-          } else {
-            //No hay search y no hay tags
-            librariesResponse = await getLibraries(
-              currentPage || 1,
-              authUser!.user.id
-            )
-          }
-        } else {
-          // Hay search
-          librariesResponse = await getLibrariesSearch(
-            currentPage || 1,
-            1,
-            tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
-            search ? search : searchParamsData ? searchParamsData : ""
-          )
-        }
-
+        librariesResponse = await getLibrariesSearch(
+          currentPage || 1,
+          authUser!.user.id,
+          tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : "",
+          search !== "null" && search
+            ? search
+            : searchParamsData !== null && searchParamsData
+            ? searchParamsData
+            : "",
+          morePopular ? "desc" : "asc"
+        ) 
         const { libraries, totalPages } = librariesResponse
+
         setLibraries(libraries)
         setTotalPages(totalPages)
         setLoading(false)
@@ -90,7 +76,7 @@ const HomePage = () => {
     }
 
     fetchLibraries()
-  }, [setTotalPages, tags, search, currentPage])
+  }, [setTotalPages, tags, search, currentPage, morePopular])
 
   useEffect(() => {
     handlePageChange(1)
@@ -98,10 +84,10 @@ const HomePage = () => {
 
   const SkeletonCard = () => {
     return (
-      <div className="flex w-[322.67px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
+      <div className="flex w-[300px] md:w-[250px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
         <div className="flex flex-col gap-2">
           <Skeleton className="h-8 w-3/4 rounded-md" />
-          <Skeleton className="h-4 w-full rounded-md" />
+          <Skeleton className="h-4 w-full sm:w-3/4 rounded-md" />
           <Skeleton className="h-4 w-5/6 rounded-md" />
           <div className="flex flex-row flex-wrap gap-2 text-sm">
             {Array.from({ length: 3 }).map((_, index) => (
@@ -113,8 +99,8 @@ const HomePage = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <div className="flex flex-row gap-4 justify-center items-center">
-            <Skeleton className="h-10 w-full rounded-md" />
+          <div className="flex flex-row gap-4 justify-start items-center">
+            <Skeleton className="h-10 w-full sm:w-3/4 rounded-md" />
           </div>
           <div className="flex flex-row items-center justify-end gap-2">
             <Skeleton className="h-4 w-24 rounded-md" />
@@ -142,10 +128,29 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-7 flex flex-col items-center gap-7 px-4 justify-start mb-7">
-          <div className="flex flex-col items-end md:items-center gap-7">
+        <div className="pt-7 flex flex-col items-center gap-7 px-1 sm:px-4 justify-center mb-7">
+          <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
+
             <>
+              <div className="flex flex-1 items-start justify-start">
+                <div>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setMorePopular(!morePopular)}
+                  >
+                    <Icon
+                      icon="uil:arrow-up"
+                      width="24"
+                      height="24"
+                      className={`${
+                        morePopular ? "rotate-180" : ""
+                      } transition-transform duration-100`}
+                    />
+                    More popular
+                  </Button>
+                </div>
+              </div>
               {notFound && currentPage === 1 ? (
                 <NotFound />
               ) : (

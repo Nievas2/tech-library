@@ -240,7 +240,8 @@ export class LibraryService extends BaseService<LibraryEntity> {
     id: number,
     currentPage: number,
     pageSize: number,
-    userAuth: UserEntity
+    userAuth: PayloadToken,
+    status?: string 
   ): Promise<LibraryPagesDto> {
     const user: UserEntity = await this.findUserById(id, userAuth);
 
@@ -258,6 +259,16 @@ export class LibraryService extends BaseService<LibraryEntity> {
       .orderBy("library.name", "ASC")
       .take(pageSize)
       .skip((currentPage - 1) * pageSize);
+
+    if (status && status !="") {
+      if (status.toLowerCase() === "pending") {
+        query.andWhere("library.state = :state", { state: State.PENDING });
+      } else if (status.toLowerCase() === "active") {
+        query.andWhere("library.state = :state", { state: State.ACTIVE });
+      } else if (status.toLowerCase() === "inactive") {
+        query.andWhere("library.state = :state", { state: State.INACTIVE });
+      }
+    }
 
     const [libraries, total] = await query.getManyAndCount();
 
@@ -388,11 +399,13 @@ export class LibraryService extends BaseService<LibraryEntity> {
     if (library.name && libraryUpdate.name !== library.name) {
       await this.existsByName(library.name);
     }
-
+    
     if (
-      libraryUpdate.createdBy.id === Number(payload.sub) ||
+      libraryUpdate.createdBy.id == Number(payload.sub) ||
       payload.role === RoleType.ADMIN
     ) {
+      console.log("success");
+      
       let tags: TagEntity[] = [];
       if (library.tags) tags = await this.getTags(library.tags);
       if(library.name) libraryUpdate.name = library.name;
@@ -413,10 +426,10 @@ export class LibraryService extends BaseService<LibraryEntity> {
       }
 
       return new LibraryResponseDTO(libraryUpdate);
-    }
-
+    } 
+    console.log("error");
+    
     throw new UnauthorizedException("User is not authorized to update this library");
-   
   }
 
   /**
@@ -582,7 +595,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
    */
   private async findUserById(
     id: number,
-    userAuth: UserEntity
+    userAuth: PayloadToken
   ): Promise<UserEntity> {
     const user = await this.userService.findById(id, userAuth);
     if (user !== null) return user;
