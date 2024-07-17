@@ -44,24 +44,6 @@ const HomePage = () => {
         const tagsIdsParams = String(searchParams.get("tags"))
 
         let librariesResponse
-        /* if (search == "null" && searchParamsData == null) {
-          //No hay search y hay tags
-          if (tagsIds.length >= 1 || tagsIdsParams.length >= 1) {
-            librariesResponse = await getLibrariesFilter(
-              currentPage || 1,
-              authUser!.user.id,
-              tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : undefined,
-              morePopular ? "desc" : "asc"
-            )
-          } else {
-            //No hay search y no hay tags
-            librariesResponse = await getLibraries(
-              currentPage || 1,
-              authUser!.user.id
-            )
-          }
-        } else { */
-        // Hay search
         librariesResponse = await getLibrariesSearch(
           currentPage || 1,
           authUser!.user.id,
@@ -72,9 +54,7 @@ const HomePage = () => {
             ? searchParamsData
             : "",
           morePopular ? "desc" : "asc"
-        ) /* 
-        } */
-
+        ) 
         const { libraries, totalPages } = librariesResponse
 
         setLibraries(libraries)
@@ -148,31 +128,29 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-7 flex flex-col items-center gap-7 px-1 sm:px-4 justify-start mb-7">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-center">
-              <SearchBar />
-            </div>
+        <div className="pt-7 flex flex-col items-center gap-7 px-1 sm:px-4 justify-center mb-7">
+          <div className="flex flex-col gap-3 justify-center">
+            <SearchBar />
 
-            <div className="flex flex-1 items-start justify-start">
-              <div>
-                <Button
-                  variant="ghost"
-                  onClick={() => setMorePopular(!morePopular)}
-                >
-                  <Icon
-                    icon="uil:arrow-up"
-                    width="24"
-                    height="24"
-                    className={`${
-                      morePopular ? "rotate-180" : ""
-                    } transition-transform duration-100`}
-                  />
-                  More popular
-                </Button>
-              </div>
-            </div>
             <>
+              <div className="flex flex-1 items-start justify-start">
+                <div>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setMorePopular(!morePopular)}
+                  >
+                    <Icon
+                      icon="uil:arrow-up"
+                      width="24"
+                      height="24"
+                      className={`${
+                        morePopular ? "rotate-180" : ""
+                      } transition-transform duration-100`}
+                    />
+                    More popular
+                  </Button>
+                </div>
+              </div>
               {notFound && currentPage === 1 ? (
                 <NotFound />
               ) : (
