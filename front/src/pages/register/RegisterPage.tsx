@@ -10,19 +10,20 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 
 import { useFormik } from "formik"
 
-import { useToast } from "@/components/ui/use-toast"
 import { AxiosError } from "axios"
 import { ResponseSuccess } from "@/interfaces/responseSuccess"
 import { useRegister } from "@/hooks"
 import { Register } from "@/services/AuthService"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import axiosInstance from "@/api/axiosInstance"
 
 const RegisterPage = () => {
   const { loading, register } = useRegister()
-  const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordMatchMessage, setPasswordMatchMessage] = useState("")
+  const [usernameError, setUsernameError] = useState("")
+  const [emailError, setEmailError] = useState("")
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -32,7 +33,7 @@ const RegisterPage = () => {
     setShowConfirmPassword((prevState) => !prevState);
   };
 
-  const { handleSubmit, errors, touched, getFieldProps, values } = useFormik({
+  const { handleSubmit, errors, touched, getFieldProps, values, handleChange, handleBlur } = useFormik({
     initialValues: {
       username: "",
       email: "",
@@ -40,23 +41,47 @@ const RegisterPage = () => {
       confirmPassword: "",
     },
     validationSchema: signupSchema,
-    onSubmit: (values) => {
-      registerFunction(values);
+    onSubmit: async (values) => {
+      const usernameExists = await checkUsername(values.username);
+      const emailExists = await checkEmail(values.email);
+
+      if (usernameExists || emailExists) {
+        if (usernameExists) setUsernameError("Username already exists");
+        if (emailExists) setEmailError("Email already exists");
+      } else {
+        setUsernameError("");
+        setEmailError("");
+        await registerFunction(values);
+      }
     },
   });
+
+  async function checkUsername(username: string) {
+    try {
+      const response = await axiosInstance.get(`/user/checkuser/${username}`)
+      return response.data.data
+    } catch (error) {
+      return false
+    }
+  }
+
+  async function checkEmail(email: string) {
+    try {
+      const response = await axiosInstance.get(`/user/checkemail/${email}`)
+      return response.data.data
+    } catch (error) {
+      return false
+    }
+  }
 
   async function registerFunction(values: Register) {
     try {
       await register(values)
     } catch (error) {
-      toast({
-        title: (error as AxiosError<ResponseSuccess>).response?.data
-          .statusMessage
-      })
+      console.error("Registration failed:", (error as AxiosError<ResponseSuccess>).response?.data.statusMessage);
       throw error
     }
   }
-
   function loginGoogle() {
     window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self")
   }
@@ -69,40 +94,22 @@ const RegisterPage = () => {
   }
 
   useEffect(() => {
-    let debounceTimer = setTimeout(() => {
+    const debounceTimer = setTimeout(() => {
       if (values.password && values.confirmPassword) {
-        if (values.password === values.confirmPassword) {
-          setPasswordMatchMessage("Passwords match");
-          
-          setTimeout(() => {
-            setPasswordMatchMessage("");
-          }, 3000);
-        } else {
-          setPasswordMatchMessage("Passwords must match");
-        }
+        setPasswordMatchMessage(
+          values.password === values.confirmPassword ? "Passwords match" : "Passwords must match"
+        );
       } else {
         setPasswordMatchMessage("");
       }
-    }, 500);
-  
+    }, 250);
+
     return () => clearTimeout(debounceTimer);
   }, [values.password, values.confirmPassword]);
 
-  // useEffect(() => {
-  //   let debounceTimer = setTimeout(() => {
-  //     if (values.password && values.confirmPassword) {
-  //       if (values.password === values.confirmPassword) {
-  //         setPasswordMatchMessage("Passwords match");
-  //       } else {
-  //         setPasswordMatchMessage("Passwords must match");
-  //       }
-  //     } else {
-  //       setPasswordMatchMessage("");
-  //     }
-  //   }, 500);
-  
-  //   return () => clearTimeout(debounceTimer);
-  // }, [values.password, values.confirmPassword]);
+  const passwordMatchClass = useMemo(() => 
+    passwordMatchMessage === "Passwords match" ? "text-[#40944A]" : "text-[#ff4444]"
+  , [passwordMatchMessage]);
 
   return (
     <div className="flex my-auto">
@@ -131,12 +138,25 @@ const RegisterPage = () => {
 
               <div className="flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col gap-2">
-                  <Label>Username</Label>
+                  <div className="flex flex-row gap-2 items-end">
+                    <Label>Username</Label>
+                    {usernameError && (
+                      <div className="flex flex-row gap-2 items-end">
+                        <span className="leading-none">|</span>
+                        <small className="font-bold text-[#ff4444] leading-none">
+                          {usernameError}
+                        </small>
+                      </div>
+                    )}
+                  </div>
 
                   <Input
                     type="text"
+                    name="username"
                     placeholder="Sani"
-                    {...getFieldProps("username")}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.username}
                     disabled={loading}
                   />
 
@@ -148,12 +168,25 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label>Email</Label>
+                  <div className="flex flex-row gap-2 items-end">
+                    <Label>Email</Label>
+                    {emailError && (
+                      <div className="flex flex-row gap-2 items-end">
+                        <span className="leading-none">|</span>
+                        <small className="font-bold text-[#ff4444] leading-none">
+                          {emailError}
+                        </small>
+                      </div>
+                    )}
+                  </div>
 
                   <Input
                     type="email"
+                    name="email"
                     placeholder="example@gmail.com"
-                    {...getFieldProps("email")}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.email}
                     disabled={loading}
                   />
 
@@ -236,7 +269,7 @@ const RegisterPage = () => {
                   )}     
                   
                   {passwordMatchMessage && (
-                    <small className={`font-bold ${passwordMatchMessage === "Passwords match" ? "text-[#40944A]" : "text-[#ff4444]"}`}>
+                    <small className={`font-bold ${passwordMatchClass}`}>
                       {passwordMatchMessage}
                     </small>
                   )}

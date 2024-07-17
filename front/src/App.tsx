@@ -38,8 +38,20 @@ function App() {
             <Route path='/login/auth' element={ <AuthPage /> } />
             <Route path='/signup' element={ authUser ? <Navigate to='/home' /> : <RegisterPage /> } />
 
-            <Route path='/user-dashboard' element={<UserDashboardPage />} />
-            <Route path='/admin-dashboard' element={<AdminDashboardPage />} />
+            <Route path='/user-dashboard' element={
+              <ProtectedRoute>
+                <UserDashboardPage />
+              </ProtectedRoute>
+            } />
+
+            <Route path='/admin-dashboard' element={
+              <ProtectedRoute>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            } />
+
+            {/* <Route path='/user-dashboard' element={<UserDashboardPage />} /> */}
+            {/* <Route path='/admin-dashboard' element={<AdminDashboardPage />} /> */}
 
             <Route path='/404' element={<h1>Not found</h1>} />
             <Route path="/*" element={ <Navigate to="/404" replace />} />

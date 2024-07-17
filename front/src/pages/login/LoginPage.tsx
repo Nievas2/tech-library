@@ -6,13 +6,11 @@ import { Icon } from "@iconify/react"
 import { useFormik } from "formik"
 import { loginSchema } from "@/utils"
 import { Login } from "@/services/AuthService"
-import { useToast } from "@/components/ui/use-toast"
 import useLogin from "@/hooks/useLogin"
 import { useState } from "react"
 
 const LoginPage = () => {
   const { loading, login } = useLogin()
-  const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
 
