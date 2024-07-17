@@ -6,10 +6,11 @@ export interface Library {
   name: string
   description: string
   link: string
-  likes: number
+  liked: boolean
   isActive: boolean
   state: "ACTIVE" | "PENDING" | "INACTIVE"
   createdBy: User
   createdAt: string;
   tags?: Tag[]
+  likesCount?: number
 }

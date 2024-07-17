@@ -12,7 +12,7 @@ export default function SideBar() {
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
   const { searchParams } = usePaginationHome()
-  
+
   useEffect(() => {
     const handleResize = () => {
       setOpen(window.innerWidth > 768)
@@ -56,45 +56,44 @@ export default function SideBar() {
 
   return (
     <section
-      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static border border-dark dark:border-light bg-light dark:bg-dark md:bg-main/15 md:dark:bg-main/15  ${
+      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#311421] md:dark:bg-main/15  ${
         open ? "w-60" : "w-0 border-none"
       } `}
     >
-      {/* border-r border-r-dark dark:border-r-light md:border-l md:border-l-dark dark:md:border-l-light */}
       <div
-        className={`w-full h-full relative ${
-          open
-            ? "px-4 pt-[34px]"
-            : "pt-0"
-        }`}
+        className={`fixed top-30 duration-150 ${
+          open ? "left-[225px] xl:left-[250px]" : "left-[0px]"
+        } top-[125px]`}
       >
-        <div
-          className={`absolute duration-150 ${
-            open ? "right-[-18px]" : "right-[-50px] xl:right-[-50px]"
-          } top-[30px]`}
+        <Button
+          onClick={handleSidebar}
+          variant="sidebarToggle"
+          size="rounded"
         >
-          <Button
-            onClick={handleSidebar}
-            variant="sidebarToggle"
-            size="rounded"
-          >
-            <Icon
-              icon="mingcute:right-fill"
-              width="36"
-              height="36"
-              color="#f72585"
-              className={`duration-500 ${open ? "rotate-180" : ""}`}
-            />
-          </Button>
-        </div>
-
-        <div className={`${open ? "flex flex-col gap-4" : "hidden"}`}>
-          <h2 className="text-xl font-bold">CATEGORIES</h2>
+          <Icon
+            icon="mingcute:right-fill"
+            width="36"
+            height="36"
+            color="#f72585"
+            className={`duration-500 ${open ? "rotate-180" : ""}`}
+          />
+        </Button>
+      </div>
+      <div
+        className={`w-full h-screen sticky top-[97px] overflow-y-scroll scroll-smooth p-2 ${
+          open ? "px-4 pt-[34px]" : "pt-0"
+        }`}
+        style={{
+          scrollbarWidth: "none"
+        }}
+      >
+        <div className={`${open ? "flex flex-col gap-4" : "hidden"} `}>
+          <h2 className="text-xl font-bold text-[#fff]">CATEGORIES</h2>
           <ul className="flex flex-col gap-1">
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-wrap gap-3">
                 {tags &&
                   tags?.map((tag: Tag) => (
                     <ItemsSideBar
