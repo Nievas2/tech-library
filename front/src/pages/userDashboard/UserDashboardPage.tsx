@@ -90,6 +90,7 @@ const UserDashboardPage = () => {
 
   return (
     <div className="flex flex-1 mx-auto max-w-[1240px] w-screen flex-col relative gap-6 pt-0 p-4 md:pt-0 sm:p-4 sm:pt-0 xl:p-0">
+      <h1 className="text-3xl font-bold py-0 text-center">Your dashboard</h1>
       <div className="flex">
         <div className="flex-1">
           <Select

@@ -5,7 +5,8 @@ const FavoritesPage = () => {
   const favorites = useFavoriteStore((state) => state.favorites)
 
   return (
-    <div>
+    <div className="pb-4">
+      <h1 className="text-3xl font-bold mb-4 text-center">Favorites</h1>
       {favorites.length > 0 ? (
         <CardsContainer libraries={favorites} />
       ) : (
