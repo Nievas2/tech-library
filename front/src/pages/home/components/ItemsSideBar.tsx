@@ -18,7 +18,7 @@ export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
   return (
     <li className="flex">
       <button
-        className={`${tag.selected ? "bg-main" : ""} text-[#fff] capitalize px-2 py-1 rounded-md border border-main hover:transition-colors duration-150`}
+        className={`${tag.selected ? "bg-main text-light" : ""} capitalize px-2 py-1 rounded-md border border-main hover:transition-colors duration-150`}
         onClick={handleClick}
       >
         {tag.name}

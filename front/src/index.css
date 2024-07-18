@@ -107,3 +107,25 @@ secondaries:
     transform: scale(1);
   }
 }
+
+/* ScrollBar Styles */
+::-webkit-scrollbar {
+  width: 10px; 
+  height: 10px;
+  background-color: #F9F7EE;
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #F9F7EE;
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #F72585;
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(210, 21, 106);
+}
