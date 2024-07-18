@@ -40,18 +40,26 @@ const Card = ({ library }: CardProps) => {
   }
   async function toggleLike() {
     try {
-      if (!liked) {
+      if (liked === false && library.liked === false) {
         const response = await postLibraryLike(
           String(library.id),
           authUser!.user.id
         )
-        if (response.status === 200) setLiked(true)
+        if (response.status === 200) {
+          library.liked = true
+          library.likesCount = library.likesCount! + 1
+          setLiked(true)
+        }
       } else {
         const response = await deleteLibraryLike(
           String(library.id),
           authUser!.user.id
         )
-        if (response.status === 200) setLiked(false)
+        if (response.status === 200) {
+          library.liked = false
+          library.likesCount = library.likesCount ? library.likesCount - 1 : 0
+          setLiked(false)
+        }
       }
     } catch (error) {
       throw error
@@ -128,7 +136,7 @@ const Card = ({ library }: CardProps) => {
                 width="30"
                 height="30"
                 className={`rounded-full transition-colors duration-100 ${
-                  liked ? "bg-[#00f]" : "bg-[transparent]"
+                  library.liked ? "bg-[#00f]" : "bg-[transparent]"
                 }`}
               />
 
