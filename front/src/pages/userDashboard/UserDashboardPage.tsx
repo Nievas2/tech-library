@@ -41,13 +41,17 @@ const UserDashboardPage = () => {
   } = usePagination()
 
   async function getLibrary() {
-    const response = await getLibrariesUserDashboard(
-      authUser!.user.id,
-      currentPage
-    )
-
-    setList(response.results)
-    setTotalPages(Math.ceil(response.total_pages))
+    try {
+      const response = await getLibrariesUserDashboard(
+        authUser!.user.id,
+        currentPage
+      )
+      setFilterError("")
+      setList(response.results)
+      setTotalPages(Math.ceil(response.total_pages))
+    } catch (error) {
+      setFilterError("No found libraries.")
+    }
   }
 
   useEffect(() => {
@@ -81,11 +85,11 @@ const UserDashboardPage = () => {
       setTotalPages(response.data.total_pages)
       setFilterError("")
     } catch (error) {
-      setFilterError("No libraries were found with that state")
-
+      setFilterError("No found libraries.")
       throw error
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (

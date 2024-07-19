@@ -89,8 +89,7 @@ export async function getLibrariesUserDashboard(userId: string, page: number) {
     )
     return response.data.data
   } catch (error) {
-    console.log(error)
-    return null
+    throw error
   }
 }
 
