@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TagService } from "../services/tag.service";
-import { QueryFailedError, UpdateResult } from "typeorm";
+import { QueryFailedError } from "typeorm";
 import { TagHttpResponse } from "../response/tag.http.response";
 import { GlobalExceptionHandling } from "../../shared/exception/global.exception.handling";
 import { TagResponseDto } from "../entities/tag.dto";
@@ -93,10 +93,8 @@ export class TagController {
   public async updateTag(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const data: UpdateResult = await this.service.update(id, req.body);
-      if (!data.affected)
-        return this.tagHttpResponse.BadRequestUpdatedTag(res, data);
-      this.tagHttpResponse.Updated(res, data);
+      const data: TagResponseDto = await this.service.update(id, req.body);
+      this.tagHttpResponse.Ok(res, data);
     } catch (error) {
       if(error instanceof Error) return this.globalExceptionHandler.handleErrors(error, res);
     }
