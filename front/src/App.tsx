@@ -12,6 +12,7 @@ import AdminDashboardPage from "./pages/adminDashboard/AdminDashboard"
 import { useAuthContext } from "./contexts"
 import AuthPage from "./pages/auth/AuthPage"
 import { ProtectedRoute } from "./components/shared/ProtectedRoute"
+import NotFoundPage from "./pages/notFound/NotFoundPage"
 
 function App() {
   const location = useLocation();
@@ -53,7 +54,7 @@ function App() {
             {/* <Route path='/user-dashboard' element={<UserDashboardPage />} /> */}
             {/* <Route path='/admin-dashboard' element={<AdminDashboardPage />} /> */}
 
-            <Route path='/404' element={<h1>Not found</h1>} />
+            <Route path='/404' element={ <NotFoundPage/> } />
             <Route path="/*" element={ <Navigate to="/404" replace />} />
           </Routes>
         </div>

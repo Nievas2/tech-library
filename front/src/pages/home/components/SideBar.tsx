@@ -12,7 +12,6 @@ export default function SideBar() {
   const [open, setOpen] = useState(window.innerWidth > 768)
   const setTags = useTagStore((state) => state.setTags)
   const tags = useTagStore((state) => state.tags)
-  //const [tagsSearch, setTagsSearch] = useState<Tag[] | undefined>()
   const [loading, setLoading] = useState(true)
   const [text, setText] = useState("")
   const [value] = useDebounce(text, 350)
