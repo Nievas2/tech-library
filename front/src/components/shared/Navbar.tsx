@@ -1,7 +1,7 @@
 import { ModeToggle } from "../mode-toggle"
 import ItemsNavbar from "./Navbar-components/items"
 import { Icon } from "@iconify/react"
-import { Link, NavLink } from "react-router-dom"
+import { Link, NavLink, useLocation } from "react-router-dom"
 import { useAuthContext } from "@/contexts"
 import { useLogout } from "@/hooks"
 
@@ -25,6 +25,8 @@ const Navbar = () => {
   const handleDropdownClick  = () => {
     setIsDropdownOpen(false);
   };
+
+  const location = useLocation();
   
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
@@ -75,8 +77,10 @@ const Navbar = () => {
 
                           <DropdownMenuSeparator className="bg-dark dark:bg-light" />
 
-                          <DropdownMenuGroup>
-                            <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer">
+                          <DropdownMenuGroup className="flex gap-2 flex-col">
+                            <DropdownMenuItem 
+                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main' : ''}`}
+                            >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
                                 to="/favorites"
@@ -91,7 +95,9 @@ const Navbar = () => {
                               </Link>
                             </DropdownMenuItem>
 
-                            <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer">
+                            <DropdownMenuItem 
+                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main' : ''}`}
+                            >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
                                 to="/user-dashboard"
@@ -106,8 +112,10 @@ const Navbar = () => {
                               </Link>
                             </DropdownMenuItem>
 
-                            <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer">
-                              {authUser?.user.role === "ADMIN" && (
+                            {authUser?.user.role === "ADMIN" && (
+                              <DropdownMenuItem 
+                                className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main' : ''}`}
+                              >
                                 <Link 
                                   className="px-[3px] flex items-center flex-row gap-2 w-full"
                                   to="/admin-dashboard"
@@ -120,8 +128,8 @@ const Navbar = () => {
                                   />
                                   <p>Admin Dashboard</p>
                                 </Link>
-                              )}
-                            </DropdownMenuItem>
+                              </DropdownMenuItem>
+                            )}
                           </DropdownMenuGroup>
 
                           <DropdownMenuSeparator className="bg-dark dark:bg-light" />
