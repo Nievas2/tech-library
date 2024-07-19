@@ -29,14 +29,32 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         }
       }
       if (tag != undefined) {
-        await putTag(values, tag?.id)
-        window.location.reload()
+        try {
+          await putTag(values, tag?.id)
+          toast({
+            title: "Tag actualizado"
+          })
+          window.location.reload()
+        } catch (error) {
+          toast({
+            title: "Error al actualizar el tag"
+          })
+        }
       }
     }
   })
-  function handleDeleteTag() {
+  async function handleDeleteTag() {
     if (!tag) return
-    deleteTag(tag?.id)
+    try {
+      await deleteTag(tag?.id)
+      window.location.reload()
+    } catch (error) {
+      toast({
+        title: "Error al eliminar el tag"
+      })
+      throw error
+    }
+    
   }
   return (
     <div>
@@ -90,6 +108,9 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             variant={"destructive"}
             onClick={handleDeleteTag}
             type="button"
+            id="delete"
+            aria-label="Delete"
+            role="button"
           >
             Delete
           </Button>
@@ -99,6 +120,9 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
           variant={"marketing"}
           className="p-1 mt-4"
           type="submit"
+          id="submit"
+          aria-label="Submit"
+          role="button"
         >
           Submit
         </Button>

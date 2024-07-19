@@ -25,7 +25,11 @@ const Marketing = () => {
       )}>
         Collaborate, manage projects and reach new productivity peaks. From high rises to the home office, the work your team works is unique - accomplish it all with TechLibrary
       </div>
-      <Button variant="marketing" className="mt-6" size="lg">
+      <Button variant="marketing" className="mt-6" size="lg"
+      id="explore"
+      aria-label="explore"
+      role="button"
+      >
         <Link to="/home">
           EXPLORE TECHLIBRARY
         </Link>

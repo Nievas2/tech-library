@@ -95,6 +95,9 @@ const Card = ({ library }: CardProps) => {
             <Button
               variant="directLink"
               className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointer"
+              id="link"
+              aria-label="Direct Link"
+              role="button"
             >
               <Link />
               <p>Direct Link</p>
@@ -120,21 +123,29 @@ const Card = ({ library }: CardProps) => {
         <div className="flex flex-row ">
           <div className="flex items-center">
             <Button
-              className="flex items-center p-0 px-2 focus:bg-[transparent]"
+              className={`flex items-center p-0 px-[5px]
+              rounded-full transition-colors duration-100 hover:bg-main ${
+                library.liked ? "bg-main" : "bg-[transparent]"
+              }
+              `}
               variant="ghost"
               onClick={toggleLike}
+              id="like"
+              aria-label="Like"
+              role="button"
             >
               <Icon
                 icon="ei:like"
                 width="30"
                 height="30"
-                className={`rounded-full transition-colors duration-100 ${
-                  library.liked ? "bg-[#00f]" : "bg-[transparent]"
+                className={`${
+                  library.liked
+                    ? "text-light dark:text-light animate-like"
+                    : "bg-[transparent]"
                 }`}
               />
-
-              <small className="pl-2">{library.likesCount}</small>
             </Button>
+            <small className="pl-2">{library.likesCount}</small>
           </div>
 
           <div className="flex flex-col flex-1 items-end justify-center">

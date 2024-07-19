@@ -137,6 +137,10 @@ const LoginPage = () => {
                     variant="authButton"
                     className="w-full rounded-lg"
                     type="submit"
+                    id="login"
+                    aria-label="login"
+                    role="button"
+                    disabled={loading}
                   >
                     {loading ? "loading..." : "Login"}
                   </Button>

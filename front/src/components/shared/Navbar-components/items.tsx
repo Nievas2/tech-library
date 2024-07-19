@@ -7,10 +7,13 @@ interface ItemsNavbarProps {
 }
 export default function ItemsNavbar({ name, path }: ItemsNavbarProps) {
   return (
-    <Link
-      to={path}
-    >
-      <Button variant="authButton">
+    <Link to={path}>
+      <Button
+        variant="authButton"
+        id="Item-navbar"
+        aria-label="Item Navbar"
+        role="button"
+      >
         {name}
       </Button>
     </Link>

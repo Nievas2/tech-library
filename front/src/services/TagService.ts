@@ -44,14 +44,13 @@ export function putTag(tag: TagDto, tagId: number) {
     
 }
 
-export function deleteTag(tagId: number) {
-  axiosInstance
+export async function deleteTag(tagId: number) {
+  try {
+    const response = await axiosInstance
     .delete(`/tag/delete/${tagId}`)
-    .then((response) => {
-      return response.data.data
-    })
-    .catch((error) => {
-      console.log(error)
-      return null
-    })
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+  
 }
