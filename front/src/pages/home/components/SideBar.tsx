@@ -59,35 +59,36 @@ export default function SideBar() {
         open ? "w-60" : "w-0 border-none"
       } `}
     >
-      <div
-        className="w-full h-full relative"
-      >
-        <div
-          className={`absolute duration-150 z-50 ${
-            open ? "right-[-18px]" : "right-[-52px] xl:right-[-50px]"
-          } top-[30px]`}
-        >
-          <Button
-            onClick={handleSidebar}
-            variant="sidebarToggle"
-            size="rounded"
-          >
-            <Icon
-              icon="mingcute:right-fill"
-              width="36"
-              height="36"
-              color="#f72585"
-              className={`duration-500 ${open ? "rotate-180" : ""}`}
-            />
-          </Button>
-        </div>
-      
+      <div className="w-full h-full relative">
         <div
           className={`w-full h-screen sticky top-[97px] ${
             open ? "px-4 pt-[34px] pb-4" : "pt-0"
           }`}
         >
-          <div className={`${open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"}`}>
+          <div
+            className={`absolute duration-150 z-50 ${
+              open ? "right-[-18px]" : "right-[-52px] xl:right-[-50px]"
+            } top-[30px]`}
+          >
+            <Button
+              onClick={handleSidebar}
+              variant="sidebarToggle"
+              size="rounded"
+            >
+              <Icon
+                icon="mingcute:right-fill"
+                width="36"
+                height="36"
+                color="#f72585"
+                className={`duration-500 ${open ? "rotate-180" : ""}`}
+              />
+            </Button>
+          </div>
+          <div
+            className={`${
+              open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"
+            }`}
+          >
             <h2 className="text-xl font-bold">CATEGORIES</h2>
             <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[320px]">
               {loading ? (
