@@ -107,7 +107,22 @@ secondaries:
     transform: scale(1);
   }
 }
+.animate-like{
+  animation: like 0.5s ease-in-out;
+}
 
+@keyframes like {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+    rotate: -20deg;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 /* ScrollBar Styles */
 ::-webkit-scrollbar {
   width: 10px; 

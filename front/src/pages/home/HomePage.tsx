@@ -140,6 +140,9 @@ const HomePage = () => {
                     variant="popular"
                     size="popularSize"
                     onClick={() => setMorePopular(!morePopular)}
+                    id="popular"
+                    aria-label="popular"
+                    role="button"
                   >
                     <Icon
                       icon="uil:arrow-up"

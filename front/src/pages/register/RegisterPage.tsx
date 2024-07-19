@@ -279,6 +279,10 @@ const RegisterPage = () => {
                   <Button
                     variant="authButton"
                     className="w-full rounded-lg"
+                    type="submit"
+                    id="register"
+                    aria-label="Register"
+                    role="button"
                     disabled={loading}
                   >
                     Sign up

@@ -127,6 +127,9 @@ const AdminDashboardPage = () => {
           <Button
             className={`${showTags ? "bg-main dark:text-white" : ""} `}
             onClick={() => setShowTags(!showTags)}
+            id="show-tags"
+            aria-label="Show tags"
+            role="button"
           >
             <Icon
               icon="mdi:tag-outline"
