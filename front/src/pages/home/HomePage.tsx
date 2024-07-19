@@ -46,7 +46,7 @@ const HomePage = () => {
         let librariesResponse
         librariesResponse = await getLibrariesSearch(
           currentPage || 1,
-          authUser!.user.id,
+          authUser !== null ? authUser.user.id : "0",
           tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : "",
           search !== "null" && search
             ? search
@@ -137,7 +137,8 @@ const HomePage = () => {
               <div className="flex flex-1 items-start justify-start">
                 <div>
                   <Button
-                    variant="ghost"
+                    variant="popular"
+                    size="popularSize"
                     onClick={() => setMorePopular(!morePopular)}
                   >
                     <Icon
@@ -172,11 +173,11 @@ const HomePage = () => {
             </>
           </div>
 
-          {/* <Pagination
+          <Pagination
             currentPage={currentPage!}
             totalPages={totalPages}
             onPageChange={handlePageChange}
-          /> */}
+          />
         </div>
       </section>
     </>

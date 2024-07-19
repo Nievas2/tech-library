@@ -1,15 +1,29 @@
 import { ModeToggle } from "../mode-toggle"
 import ItemsNavbar from "./Navbar-components/items"
 import { Icon } from "@iconify/react"
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { useAuthContext } from "@/contexts"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Separator } from "../ui/separator"
 import { useLogout } from "@/hooks"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useState } from "react"
 
 const Navbar = () => {
   const { logOut } = useLogout();
   const { authUser } = useAuthContext();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleDropdownClick  = () => {
+    setIsDropdownOpen(false);
+  };
   
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
@@ -34,70 +48,85 @@ const Navbar = () => {
             <div className={`flex-grow items-center flex justify-end gap-6`}>
               <div className="flex items-center justify-center gap-3">
                 {authUser ? (
-                  <div className="flex items-center justify-center gap-4">
-                    <Link
+                  <div className="flex items-center justify-center gap-3">
+                    <NavLink
                       to="/favorites"
+                      className={({ isActive }) =>
+                        `${isActive ? 'active-link' : ''}`
+                      }
                     >
-                      <Icon className="hover:text-[#E81224] transition-colors duration-150 hover:animate-pulse" icon="tdesign:heart-filled" width="46" height="46" />
-                    </Link>
+                      <Icon icon="tdesign:heart-filled" width="48" height="48" />
+                    </NavLink>
 
                     <div className="flex gap-4">
-                      <Popover>
-                        <PopoverTrigger>
-                          <div className="rounded-full h-10 w-10 bg-dark dark:bg-light"></div>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <div className="p-[5px]">
-                            <p>{authUser?.user.email}</p>
-                            <p>@{authUser?.user.username}</p>
-                          </div>
+                      <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+                        <DropdownMenuTrigger>
+                          <Icon className="h-12 w-12 cursor-pointer" icon="carbon:user-avatar-filled"  />
+                        </DropdownMenuTrigger>
 
-                          <Separator className="mt-[10px] mx-[5px] mb-[10px]" />
+                        <DropdownMenuContent className="w-[288px] bg-light dark:bg-dark border-dark dark:border-light text-dark dark:text-light">
+                          <DropdownMenuLabel>
+                            <div className="text-base">
+                              <p>{authUser?.user.email}</p>
+                              <p>@{authUser?.user.username}</p>
+                            </div>
+                          </DropdownMenuLabel>
 
-                          <div className="flex flex-col">
-                            <Link 
-                              className="cursor-pointer p-[5px] flex items-center flex-row gap-2"
-                              to="/favorites"
-                            >
-                              <Icon
-                                icon="tdesign:heart-filled"
-                                width="24"
-                                height="24"
-                              />
-                              <p>Favorites</p>
-                            </Link>
+                          <DropdownMenuSeparator className="bg-dark dark:bg-light" />
 
-                            <Link 
-                              className="cursor-pointer p-[5px] flex items-center flex-row gap-2"
-                              to="/user-dashboard"
-                            >
-                              <Icon
-                                icon="icon-park-outline:config"
-                                width="24"
-                                height="24"
-                              />
-                              <p>Your Dashboard</p>
-                            </Link>
-
-                            {authUser?.user.role === "ADMIN" && (
+                          <DropdownMenuGroup>
+                            <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer">
                               <Link 
-                                className="cursor-pointer p-[5px] flex items-center flex-row gap-2"
-                                to="/admin-dashboard"
+                                className="px-[3px] flex items-center flex-row gap-2 w-full"
+                                to="/favorites"
+                                onClick={handleDropdownClick}
                               >
-                                <Icon 
-                                  icon="fluent:globe-shield-48-filled"
-                                  width="24" 
-                                  height="24"  
+                                <Icon
+                                  icon="tdesign:heart-filled"
+                                  width="24"
+                                  height="24"
                                 />
-                                <p>Admin Dashboard</p>
+                                <p>Favorites</p>
                               </Link>
-                            )}
-                          </div>
+                            </DropdownMenuItem>
 
-                          <Separator className="mt-[10px] mx-[5px] mb-[10px]" />
+                            <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer">
+                              <Link 
+                                className="px-[3px] flex items-center flex-row gap-2 w-full"
+                                to="/user-dashboard"
+                                onClick={handleDropdownClick}
+                              >
+                                <Icon
+                                  icon="icon-park-outline:config"
+                                  width="24"
+                                  height="24"
+                                />
+                                <p>Your Dashboard</p>
+                              </Link>
+                            </DropdownMenuItem>
 
-                          <div className="flex flex-col" onClick={logOut}>
-                            <button className="cursor-pointer p-[5px] flex items-center flex-row gap-2">
+                            <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer">
+                              {authUser?.user.role === "ADMIN" && (
+                                <Link 
+                                  className="px-[3px] flex items-center flex-row gap-2 w-full"
+                                  to="/admin-dashboard"
+                                  onClick={handleDropdownClick}
+                                >
+                                  <Icon 
+                                    icon="fluent:globe-shield-48-filled"
+                                    width="24" 
+                                    height="24"  
+                                  />
+                                  <p>Admin Dashboard</p>
+                                </Link>
+                              )}
+                            </DropdownMenuItem>
+                          </DropdownMenuGroup>
+
+                          <DropdownMenuSeparator className="bg-dark dark:bg-light" />
+
+                          <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer" onClick={logOut}>
+                            <button className="px-[3px] flex items-center flex-row gap-2 w-full" onClick={handleDropdownClick}>
                               <Icon
                                 icon="material-symbols:logout"
                                 width="24"
@@ -105,9 +134,9 @@ const Navbar = () => {
                               />
                               <p>Logout</p>
                             </button>
-                          </div>
-                        </PopoverContent>
-                      </Popover>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
 
                     <ModeToggle />
