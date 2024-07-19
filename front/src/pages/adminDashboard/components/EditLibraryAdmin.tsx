@@ -239,6 +239,9 @@ export default function EditLibraryAdmin({ card }: CardProps) {
         variant={"marketing"}
         className="p-1"
         type="submit"
+        id="submit"
+        aria-label="Submit"
+        role="button"
       >
         {loading ? "Loading..." : "Submit"}
       </Button>

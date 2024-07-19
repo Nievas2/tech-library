@@ -17,6 +17,7 @@ const buttonVariants = cva(
         secondary:
           "bg-dark text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        popular: "",
         link: "text-primary underline-offset-4 hover:underline",
         marketing: "bg-main hover:bg-main/80 text-light font-bold text-lg",
         darkSwich: "bg-dark hover:bg-dark/80 dark:bg-light dark:hover:bg-light/90 text-light dark:text-dark",
@@ -26,6 +27,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 px-4 py-2",
+        popularSize: "h-10 px-1 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",

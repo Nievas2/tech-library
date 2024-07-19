@@ -233,6 +233,10 @@ export default function FormAddLibrary({ card }: CardProps) {
         variant="marketing"
         className="p-1"
         type="submit"
+        id="submit"
+        aria-label="Submit"
+        role="button"
+        disabled={loading}
       >
         Submit
       </Button>

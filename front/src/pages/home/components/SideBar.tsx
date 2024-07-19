@@ -5,12 +5,16 @@ import { Button } from "@/components/ui/button"
 import { getTagsApi } from "@/services/TagService"
 import { Tag, useTagStore } from "@/stores"
 import usePaginationHome from "@/hooks/usePaginationHome"
+import { Input } from "@/components/ui/input"
+import { useDebounce } from "use-debounce"
 
 export default function SideBar() {
   const [open, setOpen] = useState(window.innerWidth > 768)
   const setTags = useTagStore((state) => state.setTags)
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
+  const [text, setText] = useState("")
+  const [value] = useDebounce(text, 350)
   const { searchParams } = usePaginationHome()
 
   useEffect(() => {
@@ -24,86 +28,141 @@ export default function SideBar() {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
-
-  // Forma optima de traer las tags
+  const fetchTags = async () => {
+    try {
+      const response = await getTagsApi()
+      const tagsIdsParams = String(searchParams.get("tags"))
+      const ids = tagsIdsParams.split(",").map(Number)
+      const updatedObjectsArray = response.map((obj) => {
+        return {
+          ...obj,
+          selected: ids.includes(Number(obj.id))
+        }
+      })
+      setTags(updatedObjectsArray)
+    } catch (error) {
+      console.error("Error fetching tags", error)
+    } finally {
+      setLoading(false)
+    }
+  }
   useEffect(() => {
     setLoading(true)
-    const fetchTags = async () => {
-      try {
-        const response = await getTagsApi()
-        const tagsIdsParams = String(searchParams.get("tags"))
-        const ids = tagsIdsParams.split(",").map(Number)
-        const updatedObjectsArray = response.map((obj) => {
-          return {
-            ...obj,
-            selected: ids.includes(Number(obj.id))
-          }
-        })
-        setTags(updatedObjectsArray)
-      } catch (error) {
-        console.error("Error fetching tags", error)
-      } finally {
-        setLoading(false)
-      }
+    handleChangeSelect(value)
+  }, [value])
+  function handleChangeSelect(value: string) {
+    if (value.length === 0) {
+      fetchTags()
+    } else {
+      const tagsFiltered = tags.filter((tag: Tag) => {
+        if (tag.name.toLowerCase().includes(value.toLowerCase())) {
+          return tag
+        }
+      })
+      setTags(tagsFiltered)
     }
-
-    fetchTags()
-  }, [])
-
+    setLoading(false)
+  }
   const handleSidebar = () => {
     setOpen(!open)
   }
 
   return (
     <section
-      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#311421] md:dark:bg-main/15  ${
+      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
         open ? "w-60" : "w-0 border-none"
       } `}
     >
-      <div
-        className={`fixed top-30 duration-150 ${
-          open ? "left-[225px] xl:left-[250px]" : "left-[0px]"
-        } top-[125px]`}
-      >
-        <Button
-          onClick={handleSidebar}
-          variant="sidebarToggle"
-          size="rounded"
+      <div className="w-full h-full relative">
+        <div
+          className={`w-full h-screen sticky top-[97px] ${
+            open ? "px-4 pt-[34px] pb-4" : "pt-0"
+          }`}
         >
-          <Icon
-            icon="mingcute:right-fill"
-            width="36"
-            height="36"
-            color="#f72585"
-            className={`duration-500 ${open ? "rotate-180" : ""}`}
-          />
-        </Button>
-      </div>
-      <div
-        className={`w-full h-screen sticky top-[97px] overflow-y-scroll scroll-smooth p-2 ${
-          open ? "px-4 pt-[34px]" : "pt-0"
-        }`}
-        style={{
-          scrollbarWidth: "none"
-        }}
-      >
-        <div className={`${open ? "flex flex-col gap-4" : "hidden"} `}>
-          <h2 className="text-xl font-bold text-[#fff]">CATEGORIES</h2>
-          <ul className="flex flex-col gap-1">
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <div className="flex flex-wrap gap-3">
-                {tags &&
-                  tags?.map((tag: Tag) => (
-                    <ItemsSideBar
-                      key={tag.name}
-                      tag={tag}
+          <div
+            className={`absolute duration-150 z-50 ${
+              open ? "right-[-18px]" : "right-[-52px] xl:right-[-50px]"
+            } top-[30px]`}
+          >
+            <Button
+              onClick={handleSidebar}
+              variant="sidebarToggle"
+              size="rounded"
+              id="sidebar-toggle"
+              role="button"
+              aria-label="Toggle sidebar"
+            >
+              <Icon
+                icon="mingcute:right-fill"
+                width="36"
+                height="36"
+                color="#f72585"
+                className={`duration-500 ${open ? "rotate-180" : ""}`}
+              />
+            </Button>
+          </div>
+          <div
+            className={`${
+              open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"
+            }`}
+          >
+            <h2 className="text-xl font-bold">CATEGORIES</h2>
+            <div className="w-full flex h-8 border border-dark dark:border-light rounded-md">
+              <div className="w-full relative rounded-md">
+                <Input
+                  placeholder="Search tag"
+                  value={text}
+                  onChange={(e) => {
+                    setText(e.target.value)
+                  }}
+                  className="w-full bg-light focus:ring-0 disabled:focus:ring text-dark dark:text-light dark:bg-dark rounded-l-none h-full rounded-md"
+                />
+
+                {text && (
+                  <button
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-0"
+                    onClick={() => setText("")}
+                  >
+                    <Icon
+                      icon="material-symbols:close"
+                      width="24"
+                      height="24"
                     />
-                  ))}
+                  </button>
+                )}
               </div>
-            )}
-          </ul>
+            </div>
+            <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[320px]">
+              {loading ? (
+                <p>Loading...</p>
+              ) : (
+                <div>
+                  {
+                    tags && (
+                      <div className="flex flex-wrap gap-3">
+                        {tags?.map((tag: Tag) => (
+                          <ItemsSideBar
+                            key={crypto.randomUUID()}
+                            tag={tag}
+                          />
+                        ))}
+                      </div>
+                    ) /* : (
+                    <div className="flex flex-wrap gap-3">
+                      {tags &&
+                        tags?.map((tag: Tag) => (
+                          <ItemsSideBar
+                            key={crypto.randomUUID()}
+                            tag={tag}
+                          />
+                        ))}
+                    </div>
+                  ) */
+                  }
+                </div>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </section>

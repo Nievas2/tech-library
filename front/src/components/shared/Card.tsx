@@ -40,18 +40,26 @@ const Card = ({ library }: CardProps) => {
   }
   async function toggleLike() {
     try {
-      if (!liked) {
+      if (liked === false && library.liked === false) {
         const response = await postLibraryLike(
           String(library.id),
           authUser!.user.id
         )
-        if (response.status === 200) setLiked(true)
+        if (response.status === 200) {
+          library.liked = true
+          library.likesCount = library.likesCount! + 1
+          setLiked(true)
+        }
       } else {
         const response = await deleteLibraryLike(
           String(library.id),
           authUser!.user.id
         )
-        if (response.status === 200) setLiked(false)
+        if (response.status === 200) {
+          library.liked = false
+          library.likesCount = library.likesCount ? library.likesCount - 1 : 0
+          setLiked(false)
+        }
       }
     } catch (error) {
       throw error
@@ -85,7 +93,10 @@ const Card = ({ library }: CardProps) => {
           >
             <Button
               variant="directLink"
-              className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointer text-dark"
+              className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointer"
+              id="link"
+              aria-label="Direct Link"
+              role="button"
             >
               <Link />
               <p className="font-bold text-dark">Direct Link</p>
@@ -107,33 +118,33 @@ const Card = ({ library }: CardProps) => {
             )}
           </div>
         </div>
-        {/* <small>{library.likesCount}</small> */}
 
         <div className="flex flex-row ">
-          {/* <small>
-            Suggested by{" "}
-            <span className="font-semibold text-main">
-              @{removeNumbers(library.createdBy.username)}
-            </span>{" "}
-            on {formatDate(library.createdAt)}
-          </small> */}
           <div className="flex items-center">
             <Button
-              className="flex items-center p-0 px-2 focus:bg-[transparent]"
+              className={`flex items-center p-0 px-[5px]
+              rounded-full transition-colors duration-100 hover:bg-main ${
+                library.liked ? "bg-main" : "bg-[transparent]"
+              }
+              `}
               variant="ghost"
               onClick={toggleLike}
+              id="like"
+              aria-label="Like"
+              role="button"
             >
               <Icon
                 icon="ei:like"
                 width="30"
                 height="30"
-                className={`rounded-full transition-colors duration-100 ${
-                  liked ? "bg-[#00f]" : "bg-[transparent]"
+                className={`${
+                  library.liked
+                    ? "text-light dark:text-light animate-like"
+                    : "bg-[transparent]"
                 }`}
               />
-
-              <small className="pl-2">{library.likesCount}</small>
             </Button>
+            <small className="pl-2">{library.likesCount}</small>
           </div>
           <div className="flex flex-col flex-1 items-end justify-center">
             <small>Suggested by </small>

@@ -15,7 +15,6 @@ export class TagDto extends BaseDTO {
   @IsNotEmpty()
   @Matches(/#[A-Fa-f0-9]{8}/)
   color!: string;
-  
 }
 
 /**

@@ -37,10 +37,18 @@ export class TagService extends BaseService<TagEntity> {
     return (await this.execRepository).save(tag);
   }
 
-  async update(id: number, tag: TagDto): Promise<UpdateResult> {
-    await this.existsById(id);
-    await this.existsByName(tag.name);
-    return (await this.execRepository).update(id, tag);
+  async update(id: number, tag: TagDto): Promise<TagResponseDto> {
+    const data = await this.findById(id);
+    if (data === null) throw new TagNotFoundException("Tag not found");
+
+    if(data.id != id) throw new TagAlreadyExistException("Tag already exist");
+
+    await (await this.execRepository).update(id, tag);
+
+    data.name = tag.name;
+    data.color = tag.color;
+
+    return new TagResponseDto(data);
   }
 
   async restore(id: number): Promise<UpdateResult> {
@@ -59,11 +67,6 @@ export class TagService extends BaseService<TagEntity> {
   }
 
   //----------------------Helpers-----------------------------
-
-  private async existsById(id: number): Promise<void> {
-    const exist = await (await this.execRepository).existsBy({ id: id });
-    if (!exist) throw new TagNotFoundException("Tag not found");
-  }
 
   private async existsByName(name: string): Promise<void> {
     const exist = await (await this.execRepository).createQueryBuilder("tag").where("LOWER(tag.name) = LOWER(:name)", { name }).andWhere("tag.isActive = true").getExists();

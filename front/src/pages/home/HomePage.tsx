@@ -46,7 +46,7 @@ const HomePage = () => {
         let librariesResponse
         librariesResponse = await getLibrariesSearch(
           currentPage || 1,
-          authUser!.user.id,
+          authUser !== null ? authUser.user.id : "0",
           tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : "",
           search !== "null" && search
             ? search
@@ -128,7 +128,8 @@ const HomePage = () => {
         <div className="flex flex-1">
           <SideBar />
         </div>
-        <div className="pt-7 flex flex-col items-center gap-7 px-1 sm:px-4 justify-center mb-7">
+
+        <div className="pt-7 flex flex-col items-center gap-7 px-4 justify-start mb-7">
           <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
 
@@ -136,8 +137,12 @@ const HomePage = () => {
               <div className="flex flex-1 items-start justify-start">
                 <div>
                   <Button
-                    variant="ghost"
+                    variant="popular"
+                    size="popularSize"
                     onClick={() => setMorePopular(!morePopular)}
+                    id="popular"
+                    aria-label="popular"
+                    role="button"
                   >
                     <Icon
                       icon="uil:arrow-up"

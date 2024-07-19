@@ -84,6 +84,7 @@ const AdminDashboardPage = () => {
   }
   return (
     <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
+      <h1 className="text-3xl font-bold text-center">Admin dashboard</h1>
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
           <Select
@@ -126,6 +127,9 @@ const AdminDashboardPage = () => {
           <Button
             className={`${showTags ? "bg-main dark:text-white" : ""} `}
             onClick={() => setShowTags(!showTags)}
+            id="show-tags"
+            aria-label="Show tags"
+            role="button"
           >
             <Icon
               icon="mdi:tag-outline"

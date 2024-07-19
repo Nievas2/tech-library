@@ -20,9 +20,10 @@ export function ModeToggle() {
       variant="darkSwich"
       size="icon"
       onClick={handleChange}
-      role="button"
+      className="ml-1"
+      id="theme-toggle"
       aria-label="Toggle dark mode"
-      id="mode-toggle"
+      role="button"
     >
       {theme === "light" ? (
         <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-text" />
