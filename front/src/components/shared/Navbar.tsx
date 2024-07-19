@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
+import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 
 const Navbar = () => {
   const { logOut } = useLogout();
@@ -27,7 +28,6 @@ const Navbar = () => {
   
   return (
     <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
-
       <div className="mx-auto max-w-7xl p-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-center justify-start">
@@ -40,6 +40,7 @@ const Navbar = () => {
                 width="42"
                 height="42"
               />
+
               <h1 className="text-2xl font-bold hidden sm:block">
                 Tech Library
               </h1>
@@ -68,7 +69,7 @@ const Navbar = () => {
                           <DropdownMenuLabel>
                             <div className="text-base">
                               <p>{authUser?.user.email}</p>
-                              <p>@{authUser?.user.username}</p>
+                              <p>@{formatGoogleUsername(authUser?.user.username)}</p>
                             </div>
                           </DropdownMenuLabel>
 

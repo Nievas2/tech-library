@@ -9,27 +9,25 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import { deleteLibraryLike, postLibraryLike } from "@/services/LibraryService"
 import { useAuthContext } from "@/contexts"
 import { useState } from "react"
+import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 
 interface CardProps {
-  library: Library
-}
-export const removeNumbers = (username: string): string => {
-  const cleanedName = username.replace(/-\d+/, "")
-  return cleanedName
+  library : Library
 }
 
 const Card = ({ library }: CardProps) => {
-  const { authUser } = useAuthContext()
-  const favorites = useFavoriteStore((state) => state.favorites)
-  const [liked, setLiked] = useState(library.liked)
+  const { authUser } = useAuthContext();
+  const [liked, setLiked] = useState(library.liked);
+  const favorites = useFavoriteStore((state) => state.favorites);
+  const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
+
   const addFavoriteLibrary = useFavoriteStore(
     (state) => state.addFavoriteLibrary
   )
+
   const deleteFavoriteLibrary = useFavoriteStore(
     (state) => state.deleteFavoriteLibrary
   )
-
-  const isFavorite = favorites?.some((favorite) => favorite.id === library.id)
 
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -38,6 +36,7 @@ const Card = ({ library }: CardProps) => {
       addFavoriteLibrary(library)
     }
   }
+
   async function toggleLike() {
     try {
       if (liked === false && library.liked === false) {
@@ -70,7 +69,9 @@ const Card = ({ library }: CardProps) => {
     <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">{library.name}</h2>
+
         <p className="text-base">{library.description}</p>
+
         <div className="flex flex-row flex-wrap gap-2 text-sm">
           {library.tags?.map((tag: Tag) => (
             <h4
@@ -115,16 +116,8 @@ const Card = ({ library }: CardProps) => {
             )}
           </div>
         </div>
-        {/* <small>{library.likesCount}</small> */}
 
         <div className="flex flex-row ">
-          {/* <small>
-            Suggested by{" "}
-            <span className="font-semibold text-main">
-              @{removeNumbers(library.createdBy.username)}
-            </span>{" "}
-            on {formatDate(library.createdAt)}
-          </small> */}
           <div className="flex items-center">
             <Button
               className="flex items-center p-0 px-2 focus:bg-[transparent]"
@@ -143,13 +136,16 @@ const Card = ({ library }: CardProps) => {
               <small className="pl-2">{library.likesCount}</small>
             </Button>
           </div>
+
           <div className="flex flex-col flex-1 items-end justify-center">
             <small>Suggested by </small>
+
             <small>
               <span className="font-semibold text-main flex">
-                @{removeNumbers(library.createdBy.username)}
+                @{formatGoogleUsername(library.createdBy.username)}
               </span>{" "}
             </small>
+
             <small>
               <span className="flex">{formatDate(library.createdAt)}</span>
             </small>
