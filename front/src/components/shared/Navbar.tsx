@@ -29,7 +29,7 @@ const Navbar = () => {
   const location = useLocation();
   
   return (
-    <nav className="fixed w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
+    <nav className="sticky w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
       <div className="mx-auto max-w-7xl p-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-center justify-start">
@@ -79,7 +79,7 @@ const Navbar = () => {
 
                           <DropdownMenuGroup className="flex gap-2 flex-col">
                             <DropdownMenuItem 
-                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main' : ''}`}
+                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : ''}`}
                             >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -96,7 +96,7 @@ const Navbar = () => {
                             </DropdownMenuItem>
 
                             <DropdownMenuItem 
-                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main' : ''}`}
+                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : ''}`}
                             >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -114,7 +114,7 @@ const Navbar = () => {
 
                             {authUser?.user.role === "ADMIN" && (
                               <DropdownMenuItem 
-                                className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main' : ''}`}
+                                className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : ''}`}
                               >
                                 <Link 
                                   className="px-[3px] flex items-center flex-row gap-2 w-full"

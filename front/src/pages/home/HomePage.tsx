@@ -129,7 +129,7 @@ const HomePage = () => {
           <SideBar />
         </div>
 
-        <div className="pt-7 flex flex-col items-center gap-7 px-4 justify-start mb-7">
+        <div className="py-7 px-4 flex flex-col items-center gap-7 justify-start">
           <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
 

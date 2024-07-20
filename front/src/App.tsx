@@ -24,7 +24,7 @@ function App() {
       <section className="w-full font-poppins flex flex-col justify-center items-center min-h-screen">
         <Navbar />
 
-        <div className={`flex flex-1 max-w-7xl ${!noPadding ? 'pt-[120px]' : 'pt-24'}`}>
+        <div className={`flex flex-1 max-w-7xl ${!noPadding ? 'py-7 px-4' : ''}`}>
           <Routes>
             <Route path='/' element={ <LandingPage /> } />
             <Route path='/home' element={ <HomePage /> } />

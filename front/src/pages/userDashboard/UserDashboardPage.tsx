@@ -62,9 +62,11 @@ const UserDashboardPage = () => {
     setLoading(true)
     handlePageChange(1)
   }, [])
+
   useEffect(() => {
     setCurrentPage(1)
   }, [state])
+
   useEffect(() => {
     fethLibraries(state)
   }, [currentPage, state])
@@ -93,17 +95,18 @@ const UserDashboardPage = () => {
   }
 
   return (
-    <div className="flex flex-1 mx-auto max-w-[1240px] w-screen flex-col relative gap-6 pt-0 p-4 md:pt-0 sm:p-4 sm:pt-0 xl:p-0">
+    <div className="flex flex-1 mx-auto max-w-[1240px] flex-col relative gap-6">
       <h1 className="text-3xl font-bold py-0 text-center">Your dashboard</h1>
-      <div className="flex">
-        <div className="flex-1">
-          <Select
+
+      <div className="flex justify-between py-2">
+        <Select
             defaultValue="ALL"
             onValueChange={handleChangeSelect}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a state" />
             </SelectTrigger>
+
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="ALL">All</SelectItem>
@@ -112,14 +115,14 @@ const UserDashboardPage = () => {
                 <SelectItem value="INACTIVE">INACTIVE</SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select>
-        </div>
+        </Select>
 
         <div className="flex justify-end">
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
               Sugerir
             </DialogTrigger>
+
             <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
               <DialogHeader className="">
                 <DialogTitle>
@@ -128,11 +131,13 @@ const UserDashboardPage = () => {
                   </strong>
                 </DialogTitle>
               </DialogHeader>
+              
               <FormAddLibrary card={undefined} />
             </DialogContent>
           </Dialog>
         </div>
       </div>
+
       {loading ? (
         renderSkeletonsUserDashboard()
       ) : (
@@ -151,7 +156,7 @@ const UserDashboardPage = () => {
                   />
                 ))}
               </section>
-              <div className="flex justify-center pb-4">
+              <div className="flex justify-center">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
