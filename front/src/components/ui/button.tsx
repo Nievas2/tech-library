@@ -19,10 +19,10 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         popular: "",
         link: "text-primary underline-offset-4 hover:underline",
-        marketing: "bg-main hover:bg-main/80 text-light font-bold text-lg",
+        marketing: "bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] text-light font-bold text-lg",
         darkSwich: "bg-dark hover:bg-dark/80 dark:bg-light dark:hover:bg-light/90 text-light dark:text-dark",
-        directLink: "bg-main hover:bg-main/80 text-light",
-        authButton: "bg-main hover:bg-main/80 text-light text-base font-bold",
+        directLink: "bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] text-light",
+        authButton: "bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] text-light text-base font-bold",
         sidebarToggle: "bg-dark hover:bg-dark/80 dark:bg-light hover:dark:bg-light/90",
       },
       size: {

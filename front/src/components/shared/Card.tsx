@@ -99,8 +99,8 @@ const Card = ({ library }: CardProps) => {
               aria-label="Direct Link"
               role="button"
             >
-              <Link />
-              <p>Direct Link</p>
+              <Link className="h-[20px] w-[20px]" />
+              <p className="text-sm">Direct Link</p>
             </Button>
           </NavLink>
 
@@ -121,13 +121,9 @@ const Card = ({ library }: CardProps) => {
         </div>
 
         <div className="flex flex-row ">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center gap-2 font-medium">
             <Button
-              className={`flex items-center p-0 px-[5px]
-              rounded-full transition-colors duration-100 hover:bg-main ${
-                library.liked ? "bg-main" : "bg-[transparent]"
-              }
-              `}
+              className={`flex items-center px-[5px] py-0 border border-main rounded-full transition-colors duration-100 hover:text-light hover:bg-main ${library.liked ? "bg-main" : "bg-[transparent]"}`}
               variant="ghost"
               onClick={toggleLike}
               id="like"
@@ -145,7 +141,7 @@ const Card = ({ library }: CardProps) => {
                 }`}
               />
             </Button>
-            <small className="pl-2">{library.likesCount}</small>
+            <small>{library.likesCount}</small>
           </div>
 
           <div className="flex flex-col flex-1 items-end justify-center">

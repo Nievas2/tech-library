@@ -15,6 +15,7 @@ const StateCard = ({ card }: { card: Library }) => {
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold">{card.name}</h2>
+
           <div
             className={`flex items-center gap-2 border ${
               card.state === "ACTIVE"
@@ -44,24 +45,26 @@ const StateCard = ({ card }: { card: Library }) => {
           </div>
         </div>
 
-        <p className="text-base truncate">{card.description}</p>
+        <p className="text-base line-clamp-3">{card.description}</p>
       </div>
+
       {card.state === "ACTIVE" ? (
         ""
       ) : (
         <div className="flex items-center justify-between mt-4">
           <Dialog>
-            <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-main/50 transition-colors duration-150 text-light py-2 rounded-sm">
-              Edit
+            <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] transition-colors duration-150 text-light py-2 rounded-sm">
               <Icon
                 icon="fluent:edit-24-filled"
-                width="16"
-                height="16"
+                width="20"
+                height="20"
               />
+              <p className="font-medium text-sm">Edit</p>
             </DialogTrigger>
-            <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
-              <DialogHeader className="">
-                <DialogTitle className="text-dark dark:text-light">
+
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>
                   Sugerir
                 </DialogTitle>
               </DialogHeader>

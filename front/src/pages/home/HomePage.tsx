@@ -84,7 +84,7 @@ const HomePage = () => {
 
   const SkeletonCard = () => {
     return (
-      <div className="flex w-[300px] md:w-[250px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
+      <div className="flex w-[300px] sm:w-[294px] md:w-[358px] lg:w-[237.33px] xl:w-[322.66px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
         <div className="flex flex-col gap-2">
           <Skeleton className="h-8 w-3/4 rounded-md" />
           <Skeleton className="h-4 w-full sm:w-3/4 rounded-md" />
@@ -133,47 +133,46 @@ const HomePage = () => {
           <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
 
-            <>
-              <div className="flex flex-1 items-start justify-start">
-                <div>
-                  <Button
-                    variant="popular"
-                    size="popularSize"
-                    onClick={() => setMorePopular(!morePopular)}
-                    id="popular"
-                    aria-label="popular"
-                    role="button"
-                  >
-                    <Icon
-                      icon="uil:arrow-up"
-                      width="24"
-                      height="24"
-                      className={`${
-                        morePopular ? "rotate-180" : ""
-                      } transition-transform duration-100`}
-                    />
-                    More popular
-                  </Button>
-                </div>
+            <div className="flex flex-1 items-start justify-start">
+              <div>
+                <Button
+                  variant="popular"
+                  size="popularSize"
+                  onClick={() => setMorePopular(!morePopular)}
+                  id="popular"
+                  aria-label="popular"
+                  role="button"
+                >
+                  <Icon
+                    icon="uil:arrow-up"
+                    width="24"
+                    height="24"
+                    className={`${
+                      morePopular ? "rotate-180" : ""
+                    } transition-transform duration-100`}
+                  />
+                  More popular
+                </Button>
               </div>
-              {notFound && currentPage === 1 ? (
-                <NotFound />
-              ) : (
-                <div>
-                  {search ? (
-                    <CardsContainer libraries={libraries} />
-                  ) : (
-                    <div>
-                      {loading ? (
-                        renderSkeletons()
-                      ) : (
-                        <CardsContainer libraries={libraries} />
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-            </>
+            </div>
+
+            {notFound && currentPage === 1 ? (
+              <NotFound />
+            ) : (
+              <div>
+                {search ? (
+                  <CardsContainer libraries={libraries} />
+                ) : (
+                  <div>
+                    {loading ? (
+                      renderSkeletons()
+                    ) : (
+                      <CardsContainer libraries={libraries} />
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <Pagination

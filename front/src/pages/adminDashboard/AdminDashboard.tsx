@@ -97,7 +97,6 @@ const AdminDashboardPage = () => {
           <Select
             defaultValue="ALL"
             onValueChange={handleChangeSelect}
-            disabled={loading}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a state" />
@@ -120,12 +119,10 @@ const AdminDashboardPage = () => {
               />
               Add Tag
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
-              <DialogHeader className="">
+            <DialogContent>
+              <DialogHeader>
                 <DialogTitle>
-                  <strong className="text-dark dark:text-light ">
-                    Add tag
-                  </strong>
+                  Add tag
                 </DialogTitle>
               </DialogHeader>
               <ChangeTag tag={undefined} />
@@ -152,12 +149,10 @@ const AdminDashboardPage = () => {
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
               Add Library
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
-              <DialogHeader className="">
+            <DialogContent>
+              <DialogHeader>
                 <DialogTitle>
-                  <strong className="text-dark dark:text-light ">
-                    Add Library
-                  </strong>
+                  Add Library
                 </DialogTitle>
               </DialogHeader>
               <FormAddLibrary card={undefined} />
@@ -203,12 +198,10 @@ const AdminDashboardPage = () => {
                     <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
                       {tag.name}
                     </DialogTrigger>
-                    <DialogContent className="bg-light dark:bg-dark ">
-                      <DialogHeader className="">
+                    <DialogContent>
+                      <DialogHeader>
                         <DialogTitle>
-                          <strong className="text-dark dark:text-light ">
-                            Update Tag
-                          </strong>
+                          Update Tag
                         </DialogTitle>
                       </DialogHeader>
                       <ChangeTag tag={tag} />

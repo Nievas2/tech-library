@@ -79,7 +79,7 @@ const Navbar = () => {
 
                           <DropdownMenuGroup className="flex gap-2 flex-col">
                             <DropdownMenuItem 
-                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : ''}`}
+                              className={`focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : ''}`}
                             >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -96,7 +96,7 @@ const Navbar = () => {
                             </DropdownMenuItem>
 
                             <DropdownMenuItem 
-                              className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : ''}`}
+                              className={`focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : ''}`}
                             >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -114,7 +114,7 @@ const Navbar = () => {
 
                             {authUser?.user.role === "ADMIN" && (
                               <DropdownMenuItem 
-                                className={`focus:bg-main focus:text-light text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : ''}`}
+                                className={`focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : ''}`}
                               >
                                 <Link 
                                   className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -134,7 +134,7 @@ const Navbar = () => {
 
                           <DropdownMenuSeparator className="bg-dark dark:bg-light" />
 
-                          <DropdownMenuItem className="focus:bg-main focus:text-light text-base cursor-pointer" onClick={logOut}>
+                          <DropdownMenuItem className="focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer" onClick={logOut}>
                             <button className="px-[3px] flex items-center flex-row gap-2 w-full" onClick={handleDropdownClick}>
                               <Icon
                                 icon="material-symbols:logout"

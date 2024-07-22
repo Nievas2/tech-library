@@ -95,40 +95,47 @@ const UserDashboardPage = () => {
   }
 
   return (
-    <div className="flex flex-1 mx-auto max-w-[1240px] flex-col relative gap-6">
+    <div className="flex mx-auto max-w-[1240px] flex-col relative gap-6">
       <h1 className="text-3xl font-bold py-0 text-center">Your dashboard</h1>
 
-      <div className="flex justify-between py-2">
+      <div className="flex justify-between py-2 min-w-[300px] sm:min-w-[608px] md:min-w-[736px] lg:min-w-[992px] xl:min-w-[1240px]">
         <Select
-            defaultValue="ALL"
-            onValueChange={handleChangeSelect}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a state" />
-            </SelectTrigger>
+          defaultValue="ALL"
+          onValueChange={handleChangeSelect}
+        >
+          <SelectTrigger className={`w-[180px] ${state === "all" ? "bg-light text-dark dark:text-light" : ""}`}>
+            <SelectValue placeholder="Select a state" />
+          </SelectTrigger>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">All</SelectItem>
-                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                <SelectItem value="PENDING">PENDING</SelectItem>
-                <SelectItem value="INACTIVE">INACTIVE</SelectItem>
-              </SelectGroup>
-            </SelectContent>
+          <SelectContent>
+            <SelectGroup className="flex flex-col gap-1">
+              {["ALL", "ACTIVE", "PENDING", "INACTIVE"].map((item) => (
+                <SelectItem
+                  key={item}
+                  value={item}
+                  className={`${
+                    state.toUpperCase() === item
+                      ? "bg-main text-light pointer-events-none"
+                      : "bg-white text-dark dark:text-light"
+                  }`}
+                >
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
         </Select>
 
         <div className="flex justify-end">
           <Dialog>
-            <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
+            <DialogTrigger className="text-light font-medium bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] py-2 px-4 rounded-md transition-colors duration-150">
               Sugerir
             </DialogTrigger>
 
-            <DialogContent className="bg-[#F9D8DF] dark:bg-[#311421]">
-              <DialogHeader className="">
+            <DialogContent>
+              <DialogHeader>
                 <DialogTitle>
-                  <strong className="text-dark dark:text-light ">
-                    Sugerir
-                  </strong>
+                  Sugerir
                 </DialogTitle>
               </DialogHeader>
               
@@ -138,35 +145,38 @@ const UserDashboardPage = () => {
         </div>
       </div>
 
-      {loading ? (
-        renderSkeletonsUserDashboard()
-      ) : (
-        <>
-          {filterError ? (
-            <div className="h-[40vh] flex text-center items-center justify-center">
-              <span className=" text-2xl font-bold">{filterError}</span>
-            </div>
-          ) : (
-            <>
-              <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
-                {list?.map((card) => (
-                  <StateCard
-                    key={crypto.randomUUID()}
-                    card={card}
-                  />
-                ))}
-              </section>
-              <div className="flex justify-center">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={handlePageChange}
-                />
+      <div className="flex justify-center">
+        {loading ? (
+          renderSkeletonsUserDashboard()
+        ) : (
+          <>
+            {filterError ? (
+              <div className="h-[40vh] flex text-center items-center justify-center">
+                <span className=" text-2xl font-bold">{filterError}</span>
               </div>
-            </>
-          )}
-        </>
-      )}
+            ) : (
+              <>
+                <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
+                  {list?.map((card) => (
+                    <StateCard
+                      key={crypto.randomUUID()}
+                      card={card}
+                    />
+                  ))}
+                </section>
+              </>
+            )}
+          </>
+        )}
+      </div>
+
+      <div className="flex justify-center">
+        <Pagination
+          currentPage={currentPage!}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>      
     </div>
   )
 }
