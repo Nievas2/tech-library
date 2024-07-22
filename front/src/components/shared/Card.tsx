@@ -9,27 +9,25 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import { deleteLibraryLike, postLibraryLike } from "@/services/LibraryService"
 import { useAuthContext } from "@/contexts"
 import { useState } from "react"
+import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 
 interface CardProps {
-  library: Library
-}
-export const removeNumbers = (username: string): string => {
-  const cleanedName = username.replace(/-\d+/, "")
-  return cleanedName
+  library : Library
 }
 
 const Card = ({ library }: CardProps) => {
-  const { authUser } = useAuthContext()
-  const favorites = useFavoriteStore((state) => state.favorites)
-  const [liked, setLiked] = useState(library.liked)
+  const { authUser } = useAuthContext();
+  const [liked, setLiked] = useState(library.liked);
+  const favorites = useFavoriteStore((state) => state.favorites);
+  const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
+
   const addFavoriteLibrary = useFavoriteStore(
     (state) => state.addFavoriteLibrary
   )
+
   const deleteFavoriteLibrary = useFavoriteStore(
     (state) => state.deleteFavoriteLibrary
   )
-
-  const isFavorite = favorites?.some((favorite) => favorite.id === library.id)
 
   const toggleFavorite = () => {
     if (isFavorite) {
@@ -38,6 +36,7 @@ const Card = ({ library }: CardProps) => {
       addFavoriteLibrary(library)
     }
   }
+
   async function toggleLike() {
     try {
       if (liked === false && library.liked === false) {
@@ -67,19 +66,21 @@ const Card = ({ library }: CardProps) => {
   }
 
   return (
-    <div className="flex flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
+    <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">{library.name}</h2>
+
         <p className="text-base">{library.description}</p>
+
         <div className="flex flex-row flex-wrap gap-2 text-sm">
           {library.tags?.map((tag: Tag) => (
-            <span
+            <h4
               key={tag.id}
               style={{ backgroundColor: tag.color }}
               className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light"
             >
               {tag.name}
-            </span>
+            </h4>
           ))}
         </div>
       </div>
@@ -98,8 +99,8 @@ const Card = ({ library }: CardProps) => {
               aria-label="Direct Link"
               role="button"
             >
-              <Link />
-              <p className="font-bold text-dark">Direct Link</p>
+              <Link className="h-[20px] w-[20px]" />
+              <p className="text-sm">Direct Link</p>
             </Button>
           </NavLink>
 
@@ -120,13 +121,9 @@ const Card = ({ library }: CardProps) => {
         </div>
 
         <div className="flex flex-row ">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center gap-2 font-medium">
             <Button
-              className={`flex items-center p-0 px-[5px]
-              rounded-full transition-colors duration-100 hover:bg-main ${
-                library.liked ? "bg-main" : "bg-[transparent]"
-              }
-              `}
+              className={`flex items-center px-[5px] py-0 border border-main rounded-full transition-colors duration-100 hover:text-light hover:bg-main ${library.liked ? "bg-main" : "bg-[transparent]"}`}
               variant="ghost"
               onClick={toggleLike}
               id="like"
@@ -144,15 +141,18 @@ const Card = ({ library }: CardProps) => {
                 }`}
               />
             </Button>
-            <small className="pl-2">{library.likesCount}</small>
+            <small>{library.likesCount}</small>
           </div>
+
           <div className="flex flex-col flex-1 items-end justify-center">
             <small>Suggested by </small>
+
             <small>
               <span className="font-semibold text-main flex">
-                @{removeNumbers(library.createdBy.username)}
+                @{formatGoogleUsername(library.createdBy.username)}
               </span>{" "}
             </small>
+
             <small>
               <span className="flex">{formatDate(library.createdAt)}</span>
             </small>

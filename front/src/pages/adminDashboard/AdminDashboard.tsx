@@ -41,6 +41,7 @@ const AdminDashboardPage = () => {
     handlePageChange,
     setCurrentPage
   } = usePagination()
+
   const fetchTags = async () => {
     try {
       const tags = await getTagsApi()
@@ -51,14 +52,17 @@ const AdminDashboardPage = () => {
       setLoading(false)
     }
   }
+
   useEffect(() => {
     setLoading(true)
     fetchTags()
     handlePageChange(1)
   }, [])
+
   useEffect(() => {
     setCurrentPage(1)
   }, [state])
+
   useEffect(() => {
     fethLibraries(state)
   }, [currentPage, state])
@@ -73,6 +77,7 @@ const AdminDashboardPage = () => {
         state.toLocaleLowerCase(),
         currentPage
       )
+      
       setFilterError("")
       setList(response.data.results)
       setTotalPages(response.data.total_pages)
@@ -82,15 +87,16 @@ const AdminDashboardPage = () => {
     }
     if (list) setLoading(false)
   }
+
   return (
-    <div className="flex flex-1 w-screen flex-col relative max-w-[1240px] gap-4 p-4 xl:p-0">
+    <div className="flex flex-1 flex-col relative max-w-[1240px] gap-6">
       <h1 className="text-3xl font-bold text-center">Admin dashboard</h1>
+      
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
           <Select
             defaultValue="ALL"
             onValueChange={handleChangeSelect}
-            disabled={loading}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a state" />
@@ -113,12 +119,10 @@ const AdminDashboardPage = () => {
               />
               Add Tag
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
-              <DialogHeader className="">
+            <DialogContent>
+              <DialogHeader>
                 <DialogTitle>
-                  <strong className="text-dark dark:text-light ">
-                    Add tag
-                  </strong>
+                  Add tag
                 </DialogTitle>
               </DialogHeader>
               <ChangeTag tag={undefined} />
@@ -145,12 +149,10 @@ const AdminDashboardPage = () => {
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
               Add Library
             </DialogTrigger>
-            <DialogContent className="bg-light dark:bg-dark ">
-              <DialogHeader className="">
+            <DialogContent>
+              <DialogHeader>
                 <DialogTitle>
-                  <strong className="text-dark dark:text-light ">
-                    Add Library
-                  </strong>
+                  Add Library
                 </DialogTitle>
               </DialogHeader>
               <FormAddLibrary card={undefined} />
@@ -169,7 +171,7 @@ const AdminDashboardPage = () => {
             </div>
           ) : (
             <>
-              <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mt-2">
+              <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
                 {list &&
                   list?.map((card) => (
                     <StateCardAdmin
@@ -178,32 +180,28 @@ const AdminDashboardPage = () => {
                     />
                   ))}
               </section>
-              <section className="pb-4">
-                <div className="flex justify-center">
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                  />
-                </div>
-              </section>
+              <div className="flex justify-center">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
             </>
           )}
 
           {showTags && (
-            <section className="mx-auto max-w-[1240px] justify-center gap-5 mt-2 flex flex-wrap flex-1 pb-4">
+            <section className="mx-auto max-w-[1240px] justify-center gap-5 flex flex-wrap">
               {tags?.map((tag: any) => (
                 <div key={crypto.randomUUID()}>
                   <Dialog>
                     <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
                       {tag.name}
                     </DialogTrigger>
-                    <DialogContent className="bg-light dark:bg-dark ">
-                      <DialogHeader className="">
+                    <DialogContent>
+                      <DialogHeader>
                         <DialogTitle>
-                          <strong className="text-dark dark:text-light ">
-                            Update Tag
-                          </strong>
+                          Update Tag
                         </DialogTitle>
                       </DialogHeader>
                       <ChangeTag tag={tag} />

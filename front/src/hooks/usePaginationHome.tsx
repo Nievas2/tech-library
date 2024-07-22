@@ -9,7 +9,6 @@ const usePaginationHome = () => {
   const [totalPages, setTotalPages] = useState(1)
   const tagActives = useTagStore((state) => state.tagsActives)
 
-
   const handlePageChange = useCallback((page: any) => {
     setCurrentPage(page)
     updateUrl(page)
@@ -37,7 +36,6 @@ const usePaginationHome = () => {
 
   const updateUrl = useCallback(
     (page: any) => {
-     
       const tags = tagActives()
       let tagsId = ""
       const tagsIdParams = searchParams.get("tags")
@@ -59,6 +57,7 @@ const usePaginationHome = () => {
     },
     [setSearchParams]
   )
+
   const sincronizeParams = useCallback(() => {
     const tags = tagActives()
     
@@ -79,6 +78,7 @@ const usePaginationHome = () => {
       tags: tagsId || ""
     })
   },[])
+  
   const getInitialPage = useCallback(() => {
     const pageFromUrl = Number(searchParams.get("currentPage")) || 1
     setCurrentPage(pageFromUrl)

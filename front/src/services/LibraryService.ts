@@ -127,7 +127,7 @@ export async function getLibrariesByStateUser(
 ): Promise<AxiosResponse<ResponseSuccess>> {
   try {
     let response = await axiosInstance.get(
-        `/library/all/user/${userId}?state=${state}&currentPage=${page}`
+        `/library/all/user/${userId}?state=${state}&page=${page}`
       )
     return response.data
   } catch (error) {

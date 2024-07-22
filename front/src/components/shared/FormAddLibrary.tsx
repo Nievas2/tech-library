@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Library } from "@/interfaces/Library"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -136,99 +136,112 @@ export default function FormAddLibrary({ card }: CardProps) {
 
   return (
     <form
-      className="flex flex-col gap-2 mt-1"
+      className="flex flex-col gap-4"
       onSubmit={formik.handleSubmit}
     >
-      <div className="grid w-full items-center gap-1.5">
-        <Label htmlFor="name">Name</Label>
-        <Input
-          type="text"
-          placeholder="React"
-          {...formik.getFieldProps("name")}
-          className="bg-light"
-          maxLength={20}
-          disabled={loading}
-        />
-        {formik.touched.name && formik.errors.name && (
-          <small className="font-bold text-[#ff4444]">
-            {formik.errors.name}
-          </small>
-        )}
-      </div>
-      <div className="grid w-full items-center gap-1.5">
-        <Label>Link</Label>
-        <Input
-          type="text"
-          placeholder="https://es.react.dev/"
-          {...formik.getFieldProps("link")}
-          className="bg-light"
-          maxLength={200}
-          disabled={loading}
-        />
-        {formik.touched.link && formik.errors.link && (
-          <small className="font-bold text-[#ff4444]">
-            {formik.errors.link}
-          </small>
-        )}
-      </div>
-      <div className="grid w-full items-center gap-1.5">
-        <Label>Description</Label>
-        <Textarea
-          placeholder="Description"
-          {...formik.getFieldProps("description")}
-          className="bg-light"
-          maxLength={200}
-        />
-        {formik.touched.description && formik.errors.description && (
-          <small className="font-bold text-[#ff4444]">
-            {formik.errors.description}
-          </small>
-        )}
-      </div>
-      <div className="flex w-full items-center gap-1.5">
-        <Select onValueChange={addTag}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a tag" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {tags.map((tag) => (
-                <SelectItem
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col w-full gap-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            type="text"
+            placeholder="React"
+            {...formik.getFieldProps("name")}
+            className="bg-light"
+            maxLength={20}
+            disabled={loading}
+          />
+          {formik.touched.name && formik.errors.name && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.name}
+            </small>
+          )}
+        </div>
+
+        <div className="flex flex-col w-full gap-2">
+          <Label>Link</Label>
+          <Input
+            type="text"
+            placeholder="https://es.react.dev/"
+            {...formik.getFieldProps("link")}
+            className="bg-light"
+            maxLength={200}
+            disabled={loading}
+          />
+          {formik.touched.link && formik.errors.link && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.link}
+            </small>
+          )}
+        </div>
+
+        <div className="flex flex-col w-full gap-2">
+          <Label>Description</Label>
+          <Textarea
+            placeholder="Description"
+            {...formik.getFieldProps("description")}
+            className="bg-light"
+            maxLength={200}
+            disabled={loading}
+          />
+          {formik.touched.description && formik.errors.description && (
+            <small className="font-bold text-[#ff4444]">
+              {formik.errors.description}
+            </small>
+          )}
+        </div>
+
+        {/* <div className="flex flex-col w-full gap-2.5"> */}
+        <div className={`flex flex-col w-full ${error ? 'gap-2' : 'gap-2.5'}`}>
+          <Select onValueChange={addTag}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a tag" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {tags.map((tag) => (
+                  <SelectItem
+                    key={tag.id}
+                    value={tag.name}
+                  >
+                    {tag.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          {tagsAdded.length > 0 && (
+            <div className="flex flex-row flex-wrap gap-2 text-sm">
+              {tagsAdded.map((tag, index) => (
+                <div
                   key={tag.id}
-                  value={tag.name}
+                  className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
                 >
-                  {tag.name}
-                </SelectItem>
+                  <h4>{tag.name}</h4>
+                  <button
+                    type="button"
+                    onClick={() => removeTag(index)}
+                  >
+                    <Icon
+                      icon="material-symbols:close"
+                      width="16"
+                      height="16"
+                      className="text-dark dark:text-light"
+                    />
+                  </button>
+                </div>
               ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+            </div>
+          )}
+
+          {error && (
+            <small className="font-bold text-[#ff4444]">
+              Add at least one tag
+            </small>
+          )}
+        </div>
       </div>
-      <div className="flex flex-row flex-wrap gap-2 text-sm mt-1">
-        {tagsAdded.map((tag, index) => (
-          <div
-            key={tag.id}
-            className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
-          >
-            <h4>{tag.name}</h4>
-            <button
-              type="button"
-              className="w-[16px]"
-              onClick={() => removeTag(index)}
-            >
-              <Icon
-                icon="material-symbols:close"
-                width="16"
-                height="16"
-                className="text-dark dark:text-light"
-              />
-            </button>
-          </div>
-        ))}
-      </div>
-      <small className="text-[#FF0000]">
-        {error ? "Add at least one tag" : ""}
-      </small>
+
       <Button
         variant="marketing"
         className="p-1"

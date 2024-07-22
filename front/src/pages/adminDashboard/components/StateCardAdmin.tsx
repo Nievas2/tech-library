@@ -47,18 +47,19 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
       </div>
       <div className="flex items-center justify-between mt-4">
         <Dialog>
-          <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-main/80 text-light py-2 rounded-sm">
-            Edit
+          <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] transition-colors duration-150 text-light py-2 rounded-sm">
             <Icon
               icon="fluent:edit-24-filled"
-              width="16"
-              height="16"
+              width="20"
+              height="20"
             />
+            <p className="font-medium text-sm">Edit</p>
           </DialogTrigger>
-          <DialogContent className="bg-light dark:bg-dark ">
-            <DialogHeader className="">
+
+          <DialogContent>
+            <DialogHeader>
               <DialogTitle>
-                <strong className="text-dark dark:text-light ">Sugerir</strong>
+                Sugerir
               </DialogTitle>
             </DialogHeader>
             <EditLibraryAdmin card={card} />

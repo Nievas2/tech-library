@@ -88,6 +88,12 @@ secondaries:
   }
 }
 
+@layer utilities {
+  .clamped-width {
+    width: clamp(300px, auto, 1240px);
+  }
+}
+
 .text-stroke-dark {
   text-shadow : -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
   color       : white;
