@@ -99,8 +99,17 @@ secondaries:
   color       : white;
 }
 
-.animate-fade-in-scale {
-  animation: fade-in-scale 0.5s ease-in-out;
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.animate-heart {
+  animation: heartBeat 0.4s ease-in-out;
 }
 
 @keyframes fade-in-scale {
@@ -113,6 +122,7 @@ secondaries:
     transform: scale(1);
   }
 }
+
 .animate-like{
   animation: like 0.5s ease-in-out;
 }
@@ -129,6 +139,7 @@ secondaries:
     transform: scale(1);
   }
 }
+
 /* ScrollBar Styles */
 ::-webkit-scrollbar {
   width: 10px; 

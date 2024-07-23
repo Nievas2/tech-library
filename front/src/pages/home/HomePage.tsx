@@ -3,7 +3,6 @@ import SideBar from "./components/SideBar"
 import SearchBar from "./components/SearchBar"
 import { useEffect, useState } from "react"
 import { Library } from "@/interfaces/Library"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Pagination } from "@/components/shared/Pagination"
 import usePaginationHome from "@/hooks/usePaginationHome"
 import { getLibrariesSearch } from "@/services/LibraryService"
@@ -12,15 +11,17 @@ import { useAuthContext } from "@/contexts"
 import NotFound from "@/components/shared/NotFound"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@iconify/react/dist/iconify.js"
+import { renderSkeletonHome } from "./skeletons/SkeletonHome"
 
 const HomePage = () => {
-  const [libraries, setLibraries] = useState<Library[]>([])
-  const [loading, setLoading] = useState(true)
-  const { authUser } = useAuthContext()
-  const [notFound, setNotFound] = useState(false)
-  const [morePopular, setMorePopular] = useState(false)
-  const tagsActives = useTagStore((state) => state.tagsActives)
-  const tags = useTagStore((state) => state.tags)
+  const [libraries, setLibraries] = useState<Library[]>([]);
+  const [totalLibraries, setTotalLibraries] = useState<number>();
+  const [loading, setLoading] = useState(true);
+  const { authUser } = useAuthContext();
+  const [notFound, setNotFound] = useState(false);
+  const [morePopular, setMorePopular] = useState(false);
+  const tagsActives = useTagStore((state) => state.tagsActives);
+  const tags = useTagStore((state) => state.tags);
   const {
     currentPage,
     totalPages,
@@ -28,9 +29,10 @@ const HomePage = () => {
     handlePageChange,
     searchParams,
     setCurrentPage
-  } = usePaginationHome()
-  const search = String(searchParams.get("search"))
-  const searchParamsData = searchParams.get("search")
+  } = usePaginationHome();
+  const search = String(searchParams.get("search"));
+  const searchParamsData = searchParams.get("search");
+  const [open, setOpen] = useState(window.innerWidth >= 1024);
 
   useEffect(() => {
     setCurrentPage(1)
@@ -55,10 +57,11 @@ const HomePage = () => {
             : "",
           morePopular ? "desc" : "asc"
         ) 
-        const { libraries, totalPages } = librariesResponse
+        const { libraries, totalPages, totalLibraries } = librariesResponse
 
         setLibraries(libraries)
         setTotalPages(totalPages)
+        setTotalLibraries(totalLibraries)
         setLoading(false)
         setNotFound(false)
       } catch (err) {
@@ -82,78 +85,39 @@ const HomePage = () => {
     handlePageChange(1)
   }, [tagsActives, totalPages])
 
-  const SkeletonCard = () => {
-    return (
-      <div className="flex w-[300px] sm:w-[294px] md:w-[358px] lg:w-[237.33px] xl:w-[322.66px] h-[250px] bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-8 w-3/4 rounded-md" />
-          <Skeleton className="h-4 w-full sm:w-3/4 rounded-md" />
-          <Skeleton className="h-4 w-5/6 rounded-md" />
-          <div className="flex flex-row flex-wrap gap-2 text-sm">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton
-                key={index}
-                className="h-6 w-12 rounded-lg"
-              />
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-row gap-4 justify-start items-center">
-            <Skeleton className="h-10 w-full sm:w-3/4 rounded-md" />
-          </div>
-          <div className="flex flex-row items-center justify-end gap-2">
-            <Skeleton className="h-4 w-24 rounded-md" />
-            <Skeleton className="h-4 w-8 rounded-md" />
-            <Skeleton className="h-4 w-16 rounded-md" />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  const renderSkeletons = () => {
-    return (
-      <div className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5 mb-10">
-        {Array.from({ length: 9 }).map((_, index) => (
-          <SkeletonCard key={index} />
-        ))}
-      </div>
-    )
-  }
 
   return (
     <>
       <section className="flex flex-row min-h-full">
         <div className="flex flex-1">
-          <SideBar />
+          <SideBar open={open} setOpen={setOpen} />
         </div>
 
         <div className="py-7 px-4 flex flex-col items-center gap-7 justify-start">
           <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
 
-            <div className="flex flex-1 items-start justify-start">
-              <div>
-                <Button
-                  variant="popular"
-                  size="popularSize"
-                  onClick={() => setMorePopular(!morePopular)}
-                  id="popular"
-                  aria-label="popular"
-                  role="button"
-                >
-                  <Icon
-                    icon="uil:arrow-up"
-                    width="24"
-                    height="24"
-                    className={`${
-                      morePopular ? "rotate-180" : ""
-                    } transition-transform duration-100`}
-                  />
-                  More popular
-                </Button>
-              </div>
+            <div className="flex justify-between items-center gap-2">
+              <Button
+                variant="popular"
+                size="popularSize"
+                onClick={() => setMorePopular(!morePopular)}
+                id="popular"
+                aria-label="popular"
+                role="button"
+              >
+                <Icon
+                  icon="uil:arrow-up"
+                  width="24"
+                  height="24"
+                  className={`${
+                    morePopular ? "rotate-180" : ""
+                  } transition-transform duration-100`}
+                />
+                Más populares
+              </Button>
+              
+              <p className="text-main text-sm text-right">({totalLibraries}) <span className="text-light">total de librerias</span></p>
             </div>
 
             {notFound && currentPage === 1 ? (
@@ -161,13 +125,13 @@ const HomePage = () => {
             ) : (
               <div>
                 {search ? (
-                  <CardsContainer libraries={libraries} />
+                  <CardsContainer open={open} libraries={libraries} />
                 ) : (
                   <div>
                     {loading ? (
-                      renderSkeletons()
+                      renderSkeletonHome()
                     ) : (
-                      <CardsContainer libraries={libraries} />
+                      <CardsContainer open={open} libraries={libraries} />
                     )}
                   </div>
                 )}

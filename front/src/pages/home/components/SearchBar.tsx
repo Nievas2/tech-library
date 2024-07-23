@@ -43,7 +43,7 @@ const SearchBar = () => {
 
         <div className="w-full relative">
           <Input
-            placeholder="Search library"
+            placeholder="Buscar una libreria"
             value={text}
             onChange={(e) => {
               setText(e.target.value)

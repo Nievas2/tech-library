@@ -6,7 +6,7 @@ const FavoritesPage = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-3xl font-bold text-center">Favorites</h1>
+      <h1 className="text-3xl font-bold text-center">Favoritos</h1>
       {favorites.length > 0 ? (
         <CardsContainer libraries={favorites} />
       ) : (

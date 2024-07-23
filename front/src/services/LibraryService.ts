@@ -67,14 +67,18 @@ export async function getLibrariesSearch(
   tags: string | undefined,
   search: string | undefined,
   orderLikes: "asc" | "desc"
-): Promise<{ libraries: Library[]; totalPages: number }> {
+): Promise<{ libraries: Library[]; totalPages: number; totalLibraries: number }> {
   try {
     const response = await axiosInstance.get(
       `/library/all/search/${userId}?page=${page}&tags=${tags}&q=${search}&like=${orderLikes}`
     )
+    
+    console.log(response.data.data.total_libraries);
+    
     return {
       libraries: response.data.data.results,
-      totalPages: Math.ceil(response.data.data.total_pages)
+      totalPages: Math.ceil(response.data.data.total_pages),
+      totalLibraries: response.data.data.total_libraries,
     }
   } catch (error) {
     console.error("Error fetching libraries:", error)

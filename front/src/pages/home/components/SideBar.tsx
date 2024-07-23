@@ -8,8 +8,12 @@ import usePaginationHome from "@/hooks/usePaginationHome"
 import { Input } from "@/components/ui/input"
 import { useDebounce } from "use-debounce"
 
-export default function SideBar() {
-  const [open, setOpen] = useState(window.innerWidth > 768)
+interface SideBarProps {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function SideBar({ open, setOpen }: SideBarProps) {
   const setTags = useTagStore((state) => state.setTags)
   const tags = useTagStore((state) => state.tags)
   const [loading, setLoading] = useState(true)
@@ -19,7 +23,7 @@ export default function SideBar() {
 
   useEffect(() => {
     const handleResize = () => {
-      setOpen(window.innerWidth > 768)
+      setOpen(window.innerWidth > 1024)
     }
 
     window.addEventListener("resize", handleResize)
@@ -69,7 +73,7 @@ export default function SideBar() {
 
   return (
     <section
-      className={`min-h-full transition-width duration-300 ease-out fixed z-10 md:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
+      className={`min-h-full transition-width duration-300 ease-out fixed z-10 lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
         open ? "w-60" : "w-0 border-none"
       } `}
     >
@@ -106,11 +110,11 @@ export default function SideBar() {
               open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"
             }`}
           >
-            <h2 className="text-xl font-bold">CATEGORIES</h2>
+            <h2 className="text-xl font-bold">CATEGORIAS</h2>
             <div className="w-full flex h-8 border border-dark dark:border-light rounded-md">
               <div className="w-full relative rounded-md">
                 <Input
-                  placeholder="Search tag"
+                  placeholder="Buscar una categoria"
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value)
