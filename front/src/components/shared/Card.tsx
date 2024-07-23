@@ -13,7 +13,6 @@ import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger
@@ -46,30 +45,26 @@ const Card = ({ library }: CardProps) => {
   }
 
   async function toggleLike() {
-    try {
-      if (liked === false && library.liked === false) {
-        const response = await postLibraryLike(
-          String(library.id),
-          authUser!.user.id
-        )
-        if (response.status === 200) {
-          library.liked = true
-          library.likesCount = library.likesCount! + 1
-          setLiked(true)
-        }
-      } else {
-        const response = await deleteLibraryLike(
-          String(library.id),
-          authUser!.user.id
-        )
-        if (response.status === 200) {
-          library.liked = false
-          library.likesCount = library.likesCount ? library.likesCount - 1 : 0
-          setLiked(false)
-        }
+    if (liked === false && library.liked === false) {
+      const response = await postLibraryLike(
+        String(library.id),
+        authUser!.user.id
+      )
+      if (response.status === 200) {
+        library.liked = true
+        library.likesCount = library.likesCount! + 1
+        setLiked(true)
       }
-    } catch (error) {
-      throw error
+    } else {
+      const response = await deleteLibraryLike(
+        String(library.id),
+        authUser!.user.id
+      )
+      if (response.status === 200) {
+        library.liked = false
+        library.likesCount = library.likesCount ? library.likesCount - 1 : 0
+        setLiked(false)
+      }
     }
   }
 
@@ -91,7 +86,9 @@ const Card = ({ library }: CardProps) => {
                     </DialogTitle>
 
                     <div className="flex flex-col gap-4">
-                      <p className="text-base text-left">{library.description}</p>
+                      <p className="text-base text-left">
+                        {library.description}
+                      </p>
 
                       {/* <div className="flex flex-row flex-wrap gap-2 text-sm">
                         {library.tags?.map((tag: Tag) => (
@@ -104,7 +101,7 @@ const Card = ({ library }: CardProps) => {
                           </h4>
                         ))}
                       </div> */}
-                      
+
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-row gap-4 justify-center items-center">
                           <NavLink

@@ -83,7 +83,6 @@ const AdminDashboardPage = () => {
       setTotalPages(response.data.total_pages)
     } catch (error) {
       setFilterError("No libraries were found with that status")
-      throw error
     }
     if (list) setLoading(false)
   }
