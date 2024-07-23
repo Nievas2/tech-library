@@ -83,16 +83,17 @@ const Card = ({ library }: CardProps) => {
             <>
               {library.description.slice(0, 90) + "..."}
               <Dialog>
-                <DialogTrigger className="text-main">Ver mas</DialogTrigger>
+                <DialogTrigger className="text-main">Leer más</DialogTrigger>
                 <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold">
+                  <DialogHeader className="flex flex-col gap-4">
+                    <DialogTitle className="text-2xl font-bold leading-none">
                       {library.name}
                     </DialogTitle>
-                    <DialogDescription className="flex flex-col gap-2">
-                      <p className="text-base">{library.description}</p>
 
-                      <div className="flex flex-row flex-wrap gap-2 text-sm">
+                    <div className="flex flex-col gap-4">
+                      <p className="text-base text-left">{library.description}</p>
+
+                      {/* <div className="flex flex-row flex-wrap gap-2 text-sm">
                         {library.tags?.map((tag: Tag) => (
                           <h4
                             key={tag.id}
@@ -102,7 +103,8 @@ const Card = ({ library }: CardProps) => {
                             {tag.name}
                           </h4>
                         ))}
-                      </div>
+                      </div> */}
+                      
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-row gap-4 justify-center items-center">
                           <NavLink
@@ -179,7 +181,7 @@ const Card = ({ library }: CardProps) => {
                           </small>
                         </div>
                       </div>
-                    </DialogDescription>
+                    </div>
                   </DialogHeader>
                 </DialogContent>
               </Dialog>

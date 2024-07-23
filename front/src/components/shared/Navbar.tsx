@@ -79,7 +79,7 @@ const Navbar = () => {
 
                           <DropdownMenuGroup className="flex gap-2 flex-col">
                             <DropdownMenuItem 
-                              className={`text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
+                              className={`focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : ''}`}
                             >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -91,12 +91,12 @@ const Navbar = () => {
                                   width="24"
                                   height="24"
                                 />
-                                <p>Favoritos</p>
+                                <p>Favorites</p>
                               </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuItem 
-                              className={`text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
+                              className={`focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : ''}`}
                             >
                               <Link 
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -108,13 +108,13 @@ const Navbar = () => {
                                   width="24"
                                   height="24"
                                 />
-                                <p>Panel de usuario</p>
+                                <p>Your Dashboard</p>
                               </Link>
                             </DropdownMenuItem>
 
                             {authUser?.user.role === "ADMIN" && (
                               <DropdownMenuItem 
-                                className={`text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
+                                className={`focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : ''}`}
                               >
                                 <Link 
                                   className="px-[3px] flex items-center flex-row gap-2 w-full"
@@ -126,7 +126,7 @@ const Navbar = () => {
                                     width="24" 
                                     height="24"  
                                   />
-                                  <p>Panel de administrador</p>
+                                  <p>Admin Dashboard</p>
                                 </Link>
                               </DropdownMenuItem>
                             )}
@@ -134,14 +134,14 @@ const Navbar = () => {
 
                           <DropdownMenuSeparator className="bg-dark dark:bg-light" />
 
-                          <DropdownMenuItem className="focus:bg-[#ff284cbf] focus:dark:bg-[#ff284cbf] focus:text-light text-base cursor-pointer" onClick={logOut}>
+                          <DropdownMenuItem className="focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light text-base cursor-pointer" onClick={logOut}>
                             <button className="px-[3px] flex items-center flex-row gap-2 w-full" onClick={handleDropdownClick}>
                               <Icon
                                 icon="material-symbols:logout"
                                 width="24"
                                 height="24"
                               />
-                              <p>Cerrar sesión</p>
+                              <p>Logout</p>
                             </button>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
