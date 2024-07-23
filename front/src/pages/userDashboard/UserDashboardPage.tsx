@@ -88,7 +88,6 @@ const UserDashboardPage = () => {
       setFilterError("")
     } catch (error) {
       setFilterError("No found libraries.")
-      throw error
     } finally {
       setLoading(false)
     }
