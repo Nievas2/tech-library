@@ -23,7 +23,7 @@ export class TagService extends BaseService<TagEntity> {
   }
 
   async findAll(): Promise<TagEntity[]> {
-    return (await this.execRepository).find( { where: { isActive: true } } );
+    return (await this.execRepository).find( { where: { isActive: true }, order: { name: "ASC" }, cache: true } );
   }
 
   async findById(id: number): Promise<TagEntity> {

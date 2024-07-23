@@ -32,7 +32,7 @@ export class LibraryCreateDTO extends BaseDTO {
 
 export class LibraryUpdateDTO extends BaseDTO {
   @IsNotEmpty()
-  @Length(4, 20, { message: "Lastname must be between 4 and 20 characters" })
+  @Length(3, 20, { message: "Lastname must be between 4 and 20 characters" })
   @IsOptional()
   name!: string;
   @IsNotEmpty()
