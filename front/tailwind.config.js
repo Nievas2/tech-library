@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -14,7 +16,7 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px"
-      }
+      },
     },
     extend: {
       colors: {
@@ -77,6 +79,10 @@ module.exports = {
     },
     fontFamily: {
       poppins: ["Poppins", "sans-serif"]
+    },
+    screens: {
+      "cp": '360px',
+      ...defaultTheme.screens,
     },
     /*
 primary: #f72585
