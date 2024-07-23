@@ -95,7 +95,7 @@ const UserDashboardPage = () => {
 
   return (
     <div className="flex mx-auto max-w-[1240px] flex-col relative gap-6">
-      <h1 className="text-3xl font-bold py-0 text-center">Your dashboard</h1>
+      <h1 className="text-3xl font-bold py-0 text-center">Panel de usuario</h1>
 
       <div className="flex justify-between py-2 min-w-[300px] sm:min-w-[608px] md:min-w-[736px] lg:min-w-[992px] xl:min-w-[1240px]">
         <Select

@@ -125,7 +125,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       onSubmit={formik.handleSubmit}
     >
       <div className="grid w-full items-center gap-1.5">
-        <Label htmlFor="name">Name</Label>
+        <Label htmlFor="name">Nombre</Label>
         <Input
           {...formik.getFieldProps("name")}
           type="text"
@@ -159,7 +159,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
         )}
       </div>
       <div className="grid w-full items-center gap-1.5">
-        <Label>Description</Label>
+        <Label>Descripcion</Label>
         <Textarea
           {...formik.getFieldProps("description")}
           placeholder="Description"
@@ -179,7 +179,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           disabled={loading}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a tag" />
+            <SelectValue placeholder="Elegir una categoria" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -200,7 +200,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           defaultValue={formik.values.state}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a State" />
+            <SelectValue placeholder="Elegir un estado" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -243,7 +243,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
         aria-label="Submit"
         role="button"
       >
-        {loading ? "Loading..." : "Submit"}
+        {loading ? "Loading..." : "Enviar"}
       </Button>
     </form>
   )

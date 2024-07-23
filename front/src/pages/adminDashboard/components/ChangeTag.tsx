@@ -76,7 +76,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
           )}
         </div>
         <div className="grid items-center gap-1.5">
-          <Label>Background Color</Label>
+          <Label>Color de fondo</Label>
           <InputColor
             onChange={(value) => formik.setFieldValue("color", value.hex)}
             initialValue={formik.values.color}
