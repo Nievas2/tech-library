@@ -117,7 +117,7 @@ const HomePage = () => {
                 Más populares
               </Button>
               
-              <p className="text-main text-sm text-right">({totalLibraries}) <span className="text-light">total de librerias</span></p>
+              <p className="text-main text-sm text-right">({totalLibraries}) <span className="text-dark dark:text-light">total de librerias</span></p>
             </div>
 
             {notFound && currentPage === 1 ? (

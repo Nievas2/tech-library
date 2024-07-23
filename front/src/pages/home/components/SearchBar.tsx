@@ -31,7 +31,7 @@ const SearchBar = () => {
   }, [value])
 
   return (
-    <div className="sticky z-0 top-[125px] flex flex-1 h-10 justify-end md:justify-center">
+    <div className="sticky z-50 top-[125px] flex flex-1 h-10 justify-end md:justify-center">
       <div className="w-[80%] flex">
         <div className="bg-light dark:bg-dark rounded-md border rounded-r-none w-10 grid place-content-center border-dark dark:border-light">
           <Icon
