@@ -110,11 +110,11 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
               open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"
             }`}
           >
-            <h2 className="text-xl font-bold">CATEGORIES</h2>
+            <h2 className="text-xl font-bold">CATEGORIAS</h2>
             <div className="w-full flex h-8 border border-dark dark:border-light rounded-md">
               <div className="w-full relative rounded-md">
                 <Input
-                  placeholder="Search tag"
+                  placeholder="Buscar una categoria"
                   value={text}
                   onChange={(e) => {
                     setText(e.target.value)

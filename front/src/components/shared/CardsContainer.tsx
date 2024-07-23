@@ -3,7 +3,7 @@ import Card from "./Card"
 
 interface CardsContainerProps {
   libraries: Library[]
-  open: boolean;
+  open?: boolean;
 }
 
 const CardsContainer = ({ libraries, open }: CardsContainerProps) => {

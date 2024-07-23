@@ -14,13 +14,14 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import { renderSkeletonHome } from "./skeletons/SkeletonHome"
 
 const HomePage = () => {
-  const [libraries, setLibraries] = useState<Library[]>([])
-  const [loading, setLoading] = useState(true)
-  const { authUser } = useAuthContext()
-  const [notFound, setNotFound] = useState(false)
-  const [morePopular, setMorePopular] = useState(false)
-  const tagsActives = useTagStore((state) => state.tagsActives)
-  const tags = useTagStore((state) => state.tags)
+  const [libraries, setLibraries] = useState<Library[]>([]);
+  const [totalLibraries, setTotalLibraries] = useState<number>();
+  const [loading, setLoading] = useState(true);
+  const { authUser } = useAuthContext();
+  const [notFound, setNotFound] = useState(false);
+  const [morePopular, setMorePopular] = useState(false);
+  const tagsActives = useTagStore((state) => state.tagsActives);
+  const tags = useTagStore((state) => state.tags);
   const {
     currentPage,
     totalPages,
@@ -28,9 +29,10 @@ const HomePage = () => {
     handlePageChange,
     searchParams,
     setCurrentPage
-  } = usePaginationHome()
-  const search = String(searchParams.get("search"))
-  const searchParamsData = searchParams.get("search")
+  } = usePaginationHome();
+  const search = String(searchParams.get("search"));
+  const searchParamsData = searchParams.get("search");
+  const [open, setOpen] = useState(window.innerWidth >= 1024);
 
   useEffect(() => {
     setCurrentPage(1)
@@ -55,10 +57,11 @@ const HomePage = () => {
             : "",
           morePopular ? "desc" : "asc"
         ) 
-        const { libraries, totalPages } = librariesResponse
+        const { libraries, totalPages, totalLibraries } = librariesResponse
 
         setLibraries(libraries)
         setTotalPages(totalPages)
+        setTotalLibraries(totalLibraries)
         setLoading(false)
         setNotFound(false)
       } catch (err) {
@@ -82,7 +85,6 @@ const HomePage = () => {
     handlePageChange(1)
   }, [tagsActives, totalPages])
 
-  const [open, setOpen] = useState(window.innerWidth >= 1024)
 
   return (
     <>
@@ -95,27 +97,27 @@ const HomePage = () => {
           <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
 
-            <div className="flex flex-1 items-start justify-start">
-              <div>
-                <Button
-                  variant="popular"
-                  size="popularSize"
-                  onClick={() => setMorePopular(!morePopular)}
-                  id="popular"
-                  aria-label="popular"
-                  role="button"
-                >
-                  <Icon
-                    icon="uil:arrow-up"
-                    width="24"
-                    height="24"
-                    className={`${
-                      morePopular ? "rotate-180" : ""
-                    } transition-transform duration-100`}
-                  />
-                  More popular
-                </Button>
-              </div>
+            <div className="flex justify-between items-center gap-2">
+              <Button
+                variant="popular"
+                size="popularSize"
+                onClick={() => setMorePopular(!morePopular)}
+                id="popular"
+                aria-label="popular"
+                role="button"
+              >
+                <Icon
+                  icon="uil:arrow-up"
+                  width="24"
+                  height="24"
+                  className={`${
+                    morePopular ? "rotate-180" : ""
+                  } transition-transform duration-100`}
+                />
+                Más populares
+              </Button>
+              
+              <p className="text-main text-sm">({totalLibraries}) <span className="text-light">librerias compartidas</span></p>
             </div>
 
             {notFound && currentPage === 1 ? (

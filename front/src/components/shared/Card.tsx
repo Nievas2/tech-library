@@ -100,7 +100,7 @@ const Card = ({ library }: CardProps) => {
               role="button"
             >
               <Link className="h-[20px] w-[20px]" />
-              <p className="text-sm">Direct Link</p>
+              <p className="text-sm">Link directo</p>
             </Button>
           </NavLink>
         </div>
