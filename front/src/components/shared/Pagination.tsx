@@ -51,7 +51,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => handlePageChange(1)}
         disabled={currentPage === 1}
       >
-        First
+        Primero
       </button>
 
       <button
@@ -79,7 +79,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         onClick={() => handlePageChange(totalPages)}
         disabled={currentPage === totalPages}
       >
-        Last
+        Último
       </button>
     </div>
   );

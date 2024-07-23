@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input"
 import { useDebounce } from "use-debounce"
 
 interface SideBarProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function SideBar({ open, setOpen }: SideBarProps) {
@@ -73,8 +73,8 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
 
   return (
     <section
-      className={`min-h-full transition-width duration-300 ease-out fixed z-10 lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
-        open ? "w-60" : "w-0 border-none"
+      className={`min-h-full transition-width duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
+        open ? "w-60 z-10" : "w-0 border-none z-40"
       } `}
     >
       <div className="w-full h-full relative">

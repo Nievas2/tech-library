@@ -46,8 +46,6 @@ const AdminDashboardPage = () => {
     try {
       const tags = await getTagsApi()
       setTags(tags)
-    } catch (error) {
-      console.error("Error fetching tags", error)
     } finally {
       setLoading(false)
     }
@@ -82,14 +80,14 @@ const AdminDashboardPage = () => {
       setList(response.data.results)
       setTotalPages(response.data.total_pages)
     } catch (error) {
-      setFilterError("No libraries were found with that status")
+      setFilterError("No se encontraron librerias con este estado.")
     }
     if (list) setLoading(false)
   }
 
   return (
     <div className="flex flex-1 flex-col relative max-w-[1240px] gap-6">
-      <h1 className="text-3xl font-bold text-center">Admin dashboard</h1>
+      <h1 className="text-3xl font-bold text-center">Panel administrativo</h1>
       
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
@@ -98,14 +96,14 @@ const AdminDashboardPage = () => {
             onValueChange={handleChangeSelect}
           >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a state" />
+              <SelectValue placeholder="Elegir un estado" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="ALL">All</SelectItem>
-                <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                <SelectItem value="PENDING">PENDING</SelectItem>
-                <SelectItem value="INACTIVE">INACTIVE</SelectItem>
+                <SelectItem value="ALL">TODOS</SelectItem>
+                <SelectItem value="ACTIVE">ACTIVOS</SelectItem>
+                <SelectItem value="PENDING">PENDIENTES</SelectItem>
+                <SelectItem value="INACTIVE">INACTIVOS</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -116,12 +114,12 @@ const AdminDashboardPage = () => {
                 width="16"
                 height="16"
               />
-              Add Tag
+              Agregar categoria
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>
-                  Add tag
+                  Agregar categoria
                 </DialogTitle>
               </DialogHeader>
               <ChangeTag tag={undefined} />
@@ -146,12 +144,12 @@ const AdminDashboardPage = () => {
         <div className="flex justify-end">
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
-              Add Library
+              Agregar libreria
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>
-                  Add Library
+                  Agregar libreria
                 </DialogTitle>
               </DialogHeader>
               <FormAddLibrary card={undefined} />
@@ -200,7 +198,7 @@ const AdminDashboardPage = () => {
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>
-                          Update Tag
+                          Actualizar tag
                         </DialogTitle>
                       </DialogHeader>
                       <ChangeTag tag={tag} />

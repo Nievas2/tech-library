@@ -44,7 +44,7 @@ export default function FormAddLibrary({ card }: CardProps) {
 
         setTags(tags)
       } catch (error) {
-        console.error("Error fetching tags", error)
+        console.error("Error obteniendo las categorias", error)
       } finally {
         setLoading(false)
       }
@@ -141,7 +141,7 @@ export default function FormAddLibrary({ card }: CardProps) {
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col w-full gap-2">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">Nombre</Label>
           <Input
             type="text"
             placeholder="React"
@@ -175,7 +175,7 @@ export default function FormAddLibrary({ card }: CardProps) {
         </div>
 
         <div className="flex flex-col w-full gap-2">
-          <Label>Description</Label>
+          <Label>Descripcion</Label>
           <Textarea
             placeholder="Description"
             {...formik.getFieldProps("description")}
@@ -194,7 +194,7 @@ export default function FormAddLibrary({ card }: CardProps) {
         <div className={`flex flex-col w-full ${error ? 'gap-2' : 'gap-2.5'}`}>
           <Select onValueChange={addTag}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a tag" />
+              <SelectValue placeholder="Elegir una categoria" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -236,7 +236,7 @@ export default function FormAddLibrary({ card }: CardProps) {
 
           {error && (
             <small className="font-bold text-[#ff4444]">
-              Add at least one tag
+              Agregar almenos una categoria
             </small>
           )}
         </div>
@@ -251,7 +251,7 @@ export default function FormAddLibrary({ card }: CardProps) {
         role="button"
         disabled={loading}
       >
-        Submit
+        Enviar
       </Button>
     </form>
   )
