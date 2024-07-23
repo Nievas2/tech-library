@@ -7,6 +7,7 @@ import { Tag, useTagStore } from "@/stores"
 import usePaginationHome from "@/hooks/usePaginationHome"
 import { Input } from "@/components/ui/input"
 import { useDebounce } from "use-debounce"
+import { renderSkeletonSideBar } from "../skeletons/SideBarSkeleton"
 
 interface SideBarProps {
   open: boolean
@@ -73,8 +74,8 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
 
   return (
     <section
-      className={`min-h-full transition-width duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
-        open ? "w-60 z-10" : "w-0 border-none z-40"
+      className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
+        open ? "w-60" : "w-0 border-none "
       } `}
     >
       <div className="w-full h-full relative">
@@ -138,7 +139,8 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
             </div>
             <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[320px]">
               {loading ? (
-                <p>Loading...</p>
+                renderSkeletonSideBar()
+
               ) : (
                 <div>
                   {
@@ -151,17 +153,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                           />
                         ))}
                       </div>
-                    ) /* : (
-                    <div className="flex flex-wrap gap-3">
-                      {tags &&
-                        tags?.map((tag: Tag) => (
-                          <ItemsSideBar
-                            key={crypto.randomUUID()}
-                            tag={tag}
-                          />
-                        ))}
-                    </div>
-                  ) */
+                    )
                   }
                 </div>
               )}
