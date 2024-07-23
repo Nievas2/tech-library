@@ -148,18 +148,6 @@ const Card = ({ library }: CardProps) => {
         </div>
 
         <div className="flex items-end justify-end w-full">
-          {/* <small>Sugerido por</small>
-
-          <small>
-            <span className="font-semibold text-main flex">
-              @{formatGoogleUsername(library.createdBy.username)}
-            </span>{" "}
-          </small>
-
-          <small>
-            <span className="flex">{formatDate(library.createdAt)}</span>
-          </small> */}
-
           <small className="text-dark dark:text-light font-medium">
             Sugerido por <span className="font-semibold text-main">@{formatGoogleUsername(library.createdBy.username)}</span> el {formatDate(library.createdAt)}
           </small>
