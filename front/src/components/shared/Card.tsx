@@ -103,60 +103,66 @@ const Card = ({ library }: CardProps) => {
               <p className="text-sm">Direct Link</p>
             </Button>
           </NavLink>
+        </div>
 
-          <div onClick={toggleFavorite}>
-            {isFavorite ? (
-              <div className="animate-fade-in-scale mx-auto flex justify-center items-center cursor-pointer border border-dark dark:border-light px-4 py-2 rounded-lg">
-                <Heart
-                  className="text-[#E81224]"
-                  fill="#E81224"
+        <div className="flex flex-col">
+          <div className="flex gap-3 font-medium">
+            <div className="flex flex-row gap-1 justify-center items-center">
+              <Button
+                variant="like"
+                size="like"
+                onClick={toggleLike}
+                id="like"
+                aria-label="Like"
+                role="button"
+              >
+                <Icon
+                  icon={library.liked ? "bxs:like" : "bx:like"}
+                  width="24"
+                  height="24"
+                  className={`${
+                    library.liked
+                      ? "animate-like text-main"
+                      : "bg-[transparent] text-dark dark:text-light"
+                  }`}
                 />
-              </div>
-            ) : (
-              <div className="mx-auto flex justify-center items-center cursor-pointer border border-dark dark:border-light px-4 py-2 rounded-lg hover:bg-[#E81224]/20  transition-colors duration-300">
-                <Heart />
-              </div>
-            )}
+              </Button>
+              <small>{library.likesCount}</small>
+            </div>
+
+            <div onClick={toggleFavorite} className="flex justify-center items-center">
+              {isFavorite ? (
+                <div className=" mx-auto flex justify-center items-center cursor-pointer rounded-lg">
+                  <Heart
+                    className={`text-[#E81224] h-6 w-6 animate-heart`}
+                    fill="#E81224"
+                  />
+                </div>
+              ) : (
+                <div className="mx-auto flex justify-center items-center cursor-pointer transition-colors duration-300">
+                  <Heart />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-row ">
-          <div className="flex items-center justify-center gap-2 font-medium">
-            <Button
-              className={`flex items-center px-[5px] py-0 border border-main rounded-full transition-colors duration-100 hover:text-light hover:bg-main ${library.liked ? "bg-main" : "bg-[transparent]"}`}
-              variant="ghost"
-              onClick={toggleLike}
-              id="like"
-              aria-label="Like"
-              role="button"
-            >
-              <Icon
-                icon="ei:like"
-                width="30"
-                height="30"
-                className={`${
-                  library.liked
-                    ? "text-light dark:text-light animate-like"
-                    : "bg-[transparent]"
-                }`}
-              />
-            </Button>
-            <small>{library.likesCount}</small>
-          </div>
+        <div className="flex items-end justify-end w-full">
+          {/* <small>Sugerido por</small>
 
-          <div className="flex flex-col flex-1 items-end justify-center">
-            <small>Suggested by </small>
+          <small>
+            <span className="font-semibold text-main flex">
+              @{formatGoogleUsername(library.createdBy.username)}
+            </span>{" "}
+          </small>
 
-            <small>
-              <span className="font-semibold text-main flex">
-                @{formatGoogleUsername(library.createdBy.username)}
-              </span>{" "}
-            </small>
+          <small>
+            <span className="flex">{formatDate(library.createdAt)}</span>
+          </small> */}
 
-            <small>
-              <span className="flex">{formatDate(library.createdAt)}</span>
-            </small>
-          </div>
+          <small className="text-dark dark:text-light font-medium">
+            Sugerido por <span className="font-semibold text-main">@{formatGoogleUsername(library.createdBy.username)}</span> el {formatDate(library.createdAt)}
+          </small>
         </div>
       </div>
     </div>
