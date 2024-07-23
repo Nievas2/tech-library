@@ -79,7 +79,6 @@ const RegisterPage = () => {
       await register(values)
     } catch (error) {
       console.error("Registration failed:", (error as AxiosError<ResponseSuccess>).response?.data.statusMessage);
-      throw error
     }
   }
   function loginGoogle() {

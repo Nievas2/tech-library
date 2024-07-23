@@ -52,7 +52,6 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
       toast({
         title: "Error al eliminar el tag"
       })
-      throw error
     }
     
   }

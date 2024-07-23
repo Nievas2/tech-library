@@ -67,18 +67,20 @@ export async function getLibrariesSearch(
   tags: string | undefined,
   search: string | undefined,
   orderLikes: "asc" | "desc"
-): Promise<{ libraries: Library[]; totalPages: number; totalLibraries: number }> {
+): Promise<{
+  libraries: Library[]
+  totalPages: number
+  totalLibraries: number
+}> {
   try {
     const response = await axiosInstance.get(
       `/library/all/search/${userId}?page=${page}&tags=${tags}&q=${search}&like=${orderLikes}`
     )
-    
-    console.log(response.data.data.total_libraries);
-    
+
     return {
       libraries: response.data.data.results,
       totalPages: Math.ceil(response.data.data.total_pages),
-      totalLibraries: response.data.data.total_libraries,
+      totalLibraries: response.data.data.total_libraries
     }
   } catch (error) {
     console.error("Error fetching libraries:", error)
@@ -131,8 +133,8 @@ export async function getLibrariesByStateUser(
 ): Promise<AxiosResponse<ResponseSuccess>> {
   try {
     let response = await axiosInstance.get(
-        `/library/all/user/${userId}?state=${state}&page=${page}`
-      )
+      `/library/all/user/${userId}?state=${state}&page=${page}`
+    )
     return response.data
   } catch (error) {
     throw error
@@ -161,24 +163,22 @@ export async function postLibraryLike(
   userId: string
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await axiosInstance.post(`/library/like/${userId}/${libraryId}`)
-    return response
-  } catch (error) {
-    throw error
-  }
+
+  const response = await axiosInstance.post(
+    `/library/like/${userId}/${libraryId}`
+  )
+  return response
 }
 export async function deleteLibraryLike(
   libraryId: string,
   userId: string
 ): Promise<AxiosResponse<ResponseSuccess>> {
   // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await axiosInstance.delete(`/library/unlike/${userId}/${libraryId}`)
-    return response
-  } catch (error) {
-    throw error
-  }
+
+  const response = await axiosInstance.delete(
+    `/library/unlike/${userId}/${libraryId}`
+  )
+  return response
 }
 
 export function putLibraryUser(
@@ -203,7 +203,6 @@ export function putLibraryAdmin(
   library: LibraryDtoAdmin,
   libraryId: number
 ): Promise<AxiosResponse<ResponseSuccess>> {
-
   try {
     const response = axiosInstance.put(`/library/admin/update/${libraryId}`, {
       name: library.name,
