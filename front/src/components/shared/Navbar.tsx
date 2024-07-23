@@ -29,7 +29,7 @@ const Navbar = () => {
   const location = useLocation();
   
   return (
-    <nav className="sticky w-full top-0 z-20 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
+    <nav className="sticky w-full top-0 z-50 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
       <div className="mx-auto max-w-7xl p-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-center justify-start">
