@@ -38,7 +38,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
                   : "text-[#6e0202]"
               }`}
             >
-              {card.state}
+              {card.state === "ACTIVE" ? "Activa" : card.state === "PENDING" ? "Pendiente" : "Inactiva"}
             </span>
           </div>
         </div>
@@ -53,7 +53,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
               width="20"
               height="20"
             />
-            <p className="font-medium text-sm">Edit</p>
+            <p className="font-medium text-sm">Editar</p>
           </DialogTrigger>
 
           <DialogContent>

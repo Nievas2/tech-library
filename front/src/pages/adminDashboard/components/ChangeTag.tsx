@@ -62,7 +62,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
         onSubmit={formik.handleSubmit}
       >
         <div className="grid w-full items-center gap-1.5">
-          <Label>Name</Label>
+          <Label>Nombre</Label>
           <Input
             type="text"
             placeholder="Javascript"
@@ -111,7 +111,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
             aria-label="Delete"
             role="button"
           >
-            Delete
+            Eliminar
           </Button>
         )}
 
@@ -123,7 +123,7 @@ const ChangeTag = ({ tag }: ChangeTagProps) => {
           aria-label="Submit"
           role="button"
         >
-          Submit
+          Enviar
         </Button>
       </form>
     </div>

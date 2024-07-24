@@ -75,7 +75,7 @@ const AdminDashboardPage = () => {
         state.toLocaleLowerCase(),
         currentPage
       )
-      
+
       setFilterError("")
       setList(response.data.results)
       setTotalPages(response.data.total_pages)
@@ -88,7 +88,7 @@ const AdminDashboardPage = () => {
   return (
     <div className="flex flex-1 flex-col relative max-w-[1240px] gap-6">
       <h1 className="text-3xl font-bold text-center">Panel administrativo</h1>
-      
+
       <div className="flex flex-wrap py-2 gap-1">
         <div className="flex flex-1 gap-4 flex-wrap">
           <Select
@@ -99,11 +99,47 @@ const AdminDashboardPage = () => {
               <SelectValue placeholder="Elegir un estado" />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                <SelectItem value="ALL">TODOS</SelectItem>
-                <SelectItem value="ACTIVE">ACTIVOS</SelectItem>
-                <SelectItem value="PENDING">PENDIENTES</SelectItem>
-                <SelectItem value="INACTIVE">INACTIVOS</SelectItem>
+              <SelectGroup className="flex flex-col gap-1">
+                <SelectItem
+                  value="ALL"
+                  className={`${
+                    state.toLocaleUpperCase() === "ALL"
+                      ? "bg-main text-light pointer-events-none"
+                      : "bg-white text-dark dark:text-light"
+                  }`}
+                >
+                  TODOS
+                </SelectItem>
+                <SelectItem
+                  value="ACTIVE"
+                  className={`${
+                    state.toLocaleUpperCase() === "ACTIVE"
+                      ? "bg-main text-light pointer-events-none"
+                      : "bg-white text-dark dark:text-light"
+                  }`}
+                >
+                  ACTIVOS
+                </SelectItem>
+                <SelectItem
+                  value="PENDING"
+                  className={`${
+                    state.toLocaleUpperCase() === "PENDING"
+                      ? "bg-main text-light pointer-events-none"
+                      : "bg-white text-dark dark:text-light"
+                  }`}
+                >
+                  PENDIENTES
+                </SelectItem>
+                <SelectItem
+                  value="INACTIVE"
+                  className={`${
+                    state.toLocaleUpperCase() === "INACTIVE"
+                      ? "bg-main text-light pointer-events-none"
+                      : "bg-white text-dark dark:text-light"
+                  }`}
+                >
+                  INACTIVOS
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -118,9 +154,7 @@ const AdminDashboardPage = () => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>
-                  Agregar categoria
-                </DialogTitle>
+                <DialogTitle>Agregar categoria</DialogTitle>
               </DialogHeader>
               <ChangeTag tag={undefined} />
             </DialogContent>
@@ -148,9 +182,7 @@ const AdminDashboardPage = () => {
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>
-                  Agregar libreria
-                </DialogTitle>
+                <DialogTitle>Agregar libreria</DialogTitle>
               </DialogHeader>
               <FormAddLibrary card={undefined} />
             </DialogContent>
@@ -197,9 +229,7 @@ const AdminDashboardPage = () => {
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>
-                          Actualizar tag
-                        </DialogTitle>
+                        <DialogTitle>Actualizar tag</DialogTitle>
                       </DialogHeader>
                       <ChangeTag tag={tag} />
                     </DialogContent>

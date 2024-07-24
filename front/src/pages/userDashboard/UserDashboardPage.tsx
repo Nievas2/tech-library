@@ -102,25 +102,56 @@ const UserDashboardPage = () => {
           defaultValue="ALL"
           onValueChange={handleChangeSelect}
         >
-          <SelectTrigger className={`w-[180px] ${state === "all" ? "bg-light text-dark dark:text-light" : ""}`}>
+          <SelectTrigger
+            className={`w-[180px] ${
+              state === "all" ? "bg-light text-dark dark:text-light" : ""
+            }`}
+          >
             <SelectValue placeholder="Select a state" />
           </SelectTrigger>
 
           <SelectContent>
             <SelectGroup className="flex flex-col gap-1">
-              {["ALL", "ACTIVE", "PENDING", "INACTIVE"].map((item) => (
-                <SelectItem
-                  key={item}
-                  value={item}
-                  className={`${
-                    state.toUpperCase() === item
-                      ? "bg-main text-light pointer-events-none"
-                      : "bg-white text-dark dark:text-light"
-                  }`}
-                >
-                  {item}
-                </SelectItem>
-              ))}
+              <SelectItem
+                value="ALL"
+                className={`${
+                  state.toLocaleUpperCase() === "ALL"
+                    ? "bg-main text-light pointer-events-none"
+                    : "bg-white text-dark dark:text-light"
+                }`}
+              >
+                TODOS
+              </SelectItem>
+              <SelectItem
+                value="ACTIVE"
+                className={`${
+                  state.toLocaleUpperCase() === "ACTIVE"
+                    ? "bg-main text-light pointer-events-none"
+                    : "bg-white text-dark dark:text-light"
+                }`}
+              >
+                ACTIVOS
+              </SelectItem>
+              <SelectItem
+                value="PENDING"
+                className={`${
+                  state.toLocaleUpperCase() === "PENDING"
+                    ? "bg-main text-light pointer-events-none"
+                    : "bg-white text-dark dark:text-light"
+                }`}
+              >
+                PENDIENTES
+              </SelectItem>
+              <SelectItem
+                value="INACTIVE"
+                className={`${
+                  state.toLocaleUpperCase() === "INACTIVE"
+                    ? "bg-main text-light pointer-events-none"
+                    : "bg-white text-dark dark:text-light"
+                }`}
+              >
+                INACTIVOS
+              </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -133,11 +164,9 @@ const UserDashboardPage = () => {
 
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>
-                  Sugerir
-                </DialogTitle>
+                <DialogTitle>Sugerir</DialogTitle>
               </DialogHeader>
-              
+
               <FormAddLibrary card={undefined} />
             </DialogContent>
           </Dialog>
@@ -175,7 +204,7 @@ const UserDashboardPage = () => {
           totalPages={totalPages}
           onPageChange={handlePageChange}
         />
-      </div>      
+      </div>
     </div>
   )
 }
