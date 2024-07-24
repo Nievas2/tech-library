@@ -1,8 +1,8 @@
 import * as yup from "yup"
 
 export const signupSchema = yup.object({
-  username : yup.string().required("Username is required").min(3, "Username must be at least 3 characters").max(10, "Username cannot contain more than 10 characters"),
-  email    : yup.string().required("Email is required").email("Invalid email format"),
-  password : yup.string().required("Password is required").min(5, "Password must be at least 5 characters").max(30, "Password cannot contain more than 30 characters"),
-  confirmPassword: yup.string().required("Confirm Password is required"),
+  username : yup.string().required("El nombre de usuario es requerido").min(3, "El nombre de usuario debe tener al menos 3 caracteres").max(10, "El nombre de usuario no puede tener más de 10 caracteres"),
+  email    : yup.string().required("Email es requerido").email("Formato invalido"),
+  password : yup.string().required("Password is required").min(5, "La contraseña debe tener al menos 5 caracteres").max(30, "La contraseña no puede tener más de 30 caracteres"),
+  confirmPassword: yup.string().required("Confirme su contraseña"),
 })

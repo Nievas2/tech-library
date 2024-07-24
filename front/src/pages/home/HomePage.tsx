@@ -12,6 +12,7 @@ import NotFound from "@/components/shared/NotFound"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { renderSkeletonHome } from "./skeletons/SkeletonHome"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([]);
@@ -117,7 +118,11 @@ const HomePage = () => {
                 Más populares
               </Button>
               
-              <p className="text-main text-sm text-right">({totalLibraries}) <span className="text-dark dark:text-light">total de librerias</span></p>
+              {loading ? (
+                <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px] " />
+              ) : (
+                <p className="text-main text-sm text-center cp:text-right">({totalLibraries}) <span className="text-dark dark:text-light">total de librerias</span></p>
+              )}
             </div>
 
             {notFound && currentPage === 1 ? (

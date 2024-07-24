@@ -1,6 +1,6 @@
 import * as yup from "yup"
 export const librarySchema = yup.object({
-  name: yup.string().required("Name is required").max(20, "Name is too long"),
-  description: yup.string().required("Description is required").max(200, "Description is too long").min(4, "Description is too short"),
-  link: yup.string().url().required("Link is required").max(100, "Link is too long"),
+  name: yup.string().required("El nombre es requerido").max(20, "El nombre es demasiado largo"),
+  description: yup.string().required("La descriction es requerido").max(200, "La descripcion es demasiado larga").min(4, "La description es demasiado corta"),
+  link: yup.string().url().required("El link es requerido").max(100, "El link es demasiado largo"),
 })
