@@ -96,7 +96,7 @@ const RegisterPage = () => {
     const debounceTimer = setTimeout(() => {
       if (values.password && values.confirmPassword) {
         setPasswordMatchMessage(
-          values.password === values.confirmPassword ? "Passwords match" : "Passwords must match"
+          values.password === values.confirmPassword ? "Las contraseñas coinciden" : "Las contraseñas no coinciden"
         );
       } else {
         setPasswordMatchMessage("");
@@ -107,7 +107,7 @@ const RegisterPage = () => {
   }, [values.password, values.confirmPassword]);
 
   const passwordMatchClass = useMemo(() => 
-    passwordMatchMessage === "Passwords match" ? "text-[#40944A]" : "text-[#ff4444]"
+    passwordMatchMessage === "Las contraseñas coinciden" ? "text-[#40944A]" : "text-[#ff4444]"
   , [passwordMatchMessage]);
 
   return (
@@ -132,13 +132,13 @@ const RegisterPage = () => {
           <div className="w-full sm:w-96 bg-main/20 rounded-lg shadow p-6 sm:p-8 flex flex-col gap-3">
             <div className="flex flex-col gap-4 md:gap-6">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Create your account
+                Crear una cuenta
               </h1>
 
               <div className="flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-row gap-2 items-end">
-                    <Label>Username</Label>
+                    <Label>Nombre de usuario</Label>
                     {usernameError && (
                       <div className="flex flex-row gap-2 items-end">
                         <span className="leading-none">|</span>
@@ -168,7 +168,7 @@ const RegisterPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-row gap-2 items-end">
-                    <Label>Email</Label>
+                    <Label>Correo electrónico</Label>
                     {emailError && (
                       <div className="flex flex-row gap-2 items-end">
                         <span className="leading-none">|</span>
@@ -197,7 +197,7 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label>Password</Label>
+                  <Label>Contraseña</Label>
                   
                   <div className="relative">
                     <Input
@@ -231,7 +231,7 @@ const RegisterPage = () => {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <Label>Confirm Password</Label>
+                  <Label>Confirmar contraseña</Label>
 
                   <div className="relative">
                     <Input
@@ -284,12 +284,12 @@ const RegisterPage = () => {
                     role="button"
                     disabled={loading}
                   >
-                    Sign up
+                    Registrarse
                   </Button>
 
                   <div
                     className="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-main after:mt-0.5 after:flex-1 after:border-t after:border-main dark:before:border-light dark:after:border-light">
-                    <p className="mx-4 mb-0 text-center dark:text-white">or</p>
+                    <p className="mx-4 mb-0 text-center dark:text-white">o</p>
                   </div>
 
                   <div className="flex flex-col gap-2">
@@ -302,7 +302,7 @@ const RegisterPage = () => {
                         className="h-6 w-6"
                         icon="logos:google-icon"
                       />
-                      <span className="text-sm">Continue with Google</span>
+                      <span className="text-sm">Continuar con Google</span>
                     </button>
 
                     <button
@@ -314,18 +314,18 @@ const RegisterPage = () => {
                         className="h-6 w-6"
                         icon="bi:github"
                       />
-                      <span className="text-sm">Continue with Github</span>
+                      <span className="text-sm">Continuar con Github</span>
                     </button>
                   </div>
                 </div>
 
                 <p className="text-sm font-light text-center">
-                  Already have an account?{" "}
+                  ¿Ya tienes una cuenta?{" "}
                   <Link
                     to="/login"
                     className="font-semibold text-main hover:underline"
                   >
-                    Log in
+                    Iniciar sesión
                   </Link>
                 </p>
               </div>
