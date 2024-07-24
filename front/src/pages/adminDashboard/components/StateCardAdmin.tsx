@@ -43,7 +43,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
           </div>
         </div>
 
-        <p className="text-base truncate">{card.description}</p>
+        <p className="text-base line-clamp-3">{card.description}</p>
       </div>
       <div className="flex items-center justify-between mt-4">
         <Dialog>
