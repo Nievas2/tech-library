@@ -176,7 +176,8 @@ const AdminDashboardPage = () => {
         </div>
 
         <div className="flex justify-end">
-          <Dialog>
+          <div>
+             <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
               Agregar libreria
             </DialogTrigger>
@@ -187,6 +188,8 @@ const AdminDashboardPage = () => {
               <FormAddLibrary card={undefined} />
             </DialogContent>
           </Dialog>
+          </div>
+         
         </div>
       </div>
 
