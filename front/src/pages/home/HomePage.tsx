@@ -86,7 +86,6 @@ const HomePage = () => {
     handlePageChange(1)
   }, [tagsActives, totalPages])
 
-
   return (
     <>
       <section className="flex flex-row min-h-full">
