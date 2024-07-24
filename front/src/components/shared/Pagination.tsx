@@ -29,7 +29,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       pageNumbers.push(
         <li
           key={i}
-          className={`px-[9px] py-1 sm:px-3 sm:py-1 text-sm sm:text-base rounded-md cursor-pointer ${
+          className={`px-[10px] py-2 sm:px-3 sm:py-1 text-base sm:text-lg rounded-md cursor-pointer ${
             i === currentPage
               ? "bg-main text-light"
               : "hover:bg-[#F84F9A] hover:text-light hover:dark:bg-[#C9216D]"
@@ -55,7 +55,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       </button>
 
       <button
-        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-8 h-8 xs:w-9 xs:h-9 xl:w-10 xl:h-10 flex items-center justify-center'
+        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-11 h-11 xs:w-9 xs:h-9 xl:w-10 xl:h-10 flex items-center justify-center'
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -67,7 +67,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       </ul>
 
       <button
-        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-8 h-8 xs:w-9 xs:h-9 xl:w-10 xl:h-10 flex items-center justify-center'
+        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-11 h-11 xs:w-9 xs:h-9 xl:w-10 xl:h-10 flex items-center justify-center'
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
