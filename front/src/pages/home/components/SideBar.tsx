@@ -7,11 +7,11 @@ import { Tag, useTagStore } from "@/stores"
 import usePaginationHome from "@/hooks/usePaginationHome"
 import { Input } from "@/components/ui/input"
 import { useDebounce } from "use-debounce"
-import { renderSkeletonSideBar } from "../skeletons/SideBarSkeleton"
+import { renderSkeletonSideBar } from '../skeletons/SideBarSkeleton';
 
 interface SideBarProps {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function SideBar({ open, setOpen }: SideBarProps) {
@@ -33,6 +33,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
   const fetchTags = async () => {
     try {
       const response = await getTagsApi()
@@ -51,10 +52,12 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
       setLoading(false)
     }
   }
+
   useEffect(() => {
     setLoading(true)
     handleChangeSelect(value)
   }, [value])
+
   function handleChangeSelect(value: string) {
     if (value.length === 0) {
       fetchTags()
@@ -68,6 +71,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
     }
     setLoading(false)
   }
+
   const handleSidebar = () => {
     setOpen(!open)
   }
@@ -106,6 +110,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
               />
             </Button>
           </div>
+          
           <div
             className={`${
               open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"
@@ -140,7 +145,6 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
             <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[320px]">
               {loading ? (
                 renderSkeletonSideBar()
-
               ) : (
                 <div>
                   {
@@ -153,7 +157,17 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                           />
                         ))}
                       </div>
-                    )
+                    ) /* : (
+                    <div className="flex flex-wrap gap-3">
+                      {tags &&
+                        tags?.map((tag: Tag) => (
+                          <ItemsSideBar
+                            key={crypto.randomUUID()}
+                            tag={tag}
+                          />
+                        ))}
+                    </div>
+                  ) */
                   }
                 </div>
               )}
