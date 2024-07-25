@@ -417,6 +417,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
         libraryUpdate.state = State.PENDING;
       }
 
+      libraryUpdate.updatedAt = new Date();
       await (await this.execRepository).save(libraryUpdate);
 
       // Update tags
@@ -427,8 +428,6 @@ export class LibraryService extends BaseService<LibraryEntity> {
 
       return new LibraryResponseDTO(libraryUpdate);
     } 
-    console.log("error");
-    
     throw new UnauthorizedException("User is not authorized to update this library");
   }
 
@@ -445,7 +444,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
 
     if (library.isActive)
       throw new LibraryAlreadyEnabledException("Library already enabled");
-    return (await this.execRepository).update(id, { isActive: true });
+    return (await this.execRepository).update(id, { isActive: true, updatedAt: new Date() });
   }
 
   //--------------------------DELETE METHODS-----------------------------
@@ -463,7 +462,7 @@ export class LibraryService extends BaseService<LibraryEntity> {
 
     if (!library.isActive)
       throw new LibraryAlreadyDisabledException("Library already disabled");
-    return (await this.execRepository).update(id, { isActive: false });
+    return (await this.execRepository).update(id, { isActive: false, updatedAt: new Date() });
   }
 
   /**
