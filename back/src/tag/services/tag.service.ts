@@ -41,13 +41,13 @@ export class TagService extends BaseService<TagEntity> {
     const data = await this.findById(id);
     if (data === null) throw new TagNotFoundException("Tag not found");
 
-    if(data.id != id) throw new TagAlreadyExistException("Tag already exist");
+    if (tag.name && data.name !== tag.name) await this.existsByName(tag.name);
 
-    await (await this.execRepository).update(id, tag);
+    if (tag.color) data.color = tag.color
+    if (tag.name) data.name = tag.name
+    data.updatedAt = new Date();
 
-    data.name = tag.name;
-    data.color = tag.color;
-
+    await (await this.execRepository).update(id, data);
     return new TagResponseDto(data);
   }
 
@@ -55,6 +55,7 @@ export class TagService extends BaseService<TagEntity> {
     const data = await this.findById(id);
     if (data === null) throw new TagNotFoundException("Tag not found");
     data.isActive = true;
+    data.updatedAt = new Date();
     return (await this.execRepository).update(id, data);
   }
 
@@ -62,6 +63,7 @@ export class TagService extends BaseService<TagEntity> {
     const data = await this.findById(id);
     if (data === null) throw new TagNotFoundException("Tag not found");
     data.isActive = false;
+    data.updatedAt = new Date();
     await (await this.execRepository).update(id, data);
     return new TagResponseDto(data);
   }
