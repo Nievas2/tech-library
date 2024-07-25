@@ -213,6 +213,8 @@ export class UserService extends BaseService<UserEntity> {
       if (user.role) userEntity.role = user.role;
     }
 
+    user.updatedAt = new Date();
+
     await (await this.execRepository).save(userEntity);
     return new UserResponseDTO(userEntity);
   }
@@ -224,7 +226,7 @@ export class UserService extends BaseService<UserEntity> {
    */
   async restore(id: number): Promise<UpdateResult> {
     await this.existsById(id);
-    return (await this.execRepository).update(id, { isActive: true });
+    return (await this.execRepository).update(id, { isActive: true, updatedAt: new Date() });
   }
 
   /**
@@ -235,7 +237,7 @@ export class UserService extends BaseService<UserEntity> {
    */
   async deleteLogic(id: number): Promise<UpdateResult> {
     await this.existsById(id);
-    return (await this.execRepository).update(id, { isActive: false });
+    return (await this.execRepository).update(id, { isActive: false, updatedAt: new Date() });
   }
 
   //----------------DELETE METHODS-----------------
