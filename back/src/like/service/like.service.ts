@@ -57,6 +57,7 @@ export class LikeService extends BaseService<LikeEntity> {
         throw new LikeAlreadyExistsException("User already liked this library");
       }
       like.liked = true;
+      like.updatedAt = new Date();
       library.likesCount++;
       await (await this.execRepository).update(like.id, like);
       return library;
@@ -95,6 +96,7 @@ export class LikeService extends BaseService<LikeEntity> {
     if (likeEntity.liked) {
       likeEntity.liked = false;
       library.likesCount--;
+      likeEntity.updatedAt = new Date();
       await (await this.execRepository).update(likeEntity.id, likeEntity);
       return library;
     }
