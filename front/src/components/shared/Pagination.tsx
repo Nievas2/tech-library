@@ -55,7 +55,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       </button>
 
       <button
-        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-10 h-10 xl:w-10 xl:h-10 flex items-center justify-center'
+        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w98 h-9 cp:w-10 cp:h-10 xl:w-10 xl:h-10 flex items-center justify-center'
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -67,7 +67,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       </ul>
 
       <button
-        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-10 h-10 xl:w-10 xl:h-10 flex items-center justify-center'
+        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-9 h-9 cp:w-10 cp:h-10 xl:w-10 xl:h-10 flex items-center justify-center'
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
