@@ -79,10 +79,10 @@ const Navbar = () => {
                           <DropdownMenuSeparator className="bg-dark dark:bg-light" />
 
                           <DropdownMenuGroup className="flex gap-2 flex-col">
-                            <DropdownMenuItem 
+                            {/* <DropdownMenuItem 
                               className={`text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
                             >
-                              <Link 
+                              <Link
                                 className="px-[3px] flex items-center flex-row gap-2 w-full"
                                 to="/favorites"
                                 onClick={handleDropdownClick}
@@ -94,15 +94,32 @@ const Navbar = () => {
                                 />
                                 <p>Favoritos</p>
                               </Link>
-                            </DropdownMenuItem>
+                            </DropdownMenuItem> */}
 
-                            <DropdownMenuItem 
-                              className={`text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
+                            <Link
+                              className="px-[3px] w-full"
+                              to="/favorites"
+                              onClick={handleDropdownClick}
                             >
-                              <Link 
-                                className="px-[3px] flex items-center flex-row gap-2 w-full"
-                                to="/user-dashboard"
-                                onClick={handleDropdownClick}
+                              <DropdownMenuItem 
+                                className={`text-base w-full cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
+                              >
+                                <Icon
+                                  icon="tdesign:heart-filled"
+                                  width="24"
+                                  height="24"
+                                />
+                                <p>Favoritos</p>
+                              </DropdownMenuItem>
+                            </Link>
+
+                            <Link
+                              className="px-[3px] w-full"
+                              to="/user-dashboard"
+                              onClick={handleDropdownClick}
+                            >
+                              <DropdownMenuItem 
+                                className={`text-base cursor-pointer ${location.pathname === '/user-dashboard' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
                               >
                                 <Icon
                                   icon="icon-park-outline:config"
@@ -110,17 +127,17 @@ const Navbar = () => {
                                   height="24"
                                 />
                                 <p>Panel de usuario</p>
-                              </Link>
-                            </DropdownMenuItem>
+                              </DropdownMenuItem>
+                            </Link>
 
                             {authUser?.user.role === "ADMIN" && (
-                              <DropdownMenuItem 
-                                className={`text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
+                              <Link
+                                className="px-[3px] w-full"
+                                to="/admin-dashboard"
+                                onClick={handleDropdownClick}
                               >
-                                <Link 
-                                  className="px-[3px] flex items-center flex-row gap-2 w-full"
-                                  to="/admin-dashboard"
-                                  onClick={handleDropdownClick}
+                                <DropdownMenuItem 
+                                  className={`text-base cursor-pointer ${location.pathname === '/admin-dashboard' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
                                 >
                                   <Icon 
                                     icon="fluent:globe-shield-48-filled"
@@ -128,8 +145,8 @@ const Navbar = () => {
                                     height="24"  
                                   />
                                   <p>Panel de administrador</p>
-                                </Link>
-                              </DropdownMenuItem>
+                                </DropdownMenuItem>
+                              </Link>
                             )}
                           </DropdownMenuGroup>
 
