@@ -280,9 +280,9 @@ const Card = ({ library }: CardProps) => {
       <Dialog open={showAuthLikeModal} onOpenChange={setShowAuthLikeModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>¿Te gusta esta libreria?</DialogTitle>
+            <DialogTitle>¿Te gusta esta librería?</DialogTitle>
           </DialogHeader>
-          <p className="text-center">Inicia sesión o registrate para que tu opinión cuente.</p>
+          <p className="text-center">Inicia sesión o regístrate para que tu opinión cuente.</p>
           <div className="flex flex-row gap-2 w-fit mx-auto">
             <Button className="" variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Iniciar sesión</Button>
             <Button className="" variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Registrarse</Button>
@@ -293,9 +293,9 @@ const Card = ({ library }: CardProps) => {
       <Dialog open={showAuthFavoriteModal} onOpenChange={setShowAuthFavoriteModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>¿Queres agregar a favoritos esta libreria?</DialogTitle>
+            <DialogTitle>¿Querés agregar a favoritos esta libreria?</DialogTitle>
           </DialogHeader>
-          <p className="text-center">Inicia sesión o registrate para agregar a favoritos esta libreria.</p>
+          <p className="text-center">Inicia sesión o regístrate para agregar a tus favoritos esta libreria.</p>
           <div className="flex flex-row gap-2 w-fit mx-auto">
             <Button className="" variant="authButton" onClick={() => setShowAuthFavoriteModal(false)}>Iniciar sesión</Button>
             <Button className="" variant="authButton" onClick={() => setShowAuthFavoriteModal(false)}>Registrarse</Button>
