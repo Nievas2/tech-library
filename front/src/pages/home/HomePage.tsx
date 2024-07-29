@@ -98,27 +98,31 @@ const HomePage = () => {
             <SearchBar />
 
             <div className="flex justify-between items-center gap-2">
-              <Button
-                variant="popular"
-                size="popularSize"
-                onClick={() => setMorePopular(!morePopular)}
-                id="popular"
-                aria-label="popular"
-                role="button"
-              >
-                <Icon
-                  icon="uil:arrow-up"
-                  width="24"
-                  height="24"
-                  className={`${
-                    morePopular ? "rotate-180" : ""
-                  } transition-transform duration-100`}
-                />
-                Más populares
-              </Button>
+              {loading ? (
+                <Skeleton className="h-7 w-[140px]" />
+              ) : (
+                <Button
+                  variant="popular"
+                  size="popularSize"
+                  onClick={() => setMorePopular(!morePopular)}
+                  id="popular"
+                  aria-label="popular"
+                  role="button"
+                >
+                  <Icon
+                    icon="uil:arrow-up"
+                    width="24"
+                    height="24"
+                    className={`${
+                      morePopular ? "rotate-180" : ""
+                    } transition-transform duration-100`}
+                  />
+                  Más populares
+                </Button>
+              )}
               
               {loading ? (
-                <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px] " />
+                <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px]" />
               ) : (
                 <p className="text-main text-sm text-center cp:text-right">({totalLibraries}) <span className="text-dark dark:text-light">total de librerias</span></p>
               )}
