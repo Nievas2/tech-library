@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
 import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
-
 import cofeeLogo from "../../assets/images/cofeeLogo2.svg"
 
 const Navbar = () => {
@@ -40,12 +39,11 @@ const Navbar = () => {
               to="/home"
               aria-label="Home"
             >
-              {/* <Icon
-                icon="system-uicons:book"
-                width="42"
-                height="42"
-              /> */}
-              <img className="w-16 h-16" src={cofeeLogo} alt="" />
+              <img 
+                className="w-16 h-16" 
+                src={cofeeLogo} 
+                alt="Techlibrary logo" 
+              />
 
               <h1 className="text-2xl font-bold hidden leading-none sm:block mt-5">
                 Tech Library

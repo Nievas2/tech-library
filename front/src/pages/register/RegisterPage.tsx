@@ -16,6 +16,7 @@ import { useRegister } from "@/hooks"
 import { Register } from "@/services/AuthService"
 import { useEffect, useMemo, useState } from "react"
 import axiosInstance from "@/api/axiosInstance"
+import cofeeLogo from "../../assets/images/cofeeLogo2.svg"
 
 const RegisterPage = () => {
   const { loading, register } = useRegister()
@@ -81,6 +82,7 @@ const RegisterPage = () => {
       console.error("Registration failed:", (error as AxiosError<ResponseSuccess>).response?.data.statusMessage);
     }
   }
+
   function loginGoogle() {
     window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self")
   }
@@ -117,17 +119,17 @@ const RegisterPage = () => {
         noValidate
       >
         <div className="flex flex-col gap-5 items-center justify-center px-4 py-4 mx-auto">
-          <a
-            href="#"
-            className="flex flex-row gap-1 items-center justify-center text-2xl font-semibold"
+          <div
+            className="flex flex-row gap-3 items-center justify-center text-2xl font-semibold"
           >
             <img
-              className="w-8 h-8"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-              alt="logo"
+              className="w-12 h-12"
+              src={cofeeLogo}
+              alt="Techlibrary logo"
             />
-            <p>TechLibrary</p>
-          </a>
+            
+            <p className="leading-none mt-2">TechLibrary</p>
+          </div>
 
           <div className="w-full sm:w-96 bg-main/20 rounded-lg shadow p-6 sm:p-8 flex flex-col gap-3">
             <div className="flex flex-col gap-4 md:gap-6">
