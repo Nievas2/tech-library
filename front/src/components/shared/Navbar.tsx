@@ -17,6 +17,8 @@ import {
 import { useState } from "react"
 import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 
+import cofeeLogo from "../../assets/images/cofeeLogo2.png"
+
 const Navbar = () => {
   const { logOut } = useLogout();
   const { authUser } = useAuthContext();
@@ -30,26 +32,27 @@ const Navbar = () => {
   
   return (
     <nav className="sticky w-full top-0 z-50 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
-      <div className="mx-auto max-w-7xl p-4">
-        <div className="relative flex h-16 items-center justify-between">
-          <div className="flex flex-1 items-center justify-start">
+      <div className="mx-auto max-w-7xl p-4 2xl:pl-0">
+        <div className="relative flex h-16 items-center gap-10">
+          <div className="flex items-center justify-between w-full">
             <Link
-              className="flex flex-shrink-0 items-center gap-1"
+              className="flex flex-shrink-0 items-center justify-center gap-3"
               to="/home"
               aria-label="Home"
             >
-              <Icon
+              {/* <Icon
                 icon="system-uicons:book"
                 width="42"
                 height="42"
-              />
+              /> */}
+              <img className="w-16 h-16" src={cofeeLogo} alt="" />
 
-              <h1 className="text-2xl font-bold hidden sm:block">
+              <h1 className="text-2xl font-bold hidden leading-none sm:block mt-5">
                 Tech Library
               </h1>
             </Link>
 
-            <div className={`flex-grow items-center flex justify-end gap-6`}>
+            <div className={`items-center flex justify-end gap-6`}>
               <div className="flex items-center justify-center gap-3">
                 {authUser ? (
                   <div className="flex items-center justify-center gap-3">
