@@ -143,7 +143,7 @@ const LoginPage = () => {
                     role="button"
                     disabled={loading}
                   >
-                    {loading ? "loading..." : "Login"}
+                    {loading ? "Cargando..." : "Iniciar sesión"}
                   </Button>
 
                   <div

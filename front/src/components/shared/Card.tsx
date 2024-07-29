@@ -1,6 +1,6 @@
-import { Heart, Link } from "lucide-react"
+import { Heart, Link as LRLink } from "lucide-react"
 import { Button } from "../ui/button"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { Library } from "@/interfaces/Library"
 import { Tag } from "@/interfaces/Tag"
 import { formatDate } from "@/utils"
@@ -116,7 +116,7 @@ const Card = ({ library }: CardProps) => {
                               aria-label="Direct Link"
                               role="button"
                             >
-                              <Link className="h-[20px] w-[20px]" />
+                              <LRLink className="h-[20px] w-[20px]" />
                               <p className="text-sm">Direct Link</p>
                             </Button>
                           </NavLink>
@@ -215,7 +215,7 @@ const Card = ({ library }: CardProps) => {
               aria-label="Direct Link"
               role="button"
             >
-              <Link className="h-[20px] w-[20px]" />
+              <LRLink className="h-[20px] w-[20px]" />
               <p className="text-sm">Link directo</p>
             </Button>
           </NavLink>
@@ -284,8 +284,17 @@ const Card = ({ library }: CardProps) => {
           </DialogHeader>
           <p className="text-center">Inicia sesión o regístrate para que tu opinión cuente.</p>
           <div className="flex flex-row gap-2 w-fit mx-auto">
-            <Button className="" variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Iniciar sesión</Button>
-            <Button className="" variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Registrarse</Button>
+            <Link
+              to="/login"
+            >
+              <Button variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Iniciar sesión</Button>
+            </Link>
+
+            <Link
+              to="/signup"
+            >
+              <Button variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Registrarse</Button>
+            </Link>
           </div>
         </DialogContent>
       </Dialog>
@@ -297,8 +306,17 @@ const Card = ({ library }: CardProps) => {
           </DialogHeader>
           <p className="text-center">Inicia sesión o regístrate para agregar a tus favoritos esta libreria.</p>
           <div className="flex flex-row gap-2 w-fit mx-auto">
-            <Button className="" variant="authButton" onClick={() => setShowAuthFavoriteModal(false)}>Iniciar sesión</Button>
-            <Button className="" variant="authButton" onClick={() => setShowAuthFavoriteModal(false)}>Registrarse</Button>
+            <Link
+              to="/login"
+            >
+              <Button variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Iniciar sesión</Button>
+            </Link>
+
+            <Link
+              to="/signup"
+            >
+              <Button variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Registrarse</Button>
+            </Link>
           </div>
         </DialogContent>
       </Dialog>

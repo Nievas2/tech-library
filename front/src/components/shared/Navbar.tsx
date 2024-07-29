@@ -80,23 +80,6 @@ const Navbar = () => {
                           <DropdownMenuSeparator className="bg-dark dark:bg-light" />
 
                           <DropdownMenuGroup className="flex gap-2 flex-col">
-                            {/* <DropdownMenuItem 
-                              className={`text-base cursor-pointer ${location.pathname === '/favorites' ? 'bg-main text-light' : 'focus:bg-[#F84F9A] focus:dark:bg-[#C9216D] focus:text-light'}`}
-                            >
-                              <Link
-                                className="px-[3px] flex items-center flex-row gap-2 w-full"
-                                to="/favorites"
-                                onClick={handleDropdownClick}
-                              >
-                                <Icon
-                                  icon="tdesign:heart-filled"
-                                  width="24"
-                                  height="24"
-                                />
-                                <p>Favoritos</p>
-                              </Link>
-                            </DropdownMenuItem> */}
-
                             <Link
                               className="px-[3px] w-full"
                               to="/favorites"
@@ -173,13 +156,13 @@ const Navbar = () => {
                 ) : (
                   <div className="flex items-center justify-center gap-3">
                     <ItemsNavbar
-                      name="LOGIN"
+                      name="INICIAR SESION"
                       path="/login"
                       key={crypto.randomUUID()}
                     />
 
                     <ItemsNavbar
-                      name="SIGNUP"
+                      name="REGISTRARSE"
                       path="/signup"
                       key={crypto.randomUUID()}
                     />
