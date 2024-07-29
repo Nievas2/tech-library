@@ -29,7 +29,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       pageNumbers.push(
         <li
           key={i}
-          className={`px-[10px] py-2 sm:px-3 sm:py-1 text-base sm:text-lg rounded-md cursor-pointer ${
+          className={`rounded-md cursor-pointer text-sm px-3 py-1.5 sm:text-base sm:px-3 sm:py-1 ${
             i === currentPage
               ? "bg-main text-light"
               : "hover:bg-[#F84F9A] hover:text-light hover:dark:bg-[#C9216D]"
@@ -55,11 +55,11 @@ export const Pagination: React.FC<PaginationProps> = ({
       </button>
 
       <button
-        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-11 h-11 xs:w-9 xs:h-9 xl:w-10 xl:h-10 flex items-center justify-center'
+        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-10 h-10 xl:w-10 xl:h-10 flex items-center justify-center'
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <Icon icon="iconamoon:arrow-left-2-duotone" className='text-xl xl:text-xl' />
+        <Icon icon="iconamoon:arrow-left-2-duotone" className='text-xl' />
       </button>
 
       <ul className="flex gap-2 font-semibold">
@@ -67,11 +67,11 @@ export const Pagination: React.FC<PaginationProps> = ({
       </ul>
 
       <button
-        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-11 h-11 xs:w-9 xs:h-9 xl:w-10 xl:h-10 flex items-center justify-center'
+        className='text-dark dark:text-light border border-dark dark:border-light rounded-full p-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-20 disabled:bg-black transition duration-150 disableStyles w-10 h-10 xl:w-10 xl:h-10 flex items-center justify-center'
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <Icon icon="iconamoon:arrow-right-2-duotone" className='text-xl xl:text-xl' />
+        <Icon icon="iconamoon:arrow-right-2-duotone" className='text-xl' />
       </button>
 
       <button
