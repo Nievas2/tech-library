@@ -11,7 +11,7 @@ const FavoritesPage = () => {
         <CardsContainer libraries={favorites} />
       ) : (
         <div className="flex justify-center items-center h-[58vh] text-center">
-          <p className="text-2xl font-bold">You haven't added anything to your favorites yet...</p>
+          <p className="text-2xl font-bold">Aún no has agregado librerias a tus favoritos...</p>
         </div>
       )}
     </div>

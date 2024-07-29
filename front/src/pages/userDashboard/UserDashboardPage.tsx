@@ -50,7 +50,7 @@ const UserDashboardPage = () => {
       setList(response.results)
       setTotalPages(Math.ceil(response.total_pages))
     } catch (error) {
-      setFilterError("No found libraries.")
+      setFilterError("Aún no has sugerido librerias...")
     }
   }
 
@@ -87,7 +87,7 @@ const UserDashboardPage = () => {
       setTotalPages(response.data.total_pages)
       setFilterError("")
     } catch (error) {
-      setFilterError("No found libraries.")
+      setFilterError("Aún no has sugerido librerias...")
     } finally {
       setLoading(false)
     }
