@@ -17,7 +17,7 @@ import {
 import { useState } from "react"
 import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 
-import cofeeLogo from "../../assets/images/cofeeLogo2.png"
+import cofeeLogo from "../../assets/images/cofeeLogo2.svg"
 
 const Navbar = () => {
   const { logOut } = useLogout();

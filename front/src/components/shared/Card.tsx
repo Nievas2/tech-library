@@ -23,10 +23,12 @@ interface CardProps {
 }
 
 const Card = ({ library }: CardProps) => {
-  const { authUser } = useAuthContext()
-  const [liked, setLiked] = useState(library.liked)
-  const favorites = useFavoriteStore((state) => state.favorites)
-  const isFavorite = favorites?.some((favorite) => favorite.id === library.id)
+  const { authUser } = useAuthContext();
+  const [liked, setLiked] = useState(library.liked);
+  const favorites = useFavoriteStore((state) => state.favorites);
+  const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
+  const [showAuthLikeModal, setShowAuthLikeModal] = useState(false);
+  const [showAuthFavoriteModal, setShowAuthFavoriteModal] = useState(false);
 
   const addFavoriteLibrary = useFavoriteStore(
     (state) => state.addFavoriteLibrary
@@ -37,14 +39,24 @@ const Card = ({ library }: CardProps) => {
   )
 
   const toggleFavorite = () => {
-    if (isFavorite) {
-      deleteFavoriteLibrary(library.id)
-    } else {
-      addFavoriteLibrary(library)
+    if (!authUser) {
+      setShowAuthFavoriteModal(true);
+      return;
     }
-  }
+
+    if (isFavorite) {
+      deleteFavoriteLibrary(library.id);
+    } else {
+      addFavoriteLibrary(library);
+    }
+  };
 
   async function toggleLike() {
+    if (!authUser) {
+      setShowAuthLikeModal(true);
+      return;
+    }
+
     if (liked === false && library.liked === false) {
       const response = await postLibraryLike(
         String(library.id),
@@ -89,18 +101,6 @@ const Card = ({ library }: CardProps) => {
                       <p className="text-base text-left">
                         {library.description}
                       </p>
-
-                      {/* <div className="flex flex-row flex-wrap gap-2 text-sm">
-                        {library.tags?.map((tag: Tag) => (
-                          <h4
-                            key={tag.id}
-                            style={{ backgroundColor: tag.color }}
-                            className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light"
-                          >
-                            {tag.name}
-                          </h4>
-                        ))}
-                      </div> */}
 
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-row gap-4 justify-center items-center">
@@ -276,6 +276,32 @@ const Card = ({ library }: CardProps) => {
           </small>
         </div>
       </div>
+
+      <Dialog open={showAuthLikeModal} onOpenChange={setShowAuthLikeModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>¿Te gusta esta libreria?</DialogTitle>
+          </DialogHeader>
+          <p className="text-center">Inicia sesión o registrate para que tu opinión cuente.</p>
+          <div className="flex flex-row gap-2 w-fit mx-auto">
+            <Button className="" variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Iniciar sesión</Button>
+            <Button className="" variant="authButton" onClick={() => setShowAuthLikeModal(false)}>Registrarse</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showAuthFavoriteModal} onOpenChange={setShowAuthFavoriteModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>¿Queres agregar a favoritos esta libreria?</DialogTitle>
+          </DialogHeader>
+          <p className="text-center">Inicia sesión o registrate para agregar a favoritos esta libreria.</p>
+          <div className="flex flex-row gap-2 w-fit mx-auto">
+            <Button className="" variant="authButton" onClick={() => setShowAuthFavoriteModal(false)}>Iniciar sesión</Button>
+            <Button className="" variant="authButton" onClick={() => setShowAuthFavoriteModal(false)}>Registrarse</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
