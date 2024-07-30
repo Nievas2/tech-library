@@ -8,7 +8,7 @@ import { loginSchema } from "@/utils"
 import { Login } from "@/services/AuthService"
 import useLogin from "@/hooks/useLogin"
 import { useState } from "react"
-import cofeeLogo from "../../assets/images/cofeeLogo2.svg"
+import cofeeLogo from "../../assets/images/cofeeLogo.svg"
 
 const LoginPage = () => {
   const { loading, login } = useLogin()

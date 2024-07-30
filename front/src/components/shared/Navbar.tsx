@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useState } from "react"
 import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
-import cofeeLogo from "../../assets/images/cofeeLogo2.svg"
+import cofeeLogo from "../../assets/images/cofeeLogo.svg"
 
 const Navbar = () => {
   const { logOut } = useLogout();

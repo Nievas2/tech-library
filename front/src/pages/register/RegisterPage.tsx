@@ -16,7 +16,7 @@ import { useRegister } from "@/hooks"
 import { Register } from "@/services/AuthService"
 import { useEffect, useMemo, useState } from "react"
 import axiosInstance from "@/api/axiosInstance"
-import cofeeLogo from "../../assets/images/cofeeLogo2.svg"
+import cofeeLogo from "../../assets/images/cofeeLogo.svg"
 
 const RegisterPage = () => {
   const { loading, register } = useRegister()
