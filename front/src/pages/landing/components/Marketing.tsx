@@ -8,7 +8,7 @@ const Marketing = () => {
       <div className={cn(
         "flex items-center justify-center flex-col",
       )}>
-        <div className="font-bold text-3xl md:text-6xl bg-gradient-to-r from-main to-tertiary text-light px-6 py-2 rounded-md w-fit">
+        <div className="font-bold text-3xl md:text-6xl bg-gradient-to-r from-main to-tertiary text-light px-6 py-2 rounded-md w-fit" translate="no">
           TechLibrary
         </div>
         <h1 className="font-bold text-3xl mt-3 sm:mx-0 md:text-6xl text-center mb-4">
