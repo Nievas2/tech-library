@@ -183,7 +183,7 @@ const UserDashboardPage = () => {
                 <span className=" text-2xl font-bold">{filterError}</span>
               </div>
             ) : (
-              <>
+              <section className="flex flex-col gap-6">
                 <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
                   {list?.map((card) => (
                     <StateCard
@@ -192,18 +192,17 @@ const UserDashboardPage = () => {
                     />
                   ))}
                 </section>
-              </>
+                <div className="flex justify-center">
+                  <Pagination
+                    currentPage={currentPage!}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              </section>
             )}
           </>
         )}
-      </div>
-
-      <div className="flex justify-center">
-        <Pagination
-          currentPage={currentPage!}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
       </div>
     </div>
   )

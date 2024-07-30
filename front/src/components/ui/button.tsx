@@ -23,7 +23,7 @@ const buttonVariants = cva(
         darkSwich: "bg-dark hover:bg-dark/80 dark:bg-light dark:hover:bg-light/90 text-light dark:text-dark",
         directLink: "bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] text-light",
         authButton: "bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] text-light text-base font-bold",
-        sidebarToggle: "bg-dark hover:bg-dark/80 dark:bg-light hover:dark:bg-light/90",
+        sidebarToggle: "bg-dark hover:bg-dark dark:bg-light hover:dark:bg-light",
         like: ""
       },
       size: {
