@@ -8,7 +8,6 @@ import usePaginationHome from "@/hooks/usePaginationHome"
 import { getLibrariesSearch } from "@/services/LibraryService"
 import { useTagStore } from "@/stores"
 import { useAuthContext } from "@/contexts"
-import NotFound from "@/components/shared/NotFound"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { renderSkeletonHome } from "./skeletons/SkeletonHome"
@@ -129,7 +128,14 @@ const HomePage = () => {
             </div>
 
             {notFound && currentPage === 1 ? (
-              <NotFound />
+              <div className="
+                flex flex-col gap-2 justify-center text-center
+                min-h-72 xl:min-h-96 
+                w-full 
+                px-0 sm:px-24 md:px-36 xl:px-[316px]">
+                <p className="text-3xl text-center font-extrabold">¡Lo sentimos, no encontramos lo que buscas!</p>
+                <p className="text-center">No se han encontrado resultados que coincidan con tu búsqueda o filtrado. Por favor, prueba con diferentes términos o ajusta los filtros.</p>
+              </div>
             ) : (
               <div>
                 {search ? (
@@ -147,11 +153,13 @@ const HomePage = () => {
             )}
           </div>
 
-          <Pagination
-            currentPage={currentPage!}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          {!notFound && totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage!}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </div>
       </section>
     </>

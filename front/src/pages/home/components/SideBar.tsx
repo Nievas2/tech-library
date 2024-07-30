@@ -84,7 +84,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
     >
       <div className="w-full h-full relative">
         <div
-          className={`w-full h-screen sticky top-[97px] ${
+          className={`w-full sticky top-[97px] ${
             open ? "px-4 pt-[34px] pb-4" : "pt-0"
           }`}
         >
