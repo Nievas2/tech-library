@@ -27,17 +27,18 @@ export const Pagination: React.FC<PaginationProps> = ({
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
-        <li
-          key={i}
-          className={`rounded-md cursor-pointer text-sm px-3 py-1.5 sm:text-base sm:px-3 sm:py-1 ${
+        <button
+          key={crypto.randomUUID()}
+          className={`rounded-md text-sm px-3 py-1.5 sm:text-base sm:px-3 sm:py-1 ${
             i === currentPage
-              ? "bg-main text-light"
-              : "hover:bg-[#F84F9A] hover:text-light hover:dark:bg-[#C9216D]"
+              ? "bg-main text-light cursor-not-allowed"
+              : "hover:bg-[#F84F9A] hover:text-light hover:dark:bg-[#C9216D] cursor-pointer"
           }`}
           onClick={() => handlePageChange(i)}
+          disabled={i === currentPage}
         >
           {i}
-        </li>
+        </button>
       );
     }
 

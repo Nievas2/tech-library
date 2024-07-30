@@ -302,7 +302,7 @@ const Card = ({ library }: CardProps) => {
       <Dialog open={showAuthFavoriteModal} onOpenChange={setShowAuthFavoriteModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>¿Querés agregar a favoritos esta libreria?</DialogTitle>
+            <DialogTitle>¿Querés agregar a tus favoritos esta libreria?</DialogTitle>
           </DialogHeader>
           <p className="text-center">Inicia sesión o regístrate para agregar a tus favoritos esta libreria.</p>
           <div className="flex flex-row gap-2 w-fit mx-auto">

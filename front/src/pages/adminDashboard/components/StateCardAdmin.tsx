@@ -38,7 +38,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
                   : "text-[#6e0202]"
               }`}
             >
-              {card.state === "ACTIVE" ? "Activa" : card.state === "PENDING" ? "Pendiente" : "Inactiva"}
+              {card.state === "ACTIVE" ? "ACTIVA" : card.state === "PENDING" ? "PENDIENTE" : "INACTIVA"}
             </span>
           </div>
         </div>
