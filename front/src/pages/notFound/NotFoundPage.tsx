@@ -19,11 +19,12 @@ const NotFoundPage = () => {
             height="60"
           />
         </div>
-        <h2 className="text-xl font-bold">Page not found</h2>
-        <div className="w-full sm:w-[60vh]">
+
+        <h2 className="text-xl font-bold">Página no encontrada</h2>
+        
+        <div className="w-full sm:w-[410px]">
           <p className="text-center">
-            The page you are looking for could not be found. Probably it was
-            removed.
+            Lo sentimos, no hemos podido encontrar la página que estabas buscando. Puede que haya sido eliminada o nunca haya existido.
           </p>
         </div>
 
@@ -35,7 +36,7 @@ const NotFoundPage = () => {
             type="button"
             variant={"directLink"}
           >
-            <Link to={"/home"}>Go Home</Link>
+            <Link to={"/home"}>Volver a la página principal</Link>
           </Button>
         </div>
       </section>

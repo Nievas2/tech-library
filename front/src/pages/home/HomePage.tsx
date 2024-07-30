@@ -106,47 +106,48 @@ const HomePage = () => {
             <SearchBar />
 
             <div className="flex justify-between items-center gap-2">
-              {loading ? (
-                <Skeleton className="h-7 w-[140px]" />
-              ) : (
-                <Button
-                  variant="popular"
-                  size="popularSize"
-                  onClick={() => setMorePopular(!morePopular)}
-                  id="popular"
-                  aria-label="popular"
-                  role="button"
-                >
-                  <Icon
-                    icon="uil:arrow-up"
-                    width="24"
-                    height="24"
-                    className={`${
-                      morePopular ? "rotate-180" : ""
-                    } transition-transform duration-100`}
-                  />
-                  Más populares
-                </Button>
-              )}
-
-              {loading ? (
-                <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px]" />
-              ) : (
-                <p className="text-main text-sm text-center cp:text-right">
-                  ({totalLibraries}){" "}
-                  <span className="text-dark dark:text-light">
-                    total de librerias
-                  </span>
-                </p>
+              {notFound ? null : (
+                <>
+                  {loading ? (
+                    <>
+                      <Skeleton className="h-7 w-[140px]" />
+                      <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px]" />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="popular"
+                        size="popularSize"
+                        onClick={() => setMorePopular(!morePopular)}
+                        id="popular"
+                        aria-label="popular"
+                        role="button"
+                      >
+                        <Icon
+                          icon="uil:arrow-up"
+                          width="24"
+                          height="24"
+                          className={`${
+                            morePopular ? "rotate-180" : ""
+                          } transition-transform duration-100`}
+                        />
+                        Más populares
+                      </Button>
+                      
+                      <p className="text-main text-sm text-center cp:text-right">
+                        ({totalLibraries}){" "}
+                        <span className="text-dark dark:text-light">
+                          total de librerías
+                        </span>
+                      </p>
+                    </>
+                  )}
+                </>
               )}
             </div>
 
             {notFound && currentPage === 1 ? (
-              <div className="
-                flex flex-col gap-2 justify-center text-center
-                min-h-72 xl:min-h-96 
-                w-full 
-                px-0 sm:px-24 md:px-36 xl:px-[316px]">
+              <div className="flex flex-col gap-2 justify-center text-center w-full  min-h-[400px] sm:min-h-[320px] lg:min-h-[320px] xl:min-h-[350px] px-0 sm:px-24 md:px-36 xl:px-[316px]">
                 <p className="text-3xl text-center font-extrabold">¡Lo sentimos, no encontramos lo que buscas!</p>
                 <p className="text-center">No se han encontrado resultados que coincidan con tu búsqueda o filtrado. Por favor, prueba con diferentes términos o ajusta los filtros.</p>
               </div>
