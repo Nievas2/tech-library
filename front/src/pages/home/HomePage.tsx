@@ -14,14 +14,14 @@ import { renderSkeletonHome } from "./skeletons/SkeletonHome"
 import { Skeleton } from "@/components/ui/skeleton"
 
 const HomePage = () => {
-  const [libraries, setLibraries] = useState<Library[]>([]);
-  const [totalLibraries, setTotalLibraries] = useState<number>();
-  const [loading, setLoading] = useState(true);
-  const { authUser } = useAuthContext();
-  const [notFound, setNotFound] = useState(false);
-  const [morePopular, setMorePopular] = useState(false);
-  const tagsActives = useTagStore((state) => state.tagsActives);
-  const tags = useTagStore((state) => state.tags);
+  const [libraries, setLibraries] = useState<Library[]>([])
+  const [totalLibraries, setTotalLibraries] = useState<number>()
+  const [loading, setLoading] = useState(true)
+  const { authUser } = useAuthContext()
+  const [notFound, setNotFound] = useState(false)
+  const [morePopular, setMorePopular] = useState(false)
+  const tagsActives = useTagStore((state) => state.tagsActives)
+  const tags = useTagStore((state) => state.tags)
   const {
     currentPage,
     totalPages,
@@ -29,14 +29,20 @@ const HomePage = () => {
     handlePageChange,
     searchParams,
     setCurrentPage
-  } = usePaginationHome();
-  const search = String(searchParams.get("search"));
-  const searchParamsData = searchParams.get("search");
-  const [open, setOpen] = useState(window.innerWidth >= 1024);
+  } = usePaginationHome()
+  const search = String(searchParams.get("search"))
+  const searchParamsData = searchParams.get("search")
+  const [open, setOpen] = useState(window.innerWidth >= 1024)
 
   useEffect(() => {
-    setCurrentPage(1)
-  }, [tagsActives, totalPages, searchParamsData, search])
+    //si cambia la search entra
+    if (searchParamsData !== null && search != "null"  && searchParamsData?.length !== 0 && search.length !== 0) { 
+      setCurrentPage(1)
+    }
+    if(currentPage !== undefined && currentPage > 1 && searchParamsData === null && search === "null") {
+      setCurrentPage(1)
+    }
+  }, [searchParamsData, search])
 
   useEffect(() => {
     const fetchLibraries = async () => {
@@ -56,7 +62,7 @@ const HomePage = () => {
             ? searchParamsData
             : "",
           morePopular ? "desc" : "asc"
-        ) 
+        )
         const { libraries, totalPages, totalLibraries } = librariesResponse
 
         setLibraries(libraries)
@@ -79,7 +85,7 @@ const HomePage = () => {
     }
 
     fetchLibraries()
-  }, [setTotalPages, tags, search, currentPage, morePopular])
+  }, [setTotalPages, tags, search, currentPage, morePopular, handlePageChange])
 
   useEffect(() => {
     handlePageChange(1)
@@ -89,7 +95,10 @@ const HomePage = () => {
     <>
       <section className="flex flex-row min-h-full">
         <div className="flex flex-1">
-          <SideBar open={open} setOpen={setOpen} />
+          <SideBar
+            open={open}
+            setOpen={setOpen}
+          />
         </div>
 
         <div className="py-7 px-4 flex flex-col items-center gap-7 justify-start">
@@ -119,11 +128,16 @@ const HomePage = () => {
                   Más populares
                 </Button>
               )}
-              
+
               {loading ? (
                 <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px]" />
               ) : (
-                <p className="text-main text-sm text-center cp:text-right">({totalLibraries}) <span className="text-dark dark:text-light">total de librerias</span></p>
+                <p className="text-main text-sm text-center cp:text-right">
+                  ({totalLibraries}){" "}
+                  <span className="text-dark dark:text-light">
+                    total de librerias
+                  </span>
+                </p>
               )}
             </div>
 
@@ -139,13 +153,19 @@ const HomePage = () => {
             ) : (
               <div>
                 {search ? (
-                  <CardsContainer open={open} libraries={libraries} />
+                  <CardsContainer
+                    open={open}
+                    libraries={libraries}
+                  />
                 ) : (
                   <div>
                     {loading ? (
                       renderSkeletonHome()
                     ) : (
-                      <CardsContainer open={open} libraries={libraries} />
+                      <CardsContainer
+                        open={open}
+                        libraries={libraries}
+                      />
                     )}
                   </div>
                 )}

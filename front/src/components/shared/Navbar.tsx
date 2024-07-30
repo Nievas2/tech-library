@@ -45,7 +45,7 @@ const Navbar = () => {
                 alt="Techlibrary logo" 
               />
 
-              <h1 className="text-2xl font-bold hidden leading-none md:block mt-5">
+              <h1 className="text-2xl font-bold hidden leading-none md:block mt-5" translate="no">
                 Tech Library
               </h1>
             </Link>
