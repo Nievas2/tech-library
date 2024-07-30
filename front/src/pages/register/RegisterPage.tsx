@@ -128,7 +128,7 @@ const RegisterPage = () => {
               alt="Techlibrary logo"
             />
             
-            <p className="leading-none mt-2">TechLibrary</p>
+            <p className="leading-none mt-2" translate="no">TechLibrary</p>
           </div>
 
           <div className="w-full sm:w-96 bg-main/20 rounded-lg shadow p-6 sm:p-8 flex flex-col gap-3">
