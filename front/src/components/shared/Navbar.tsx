@@ -45,7 +45,7 @@ const Navbar = () => {
                 alt="Techlibrary logo" 
               />
 
-              <h1 className="text-2xl font-bold hidden leading-none sm:block mt-5">
+              <h1 className="text-2xl font-bold hidden leading-none md:block mt-5">
                 Tech Library
               </h1>
             </Link>
@@ -154,22 +154,48 @@ const Navbar = () => {
 
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center gap-3">
-                    <ItemsNavbar
-                      name="INICIAR SESION"
-                      path="/login"
-                      key={crypto.randomUUID()}
-                    />
+                  <div className="flex items-center justify-center gap-1.5">
+                    <div className="hidden md:flex md:gap-3">
+                      <ItemsNavbar
+                        name="INICIAR SESION"
+                        path="/login"
+                        key={crypto.randomUUID()}
+                      />
 
-                    <ItemsNavbar
-                      name="REGISTRARSE"
-                      path="/signup"
-                      key={crypto.randomUUID()}
-                    />
-
-                    <div className="text-black flex rounded-md text-sm font-medium">
-                      <ModeToggle />
+                      <ItemsNavbar
+                        name="REGISTRARSE"
+                        path="/signup"
+                        key={crypto.randomUUID()}
+                      />
                     </div>
+
+                    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+                      <DropdownMenuTrigger>
+                        <Icon icon="ph:user-list" className="h-[50px] w-auto md:hidden mr-1.5 mt-[2px]" />
+                      </DropdownMenuTrigger>
+
+                      <DropdownMenuContent className="w-[190px] bg-light dark:bg-dark border-dark dark:border-light text-dark dark:text-light">
+                        <DropdownMenuGroup className="flex gap-2 flex-col mx-auto w-fit">
+                          <Link
+                            to="/login"
+                            className="px-4 py-2 h-10 text-base font-bold bg-main text-light text-center rounded-md"
+                            onClick={handleDropdownClick}
+                          >
+                            INICIAR SESIÓN
+                          </Link>
+
+                          <Link
+                            to="/signup"
+                            className="px-4 py-2 h-10 text-base font-bold bg-main text-light text-center rounded-md"
+                            onClick={handleDropdownClick}
+                          >
+                            REGISTRARSE
+                          </Link>
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+
+                    <ModeToggle />
                   </div>
                 )}
               </div>
