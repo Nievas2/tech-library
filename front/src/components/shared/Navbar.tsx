@@ -36,7 +36,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between w-full">
             <Link
               className="flex flex-shrink-0 items-center justify-center gap-3"
-              to="/home"
+              to="/home?currentPage=1&search=&tags="
               aria-label="Home"
             >
               <img 
