@@ -117,7 +117,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
             }`}
           >
             <h2 className="text-xl font-bold">CATEGORIAS</h2>
-            <div className="w-full flex h-8 border border-dark dark:border-light rounded-md">
+            <div className="w-full flex h-8 border  rounded-md">
               <div className="w-full relative rounded-md">
                 <Input
                   placeholder="Buscar una categoria"
@@ -125,8 +125,8 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                   onChange={(e) => {
                     setText(e.target.value)
                   }}
-                  className="w-full bg-light focus:ring-0 disabled:focus:ring text-dark dark:text-light dark:bg-dark rounded-l-none h-full rounded-md"
-                />
+                  className="w-full border border-dark dark:border-light hover:border-main focus-visible:border-main bg-light text-dark dark:text-light dark:bg-dark h-full"
+                  />
 
                 {text && (
                   <button
@@ -142,13 +142,13 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                 )}
               </div>
             </div>
-            <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[320px]">
+            <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[400px]">
               {loading ? (
                 renderSkeletonSideBar()
               ) : (
                 <div>
                   {
-                    tags && (
+                    tags.length > 0 ? (
                       <div className="flex flex-wrap gap-3">
                         {tags?.map((tag: Tag) => (
                           <ItemsSideBar
@@ -157,17 +157,9 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                           />
                         ))}
                       </div>
-                    ) /* : (
-                    <div className="flex flex-wrap gap-3">
-                      {tags &&
-                        tags?.map((tag: Tag) => (
-                          <ItemsSideBar
-                            key={crypto.randomUUID()}
-                            tag={tag}
-                          />
-                        ))}
-                    </div>
-                  ) */
+                    ) :(
+                      <span>No se encontraron resultados</span>
+                    )
                   }
                 </div>
               )}

@@ -202,6 +202,7 @@ export default function FormAddLibrary({ card }: CardProps) {
                   <SelectItem
                     key={tag.id}
                     value={tag.name}
+                    translate="no"
                   >
                     {tag.name}
                   </SelectItem>

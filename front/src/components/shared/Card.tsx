@@ -194,6 +194,7 @@ const Card = ({ library }: CardProps) => {
               key={tag.id}
               style={{ backgroundColor: tag.color }}
               className="px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light"
+              translate="no"
             >
               {tag.name}
             </h4>

@@ -48,7 +48,7 @@ const SearchBar = () => {
             onChange={(e) => {
               setText(e.target.value)
             }}
-            className="w-full bg-light focus:ring-0 disabled:focus:ring text-dark dark:text-light dark:bg-dark rounded-l-none h-full border border-dark dark:border-light"
+            className="w-full border border-dark dark:border-light hover:border-main focus-visible:border-main bg-light text-dark dark:text-light dark:bg-dark rounded-l-none h-full"
           />
 
           {text && (
