@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { renderSkeletonHome } from "./skeletons/SkeletonHome"
 import { Skeleton } from "@/components/ui/skeleton"
+import { motion } from "framer-motion";
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
@@ -93,8 +94,8 @@ const HomePage = () => {
 
   return (
     <>
-      <section className="flex flex-row min-h-full">
-        <div className="flex flex-1">
+      <motion.section className="flex flex-row min-h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <div className="flex flex-1" >
           <SideBar
             open={open}
             setOpen={setOpen}
@@ -115,6 +116,7 @@ const HomePage = () => {
                     </>
                   ) : (
                     <>
+                    <motion.div whileTap={{ scale: 1.2 }}>
                       <Button
                         variant="popular"
                         size="popularSize"
@@ -133,6 +135,7 @@ const HomePage = () => {
                         />
                         Más populares
                       </Button>
+                      </motion.div>
                       
                       <p className="text-main text-sm text-center cp:text-right">
                         ({totalLibraries}){" "}
@@ -182,7 +185,7 @@ const HomePage = () => {
             />
           )}
         </div>
-      </section>
+      </motion.section>
     </>
   )
 }

@@ -1,10 +1,11 @@
 import Marketing from "./components/Marketing"
+import { motion } from "framer-motion";
 
 const LandingPage = () => {
   return (
-    <div className="flex my-auto">
+    <motion.div className="flex my-auto" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <Marketing />
-    </div>
+    </motion.div>
   )
 }
 

@@ -1,30 +1,32 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
-import { signupSchema } from "@/utils"
+import { signupSchema } from "@/utils";
 
-import { Icon } from "@iconify/react/dist/iconify.js"
+import { Icon } from "@iconify/react/dist/iconify.js";
 
-import { useFormik } from "formik"
+import { useFormik } from "formik";
 
-import { AxiosError } from "axios"
-import { ResponseSuccess } from "@/interfaces/responseSuccess"
-import { useRegister } from "@/hooks"
-import { Register } from "@/services/AuthService"
-import { useEffect, useMemo, useState } from "react"
-import axiosInstance from "@/api/axiosInstance"
-import cofeeLogo from "../../assets/images/cofeeLogo.svg"
+import { AxiosError } from "axios";
+import { ResponseSuccess } from "@/interfaces/responseSuccess";
+import { useRegister } from "@/hooks";
+import { Register } from "@/services/AuthService";
+import { useEffect, useMemo, useState } from "react";
+import axiosInstance from "@/api/axiosInstance";
+import cofeeLogo from "../../assets/images/cofeeLogo.svg";
+
+import { motion } from "framer-motion";
 
 const RegisterPage = () => {
-  const { loading, register } = useRegister()
+  const { loading, register } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordMatchMessage, setPasswordMatchMessage] = useState("")
-  const [usernameError, setUsernameError] = useState("")
-  const [emailError, setEmailError] = useState("")
+  const [passwordMatchMessage, setPasswordMatchMessage] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -34,7 +36,15 @@ const RegisterPage = () => {
     setShowConfirmPassword((prevState) => !prevState);
   };
 
-  const { handleSubmit, errors, touched, getFieldProps, values, handleChange, handleBlur } = useFormik({
+  const {
+    handleSubmit,
+    errors,
+    touched,
+    getFieldProps,
+    values,
+    handleChange,
+    handleBlur,
+  } = useFormik({
     initialValues: {
       username: "",
       email: "",
@@ -59,46 +69,48 @@ const RegisterPage = () => {
 
   async function checkUsername(username: string) {
     try {
-      const response = await axiosInstance.get(`/user/checkuser/${username}`)
-      return response.data.data
+      const response = await axiosInstance.get(`/user/checkuser/${username}`);
+      return response.data.data;
     } catch (error) {
-      return false
+      return false;
     }
   }
 
   async function checkEmail(email: string) {
     try {
-      const response = await axiosInstance.get(`/user/checkemail/${email}`)
-      return response.data.data
+      const response = await axiosInstance.get(`/user/checkemail/${email}`);
+      return response.data.data;
     } catch (error) {
-      return false
+      return false;
     }
   }
 
   async function registerFunction(values: Register) {
     try {
-      await register(values)
+      await register(values);
     } catch (error) {
-      console.error("Registration failed:", (error as AxiosError<ResponseSuccess>).response?.data.statusMessage);
+      console.error(
+        "Registration failed:",
+        (error as AxiosError<ResponseSuccess>).response?.data.statusMessage
+      );
     }
   }
 
   function loginGoogle() {
-    window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self")
+    window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self");
   }
-  
+
   function loginGithub() {
-    window.open(
-      `${import.meta.env.VITE_API_URL}/login/github`,
-      "_self"
-    )
+    window.open(`${import.meta.env.VITE_API_URL}/login/github`, "_self");
   }
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       if (values.password && values.confirmPassword) {
         setPasswordMatchMessage(
-          values.password === values.confirmPassword ? "Las contraseñas coinciden" : "Las contraseñas no coinciden"
+          values.password === values.confirmPassword
+            ? "Las contraseñas coinciden"
+            : "Las contraseñas no coinciden"
         );
       } else {
         setPasswordMatchMessage("");
@@ -108,34 +120,43 @@ const RegisterPage = () => {
     return () => clearTimeout(debounceTimer);
   }, [values.password, values.confirmPassword]);
 
-  const passwordMatchClass = useMemo(() => 
-    passwordMatchMessage === "Las contraseñas coinciden" ? "text-[#40944A]" : "text-[#ff4444]"
-  , [passwordMatchMessage]);
+  const passwordMatchClass = useMemo(
+    () =>
+      passwordMatchMessage === "Las contraseñas coinciden"
+        ? "text-[#40944A]"
+        : "text-[#ff4444]",
+    [passwordMatchMessage]
+  );
 
   return (
-    <div className="flex my-auto">
-      <form
+    <motion.div
+      className="flex my-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.form
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
         onSubmit={handleSubmit}
         noValidate
       >
         <div className="flex flex-col gap-5 items-center justify-center px-4 py-4 mx-auto">
-          <div
-            className="flex flex-row gap-3 items-center justify-center text-2xl font-semibold"
-          >
-            <img
-              className="w-12 h-12"
-              src={cofeeLogo}
-              alt="Techlibrary logo"
-            />
-            
-            <p className="leading-none mt-2" translate="no">TechLibrary</p>
+          <div className="flex flex-row gap-3 items-center justify-center text-2xl font-semibold">
+            <img className="w-12 h-12" src={cofeeLogo} alt="Techlibrary logo" />
+
+            <p className="leading-none mt-2" translate="no">
+              TechLibrary
+            </p>
           </div>
 
           <div className="w-full sm:w-96 bg-main/20 rounded-lg shadow p-6 sm:p-8 flex flex-col gap-3">
             <div className="flex flex-col gap-4 md:gap-6">
-              <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              <motion.h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+               initial={{ opacity: 0, x: +100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
                 Crear una cuenta
-              </h1>
+              </motion.h1>
 
               <div className="flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col gap-2">
@@ -200,10 +221,10 @@ const RegisterPage = () => {
 
                 <div className="flex flex-col gap-2">
                   <Label>Contraseña</Label>
-                  
+
                   <div className="relative">
                     <Input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       placeholder="•••••••••••••••"
                       {...getFieldProps("password")}
                       disabled={loading}
@@ -215,12 +236,16 @@ const RegisterPage = () => {
                       onClick={togglePasswordVisibility}
                     >
                       <Icon
-                        className={`h-5 w-5 text-main transition-opacity duration-200 ${showPassword ? 'opacity-100' : 'opacity-0'}`}
-                        icon='ph:eye-bold'
+                        className={`h-5 w-5 text-main transition-opacity duration-200 ${
+                          showPassword ? "opacity-100" : "opacity-0"
+                        }`}
+                        icon="ph:eye-bold"
                       />
                       <Icon
-                        className={`h-5 w-5 text-main transition-opacity duration-200 absolute ${showPassword ? 'opacity-0' : 'opacity-100'}`}
-                        icon='ph:eye-closed-bold'
+                        className={`h-5 w-5 text-main transition-opacity duration-200 absolute ${
+                          showPassword ? "opacity-0" : "opacity-100"
+                        }`}
+                        icon="ph:eye-closed-bold"
                       />
                     </button>
                   </div>
@@ -242,7 +267,7 @@ const RegisterPage = () => {
                       {...getFieldProps("confirmPassword")}
                       disabled={loading}
                     />
-                    
+
                     <button
                       type="button"
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
@@ -267,8 +292,8 @@ const RegisterPage = () => {
                     <small className="font-bold text-[#ff4444]">
                       {errors.confirmPassword}
                     </small>
-                  )}     
-                  
+                  )}
+
                   {passwordMatchMessage && (
                     <small className={`font-bold ${passwordMatchClass}`}>
                       {passwordMatchMessage}
@@ -289,8 +314,7 @@ const RegisterPage = () => {
                     Registrarse
                   </Button>
 
-                  <div
-                    className="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-main after:mt-0.5 after:flex-1 after:border-t after:border-main dark:before:border-light dark:after:border-light">
+                  <div className="flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-main after:mt-0.5 after:flex-1 after:border-t after:border-main dark:before:border-light dark:after:border-light">
                     <p className="mx-4 mb-0 text-center dark:text-white">o</p>
                   </div>
 
@@ -300,10 +324,7 @@ const RegisterPage = () => {
                       type="button"
                       onClick={loginGoogle}
                     >
-                      <Icon
-                        className="h-6 w-6"
-                        icon="logos:google-icon"
-                      />
+                      <Icon className="h-6 w-6" icon="logos:google-icon" />
                       <span className="text-sm">Continuar con Google</span>
                     </button>
 
@@ -312,10 +333,7 @@ const RegisterPage = () => {
                       type="button"
                       onClick={loginGithub}
                     >
-                      <Icon
-                        className="h-6 w-6"
-                        icon="bi:github"
-                      />
+                      <Icon className="h-6 w-6" icon="bi:github" />
                       <span className="text-sm">Continuar con Github</span>
                     </button>
                   </div>
@@ -334,9 +352,9 @@ const RegisterPage = () => {
             </div>
           </div>
         </div>
-      </form>
-    </div>
-  )
-}
+      </motion.form>
+    </motion.div>
+  );
+};
 
-export default RegisterPage
+export default RegisterPage;

@@ -1,11 +1,13 @@
 import CardsContainer from "@/components/shared/CardsContainer"
 import { useFavoriteStore } from "@/stores";
+import { motion } from "framer-motion";
 
 const FavoritesPage = () => {
   const favorites = useFavoriteStore((state) => state.favorites)
 
   return (
-    <div className="flex flex-col gap-6">
+    <motion.div className="flex flex-col gap-6"
+    initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <h1 className="text-3xl font-bold text-center">Favoritos</h1>
       {favorites.length > 0 ? (
         <CardsContainer libraries={favorites} />
@@ -14,7 +16,7 @@ const FavoritesPage = () => {
           <p className="text-2xl font-bold">Aún no has agregado librerias a tus favoritos...</p>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 

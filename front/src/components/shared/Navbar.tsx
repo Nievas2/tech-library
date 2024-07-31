@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react"
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { useAuthContext } from "@/contexts"
 import { useLogout } from "@/hooks"
+import { motion } from "framer-motion";
 
 import {
   DropdownMenu,
@@ -30,7 +31,7 @@ const Navbar = () => {
   const location = useLocation();
   
   return (
-    <nav className="sticky w-full top-0 z-50 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light">
+    <motion.nav className="sticky w-full top-0 z-50 border-b-[1px] border-b-dark bg-[#F9D8DF] dark:bg-[#311421] dark:border-b-light" initial={{ opacity: 0, y: -100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
       <div className="mx-auto max-w-7xl p-4 2xl:pl-0">
         <div className="relative flex h-16 items-center gap-10">
           <div className="flex items-center justify-between w-full">
@@ -203,7 +204,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   )
 }
 

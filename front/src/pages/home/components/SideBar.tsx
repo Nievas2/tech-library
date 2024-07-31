@@ -8,6 +8,7 @@ import usePaginationHome from "@/hooks/usePaginationHome"
 import { Input } from "@/components/ui/input"
 import { useDebounce } from "use-debounce"
 import { renderSkeletonSideBar } from '../skeletons/SideBarSkeleton';
+import { motion } from "framer-motion";
 
 interface SideBarProps {
   open: boolean;
@@ -77,7 +78,10 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
   }
 
   return (
-    <section
+    <motion.section
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7 }}
       className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
         open ? "w-60" : "w-0 border-none "
       } `}
@@ -175,6 +179,6 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }
