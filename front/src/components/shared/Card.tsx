@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog"
+import { motion } from "framer-motion"
 
 interface CardProps {
   library: Library
@@ -81,11 +82,11 @@ const Card = ({ library }: CardProps) => {
   }
 
   return (
-    <div className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-2xl font-bold">{library.name}</h2>
+    <motion.div  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="flex flex-col gap-2">
+        <motion.h2 initial={{x: -10, opacity: 0}} animate={{x: 0, opacity: 1}} exit={{x: 10, opacity: 0}} transition={{ duration: 0.5 }} className="text-2xl font-bold">{library.name}</motion.h2>
 
-        <p className="text-base">
+        <motion.p className="text-base" initial={{x: 10, opacity: 0}} animate={{x: 0, opacity: 1}} exit={{x: -10, opacity: 0}} transition={{ duration: 0.5 }}>
           {library.description.length > 90 ? (
             <>
               {library.description.slice(0, 90) + "..."}
@@ -186,7 +187,7 @@ const Card = ({ library }: CardProps) => {
           ) : (
             library.description
           )}
-        </p>
+        </motion.p>
 
         <div className="flex flex-row flex-wrap gap-2 text-sm">
           {library.tags?.map((tag: Tag) => (
@@ -199,7 +200,7 @@ const Card = ({ library }: CardProps) => {
             </h4>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-row gap-4 justify-center items-center">
@@ -320,7 +321,7 @@ const Card = ({ library }: CardProps) => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </motion.div>
   )
 }
 

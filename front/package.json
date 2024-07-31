@@ -24,6 +24,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "formik": "^2.4.6",
+    "framer-motion": "^11.3.19",
     "immer": "^10.1.1",
     "lucide-react": "^0.394.0",
     "react": "^18.2.0",
@@ -32,6 +33,7 @@
     "react-router-dom": "^6.23.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
+    "typed.js": "^2.1.0",
     "use-debounce": "^10.0.1",
     "yup": "^1.4.0",
     "zustand": "^4.5.2"
