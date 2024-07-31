@@ -136,9 +136,10 @@ const RegisterPage = () => {
       exit={{ opacity: 0 }}
     >
       <motion.form
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        initial={{y: -20, opacity: 0}}
+        animate={{y: 0, opacity: 1}}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35 }}
         onSubmit={handleSubmit}
         noValidate
       >
@@ -153,10 +154,9 @@ const RegisterPage = () => {
 
           <div className="w-full sm:w-96 bg-main/20 rounded-lg shadow p-6 sm:p-8 flex flex-col gap-3">
             <div className="flex flex-col gap-4 md:gap-6">
-              <motion.h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
-               initial={{ opacity: 0, x: +100 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+              <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Crear una cuenta
-              </motion.h1>
+              </h1>
 
               <div className="flex flex-col gap-4 md:gap-6">
                 <div className="flex flex-col gap-2">

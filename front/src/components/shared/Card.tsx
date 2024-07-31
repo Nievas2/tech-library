@@ -82,11 +82,37 @@ const Card = ({ library }: CardProps) => {
   }
 
   return (
-    <motion.div  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="flex flex-col gap-2">
-        <motion.h2 initial={{x: -10, opacity: 0}} animate={{x: 0, opacity: 1}} exit={{x: 10, opacity: 0}} transition={{ duration: 0.5 }} className="text-2xl font-bold">{library.name}</motion.h2>
+    <motion.div 
+      className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+    >
+      <motion.div
+        className="flex flex-col gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.h2 
+          initial={{x: -10, opacity: 0}}
+          animate={{x: 0, opacity: 1}}
+          exit={{x: 10, opacity: 0}}
+          transition={{ duration: 0.5 }}
+          className="text-2xl font-bold"
+        >
+          {library.name}
+        </motion.h2>
 
-        <motion.p className="text-base" initial={{x: 10, opacity: 0}} animate={{x: 0, opacity: 1}} exit={{x: -10, opacity: 0}} transition={{ duration: 0.5 }}>
+        <motion.p 
+          className="text-base" 
+          initial={{x: 10, opacity: 0}} 
+          animate={{x: 0, opacity: 1}} 
+          exit={{x: -10, opacity: 0}} 
+          transition={{ duration: 0.5 }}
+        >
           {library.description.length > 90 ? (
             <>
               {library.description.slice(0, 90) + "..."}

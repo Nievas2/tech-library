@@ -36,7 +36,6 @@ const HomePage = () => {
   const [open, setOpen] = useState(window.innerWidth >= 1024)
 
   useEffect(() => {
-    //si cambia la search entra
     if (searchParamsData !== null && search != "null"  && searchParamsData?.length !== 0 && search.length !== 0) { 
       setCurrentPage(1)
     }
@@ -94,7 +93,13 @@ const HomePage = () => {
 
   return (
     <>
-      <motion.section className="flex flex-row min-h-full" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <motion.section 
+        className="flex flex-row min-h-full" 
+        initial={{ opacity: 0 }} 
+        animate={{ opacity: 1 }} 
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35 }}
+      >
         <div className="flex flex-1" >
           <SideBar
             open={open}

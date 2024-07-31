@@ -25,6 +25,7 @@ import { useAuthContext } from "@/contexts"
 import usePagination from "@/hooks/usePagination"
 import { Pagination } from "@/components/shared/Pagination"
 import { renderSkeletonsUserDashboard } from "./skeletons/SkeletonUserDashboard"
+import { motion } from "framer-motion";
 
 const UserDashboardPage = () => {
   const { authUser } = useAuthContext()
@@ -94,7 +95,13 @@ const UserDashboardPage = () => {
   }
 
   return (
-    <div className="flex mx-auto max-w-[1240px] flex-col relative gap-6">
+    <motion.div 
+      className="flex mx-auto max-w-[1240px] flex-col relative gap-6"
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+    >
       <h1 className="text-3xl font-bold py-0 text-center">Panel de usuario</h1>
 
       <div className="flex justify-between py-2 min-w-[300px] sm:min-w-[608px] md:min-w-[736px] lg:min-w-[992px] xl:min-w-[1240px]">
@@ -204,7 +211,7 @@ const UserDashboardPage = () => {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 

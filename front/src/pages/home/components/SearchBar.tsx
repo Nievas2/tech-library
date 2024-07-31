@@ -33,10 +33,11 @@ const SearchBar = () => {
 
   return (
     <motion.div 
-    initial={{ x: -100, opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
-    transition={{ duration: 0.7 }}
-    className="sticky z-30 top-[125px] flex flex-1 h-10 justify-end md:justify-center">
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="sticky z-30 top-[125px] flex flex-1 h-10 justify-end md:justify-center"
+    >
       <div className="w-[80%] flex">
         <div className="bg-light dark:bg-dark rounded-md border rounded-r-none w-10 grid place-content-center border-dark dark:border-light">
           <Icon

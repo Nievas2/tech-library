@@ -79,9 +79,9 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
 
   return (
     <motion.section
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
         open ? "w-60" : "w-0 border-none "
       } `}

@@ -7,7 +7,11 @@ const FavoritesPage = () => {
 
   return (
     <motion.div className="flex flex-col gap-6"
-    initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+    >
       <h1 className="text-3xl font-bold text-center">Favoritos</h1>
       {favorites.length > 0 ? (
         <CardsContainer libraries={favorites} />

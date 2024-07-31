@@ -8,11 +8,24 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog"
 import FormAddLibrary from "../../../components/shared/FormAddLibrary"
+import { motion } from "framer-motion"
 
 const StateCard = ({ card }: { card: Library }) => {
   return (
-    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4 min-w-[300px] sm:min-w-[300px] md:min-w-[320px]">
-      <div className="flex flex-1 flex-col gap-4">
+    <motion.div 
+      className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4 min-w-[300px] sm:min-w-[300px] md:min-w-[320px]"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+    >
+      <motion.div 
+        className="flex flex-1 flex-col gap-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold">{card.name}</h2>
 
@@ -46,7 +59,7 @@ const StateCard = ({ card }: { card: Library }) => {
         </div>
 
         <p className="text-base line-clamp-3">{card.description}</p>
-      </div>
+      </motion.div>
 
       {card.state === "ACTIVE" ? (
         ""
@@ -73,7 +86,7 @@ const StateCard = ({ card }: { card: Library }) => {
           </Dialog>
         </div>
       )}
-    </div>
+    </motion.div>
   )
 }
 

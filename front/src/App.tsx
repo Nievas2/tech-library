@@ -26,40 +26,37 @@ function App() {
         <Navbar />
 
         <div className={`flex flex-1 max-w-7xl ${!noPadding ? 'py-7 px-4' : ''}`}>
-          <AnimatePresence mode="wait"> 
-          <Routes location={location} key={location.pathname}>
-            <Route path='/' element={ <LandingPage /> } />
-            <Route path='/home' element={ <HomePage /> } />
+          {/* <AnimatePresence mode="wait">  */}
+            <Routes location={location} key={location.pathname}>
+              <Route path='/' element={ <LandingPage /> } />
+              <Route path='/home' element={ <HomePage /> } />
 
-            <Route path='/favorites' element={
-              <ProtectedRoute>
-                <FavoritesPage />
-              </ProtectedRoute>
-            } />
+              <Route path='/favorites' element={
+                <ProtectedRoute>
+                  <FavoritesPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path='/login' element={ authUser ? <Navigate to='/home' /> : <LoginPage /> } />
-            <Route path='/login/auth' element={ <AuthPage /> } />
-            <Route path='/signup' element={ authUser ? <Navigate to='/home' /> : <RegisterPage /> } />
+              <Route path='/login' element={ authUser ? <Navigate to='/home' /> : <LoginPage /> } />
+              <Route path='/login/auth' element={ <AuthPage /> } />
+              <Route path='/signup' element={ authUser ? <Navigate to='/home' /> : <RegisterPage /> } />
 
-            <Route path='/user-dashboard' element={
-              <ProtectedRoute>
-                <UserDashboardPage />
-              </ProtectedRoute>
-            } />
+              <Route path='/user-dashboard' element={
+                <ProtectedRoute>
+                  <UserDashboardPage />
+                </ProtectedRoute>
+              } />
 
-            <Route path='/admin-dashboard' element={
-              <ProtectedRoute>
-                <AdminDashboardPage />
-              </ProtectedRoute>
-            } />
+              <Route path='/admin-dashboard' element={
+                <ProtectedRoute>
+                  <AdminDashboardPage />
+                </ProtectedRoute>
+              } />
 
-            {/* <Route path='/user-dashboard' element={<UserDashboardPage />} /> */}
-            {/* <Route path='/admin-dashboard' element={<AdminDashboardPage />} /> */}
-
-            <Route path='/404' element={ <NotFoundPage/> } />
-            <Route path="/*" element={ <Navigate to="/404" replace />} />
-          </Routes>
-          </AnimatePresence>
+              <Route path='/404' element={ <NotFoundPage/> } />
+              <Route path="/*" element={ <Navigate to="/404" replace />} />
+            </Routes>
+          {/* </AnimatePresence> */}
         </div>
 
         <Footer />

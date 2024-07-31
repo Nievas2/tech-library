@@ -29,24 +29,24 @@ const Marketing = () => {
           className="font-bold text-3xl md:text-6xl bg-gradient-to-r from-main to-tertiary text-light px-6 py-2 rounded-md w-fit"
           translate="no"
           initial={{ opacity: 0, y: -100 }}
-          animate={{ opacity: 1, transition: { duration: 0.5 }, y: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.35 }, y: 0 }}
         >
           TechLibrary
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, transition: { duration: 0.5 }, y: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.35 }, y: 0 }}
           className="font-bold text-3xl mt-3 sm:mx-0 md:text-6xl text-center mb-4"
           ref={el}
           style={{
             minHeight: "72px",
-            maxHeight: "72px" /* Ajusta esto según el tamaño de tu texto */,
+            maxHeight: "72px"
           }}
         ></motion.h1>
       </div>
       <motion.div
         initial={{ x: -100, opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 0.5 }, x: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.35 }, x: 0 }}
         className={cn(
           "text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto"
         )}
@@ -56,7 +56,7 @@ const Marketing = () => {
       </motion.div>
       <motion.div
         initial={{ x: 100, opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 0.5 }, x: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.35 }, x: 0 }}
         className={cn(
           "text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-2xl text-center"
         )}
@@ -65,7 +65,7 @@ const Marketing = () => {
       </motion.div>
       <motion.div
         initial={{ opacity: 0, y: +100 }}
-        animate={{ opacity: 1, transition: { duration: 0.5 }, y: 0 }}
+        animate={{ opacity: 1, transition: { duration: 0.35 }, y: 0 }}
       >
         <Button
           variant="marketing"
