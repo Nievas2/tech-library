@@ -11,8 +11,8 @@ const SkeletonTag = () => {
 export const renderSkeletonSideBar = () => {
   return (
     <div className="flex flex-wrap gap-3">
-      {Array.from({ length: 16 }).map((_, index) => (
-        <SkeletonTag key={index} />
+      {Array.from({ length: 16 }).map((_) => (
+        <SkeletonTag key={crypto.randomUUID()} />
       ))}
     </div>
   )

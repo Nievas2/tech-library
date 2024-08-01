@@ -20,7 +20,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true)
   const { authUser } = useAuthContext()
   const [notFound, setNotFound] = useState(false)
-  const [morePopular, setMorePopular] = useState(false)
+  const [morePopular, setMorePopular] = useState(true)
   const [initialLoad, setInitialLoad] = useState(true)
   const tags = useTagStore((state) => state.tags)
   const initialLoadTags = useTagStore((state) => state.initialLoadTags)
@@ -51,6 +51,7 @@ const HomePage = () => {
   }, [currentPageParams])
 
   useEffect(() => {
+    if(initialLoad)setLoading(true)
     const fetchLibraries = async () => {
       try {
         const urlParams = new URLSearchParams(window.location.search)
@@ -184,22 +185,13 @@ const HomePage = () => {
               </motion.div>
             ) : (
               <div>
-                {libraries ? (
+                {loading ? (
+                  renderSkeletonHome()
+                ) : (
                   <CardsContainer
                     open={open}
                     libraries={libraries}
                   />
-                ) : (
-                  <div>
-                    {loading ? (
-                      renderSkeletonHome()
-                    ) : (
-                      <CardsContainer
-                        open={open}
-                        libraries={libraries}
-                      />
-                    )}
-                  </div>
                 )}
               </div>
             )}
