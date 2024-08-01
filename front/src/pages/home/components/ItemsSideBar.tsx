@@ -9,7 +9,6 @@ export default function ItemsSideBar({ tag }: ItemsSideBarProps) {
   const activeTag = useTagStore((state) => state.activeTag)
   const {sincronizeParams} = usePaginationHome()
 
-
   const handleClick = () => {
     activeTag(tag.id)
     sincronizeParams()
