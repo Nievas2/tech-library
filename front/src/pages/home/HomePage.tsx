@@ -116,8 +116,8 @@ const HomePage = () => {
                 <>
                   {loading ? (
                     <>
-                      <Skeleton className="h-7 w-[140px]" />
-                      <Skeleton className="h-10 w-[100px] cp:h-5 cp:w-[147px]" />
+                      <Skeleton className="h-5 w-[140px] mb-2" />
+                      <Skeleton className="h-10 w-[100px] mb-2 cp:h-5 cp:w-[147px]" />
                     </>
                   ) : (
                     <>

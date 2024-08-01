@@ -134,7 +134,12 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
             <h2 className="text-xl font-bold">CATEGORIAS</h2>
 
             <div className="w-full flex h-8 border rounded-md">
-              <div className="w-full relative rounded-md">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }} className="w-full relative rounded-md"
+              >
                 <Input
                   placeholder="Buscar una categoria"
                   value={text}
@@ -154,7 +159,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                     />
                   </button>
                 )}
-              </div>
+              </motion.div>
             </div>
             
             <ul className="flex flex-col gap-1 overflow-y-scroll overflow-x-hidden scroll-smooth h-[400px]">
