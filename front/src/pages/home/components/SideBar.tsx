@@ -16,12 +16,13 @@ interface SideBarProps {
 }
 
 export default function SideBar({ open, setOpen }: SideBarProps) {
-  const setTags = useTagStore((state) => state.setTags)
-  const tags = useTagStore((state) => state.tags)
-  const [loading, setLoading] = useState(true)
-  const [text, setText] = useState("")
-  const [value] = useDebounce(text, 350)
-  const { searchParams } = usePaginationHome()
+  const setTags = useTagStore((state) => state.setTags);
+  const tags = useTagStore((state) => state.tags);
+  const [originalTags, setOriginalTags] = useState<Tag[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [text, setText] = useState("");
+  const [value] = useDebounce(text, 350);
+  const { searchParams } = usePaginationHome();
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,31 +47,36 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
           selected: ids.includes(Number(obj.id))
         }
       })
-      setTags(updatedObjectsArray)
+      setTags(updatedObjectsArray);
+      setOriginalTags(updatedObjectsArray);
     } catch (error) {
       console.error("Error fetching tags", error)
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   useEffect(() => {
-    setLoading(true)
-    handleChangeSelect(value)
-  }, [value])
+    setLoading(true);
+    fetchTags();
+  }, []);
+
+  useEffect(() => {
+    handleChangeSelect(value);
+  }, [value]);
 
   function handleChangeSelect(value: string) {
     if (value.length === 0) {
-      fetchTags()
+      setTags(originalTags);
     } else {
-      const tagsFiltered = tags.filter((tag: Tag) => {
+      const tagsFiltered = originalTags.filter((tag: Tag) => {
         if (tag.name.toLowerCase().includes(value.toLowerCase())) {
           return tag
         }
       })
       setTags(tagsFiltered)
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const handleSidebar = () => {
@@ -82,20 +88,23 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${
-        open ? "w-60" : "w-0 border-none "
-      } `}
+      transition={{ duration: 0.35 }}
+      className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${open ? "w-60" : "w-0 border-none"}`}
     >
       <div className="w-full h-full relative">
-        <div
-          className={`w-full sticky top-[97px] ${
-            open ? "px-4 pt-[34px] pb-4" : "pt-0"
-          }`}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.35 }}
+          className={`w-full sticky top-[97px] ${open ? "px-4 pt-[34px] pb-4" : "pt-0"}`}
         >
-          <div
-            className={`absolute duration-150 z-50 ${
-              open ? "right-[-18px]" : "right-[-52px] xl:right-[-50px]"
-            } top-[30px]`}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className={`absolute duration-150 z-50 ${open ? "right-[-18px]" : "right-[-52px] xl:right-[-50px]"} top-[30px]`}
           >
             <Button
               onClick={handleSidebar}
@@ -113,24 +122,25 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                 className={`duration-500 ${open ? "rotate-180" : ""}`}
               />
             </Button>
-          </div>
+          </motion.div>
           
-          <div
-            className={`${
-              open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"
-            }`}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className={`${open ? "flex flex-col gap-4 text-dark dark:text-light" : "hidden"}`}
           >
             <h2 className="text-xl font-bold">CATEGORIAS</h2>
-            <div className="w-full flex h-8 border  rounded-md">
+
+            <div className="w-full flex h-8 border rounded-md">
               <div className="w-full relative rounded-md">
                 <Input
                   placeholder="Buscar una categoria"
                   value={text}
-                  onChange={(e) => {
-                    setText(e.target.value)
-                  }}
-                  className="w-full border border-dark dark:border-light hover:border-main focus-visible:border-main bg-light text-dark dark:text-light dark:bg-dark h-full"
-                  />
+                  onChange={(e) => {setText(e.target.value)}}
+                  className="w-full border border-dark dark:border-light hover:border-main focus-visible:border-main dark:focus-visible:border-main bg-light text-dark dark:text-light dark:bg-dark h-full"
+                />
 
                 {text && (
                   <button
@@ -146,30 +156,43 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                 )}
               </div>
             </div>
-            <ul className="flex flex-col gap-1 overflow-y-scroll scroll-smooth h-[400px]">
+            
+            <ul className="flex flex-col gap-1 overflow-y-scroll overflow-x-hidden scroll-smooth h-[400px]">
               {loading ? (
                 renderSkeletonSideBar()
               ) : (
-                <div>
+                <div className="w-[196px] pr-[16px]">
                   {
                     tags.length > 0 ? (
-                      <div className="flex flex-wrap gap-3">
+                      <motion.div className="flex flex-wrap gap-3"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35 }}
+                      >
                         {tags?.map((tag: Tag) => (
                           <ItemsSideBar
                             key={crypto.randomUUID()}
                             tag={tag}
                           />
                         ))}
-                      </div>
-                    ) :(
-                      <span>No se encontraron resultados</span>
+                      </motion.div>
+                    ) : (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        No se encontraron resultados
+                      </motion.p>
                     )
                   }
                 </div>
               )}
             </ul>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </motion.section>
   )

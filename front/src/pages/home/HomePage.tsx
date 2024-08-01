@@ -93,10 +93,10 @@ const HomePage = () => {
 
   return (
     <>
-      <motion.section 
+      <motion.section
         className="flex flex-row min-h-full" 
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.35 }}
       >
@@ -121,25 +121,25 @@ const HomePage = () => {
                     </>
                   ) : (
                     <>
-                    <motion.div whileTap={{ scale: 1.2 }}>
-                      <Button
-                        variant="popular"
-                        size="popularSize"
-                        onClick={() => setMorePopular(!morePopular)}
-                        id="popular"
-                        aria-label="popular"
-                        role="button"
-                      >
-                        <Icon
-                          icon="uil:arrow-up"
-                          width="24"
-                          height="24"
-                          className={`${
-                            morePopular ? "rotate-180" : ""
-                          } transition-transform duration-100`}
-                        />
-                        Más populares
-                      </Button>
+                      <motion.div whileTap={{ scale: 1.2 }}>
+                        <Button
+                          variant="popular"
+                          size="popularSize"
+                          onClick={() => setMorePopular(!morePopular)}
+                          id="popular"
+                          aria-label="popular"
+                          role="button"
+                        >
+                          <Icon
+                            icon="uil:arrow-up"
+                            width="24"
+                            height="24"
+                            className={`${
+                              morePopular ? "rotate-180" : ""
+                            } transition-transform duration-100`}
+                          />
+                          Más populares
+                        </Button>
                       </motion.div>
                       
                       <p className="text-main text-sm text-center cp:text-right">
@@ -155,10 +155,16 @@ const HomePage = () => {
             </div>
 
             {notFound && currentPage === 1 ? (
-              <div className="flex flex-col gap-2 justify-center text-center w-full  min-h-[400px] sm:min-h-[320px] lg:min-h-[320px] xl:min-h-[350px] px-0 sm:px-24 md:px-36 xl:px-[316px]">
+              <motion.div
+                className="flex flex-col gap-2 justify-center text-center w-full  min-h-[400px] sm:min-h-[320px] lg:min-h-[320px] xl:min-h-[350px] px-0 sm:px-24 md:px-36 xl:px-[316px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <p className="text-3xl text-center font-extrabold">¡Lo sentimos, no encontramos lo que buscas!</p>
                 <p className="text-center">No se han encontrado resultados que coincidan con tu búsqueda o filtrado. Por favor, prueba con diferentes términos o ajusta los filtros.</p>
-              </div>
+              </motion.div>
             ) : (
               <div>
                 {search ? (
