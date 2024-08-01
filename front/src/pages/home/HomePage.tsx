@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { renderSkeletonHome } from "./skeletons/SkeletonHome"
 import { Skeleton } from "@/components/ui/skeleton"
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
@@ -21,8 +21,9 @@ const HomePage = () => {
   const { authUser } = useAuthContext()
   const [notFound, setNotFound] = useState(false)
   const [morePopular, setMorePopular] = useState(false)
-  const tagsActives = useTagStore((state) => state.tagsActives)
+  const [initialLoad, setInitialLoad] = useState(true)
   const tags = useTagStore((state) => state.tags)
+  const initialLoadTags = useTagStore((state) => state.initialLoadTags)
   const {
     currentPage,
     totalPages,
@@ -31,18 +32,23 @@ const HomePage = () => {
     searchParams,
     setCurrentPage
   } = usePaginationHome()
-  const search = String(searchParams.get("search"))
   const searchParamsData = searchParams.get("search")
+  const currentPageParams = Number(searchParams.get("currentPage"))
   const [open, setOpen] = useState(window.innerWidth >= 1024)
 
   useEffect(() => {
-    if (searchParamsData !== null && search != "null"  && searchParamsData?.length !== 0 && search.length !== 0) { 
+    if (
+      currentPage !== undefined &&
+      currentPage > 1 &&
+      searchParamsData === null
+    ) {
       setCurrentPage(1)
+      console.log("test2")
     }
-    if(currentPage !== undefined && currentPage > 1 && searchParamsData === null && search === "null") {
-      setCurrentPage(1)
-    }
-  }, [searchParamsData, search])
+  }, [searchParamsData])
+  useEffect(() => {
+    setCurrentPage(currentPageParams)
+  }, [currentPageParams])
 
   useEffect(() => {
     const fetchLibraries = async () => {
@@ -53,16 +59,13 @@ const HomePage = () => {
 
         let librariesResponse
         librariesResponse = await getLibrariesSearch(
-          currentPage || 1,
+          currentPageParams,
           authUser !== null ? authUser.user.id : "0",
           tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : "",
-          search !== "null" && search
-            ? search
-            : searchParamsData !== null && searchParamsData
-            ? searchParamsData
-            : "",
+          searchParamsData !== null ? searchParamsData : "",
           morePopular ? "desc" : "asc"
         )
+
         const { libraries, totalPages, totalLibraries } = librariesResponse
 
         setLibraries(libraries)
@@ -72,35 +75,43 @@ const HomePage = () => {
         setNotFound(false)
       } catch (err) {
         console.error("Error fetching libraries:", err)
-        if (currentPage !== undefined && totalPages > currentPage) {
+        if (currentPage !== 1 && totalPages > 1) {
           setCurrentPage(1)
         }
         if (currentPage === 1) {
           setNotFound(true)
         }
         setTotalPages(1)
-
         setLoading(false)
       }
     }
 
     fetchLibraries()
-  }, [setTotalPages, tags, search, currentPage, morePopular, handlePageChange])
-
+  }, [currentPageParams, tags, morePopular, searchParamsData])
   useEffect(() => {
-    handlePageChange(1)
-  }, [tagsActives, totalPages])
-
+    // Solo cambiar currentPage si no es la carga inicial
+    if (!initialLoad && !initialLoadTags) {
+      if (currentPageParams !== 1 || searchParamsData !== null) {
+        handlePageChange(1)
+      }
+    } else {
+      // Establecer currentPage desde los parámetros de la URL en la carga inicial
+      if (currentPageParams) {
+        handlePageChange(currentPageParams)
+      }
+      setInitialLoad(false) // Marcar que ya se ha completado la carga inicial
+    }
+  }, [searchParamsData, tags])
   return (
     <>
       <motion.section
-        className="flex flex-row min-h-full" 
+        className="flex flex-row min-h-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.35 }}
       >
-        <div className="flex flex-1" >
+        <div className="flex flex-1">
           <SideBar
             open={open}
             setOpen={setOpen}
@@ -141,7 +152,7 @@ const HomePage = () => {
                           Más populares
                         </Button>
                       </motion.div>
-                      
+
                       <p className="text-main text-sm text-center cp:text-right">
                         ({totalLibraries}){" "}
                         <span className="text-dark dark:text-light">
@@ -162,12 +173,18 @@ const HomePage = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <p className="text-3xl text-center font-extrabold">¡Lo sentimos, no encontramos lo que buscas!</p>
-                <p className="text-center">No se han encontrado resultados que coincidan con tu búsqueda o filtrado. Por favor, prueba con diferentes términos o ajusta los filtros.</p>
+                <p className="text-3xl text-center font-extrabold">
+                  ¡Lo sentimos, no encontramos lo que buscas!
+                </p>
+                <p className="text-center">
+                  No se han encontrado resultados que coincidan con tu búsqueda
+                  o filtrado. Por favor, prueba con diferentes términos o ajusta
+                  los filtros.
+                </p>
               </motion.div>
             ) : (
               <div>
-                {search ? (
+                {libraries ? (
                   <CardsContainer
                     open={open}
                     libraries={libraries}
@@ -187,7 +204,6 @@ const HomePage = () => {
               </div>
             )}
           </div>
-
           {!notFound && totalPages > 1 && (
             <Pagination
               currentPage={currentPage!}

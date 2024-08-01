@@ -75,7 +75,7 @@ const Marketing = () => {
           aria-label="explore"
           role="button"
         >
-          <Link to="/home">EXPLORAR TECHLIBRARY</Link>
+          <Link to="/home?currentPage=1&search=&tags=">EXPLORAR TECHLIBRARY</Link>
         </Button>
       </motion.div>
     </div>

@@ -1,7 +1,6 @@
 import { StateCreator, create } from "zustand"
 import { immer } from "zustand/middleware/immer"
 
-
 export interface Tag {
   id: number
   name: string
@@ -14,6 +13,7 @@ interface TagState {
   setTags: (tags: Tag[]) => void
   activeTag: (tagId: number) => void
   tagsActives: () => Tag[]
+  initialLoadTags: boolean
 }
 
 const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
@@ -24,7 +24,7 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
   setTags: (tags: Tag[]) => {
     set({ tags })
   },
-
+  initialLoadTags: true,
   activeTag: (tagId: number) => {
     set((state) => {
       const tag = state.tags.find((tag) => tag.id === tagId)
@@ -32,15 +32,15 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
         tag.selected = !tag.selected
       }
     })
+    if (get().initialLoadTags) set({ initialLoadTags: false })
   },
 
   tagsActives: () => {
     const tags = get().tags
+
     const tagsActives = tags.filter((tag) => tag.selected)
     return tagsActives
-    
   }
-
 })
 
-export const useTagStore = create<TagState>()(immer (storeApi))
+export const useTagStore = create<TagState>()(immer(storeApi))
