@@ -1,14 +1,34 @@
 services:
   tech_library:
-    image: mysql:8.4
+    container_name: tech_library_db
+    image: mysql:5.7
+    hostname: tech-library
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: ["--init-file", "/docker-entrypoint-initdb.d/init.sql"]
     ports:
       - "3312:3306"
     environment:
       MYSQL_DATABASE: tech_library
-      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: 42039714Emi
+    networks:
+      - tech_library_network
+
+  tech_library_app:
+    container_name: tech_library_app
+    build: .
+    depends_on:
+      - tech_library
+    ports:
+      - "8000:8000"
+    networks:
+      - tech_library_network
+    environment:
+      DB_HOST: tech_library_db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: 42039714Emi
+      DB_NAME: tech_library
+
 networks:
-  default:
-    name: open-library_default
+  tech_library_network:
+    driver: bridge
