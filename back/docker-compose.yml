@@ -1,7 +1,7 @@
 services:
   tech_library:
     container_name: tech_library_db
-    image: mysql:5.7
+    image: mysql:9
     hostname: tech-library
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -9,7 +9,7 @@ services:
       - "3312:3306"
     environment:
       MYSQL_DATABASE: tech_library
-      MYSQL_ROOT_PASSWORD: 42039714Emi
+      MYSQL_ROOT_PASSWORD: 
     networks:
       - tech_library_network
 
@@ -26,8 +26,22 @@ services:
       DB_HOST: tech_library_db
       DB_PORT: 3306
       DB_USER: root
-      DB_PASSWORD: 42039714Emi
+      DB_PASSWORD: 
       DB_NAME: tech_library
+      PORT: 8000
+      LENGUAGE: es
+      DEFAULT_PAGE_SIZE: 9
+      JWT_SECRET: secret
+      ORIGIN: 
+      GITHUB_CLIENT_ID:
+      GITHUB_CLIENT_SECRET:
+      GITHUB_CALLBACK_URL:
+      GOOGLE_CLIENT_ID:
+      GOOGLE_CLIENT_SECRET:
+      GOOGLE_CALLBACK_URL:
+      REDIRECT_URL:
+
+    command: ["/usr/src/app/wait-for-it.sh", "tech_library_db:3306 -t 10", "--", "sh", "-c", "npm run db:create && npm start"]
 
 networks:
   tech_library_network:
