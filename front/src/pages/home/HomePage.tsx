@@ -34,6 +34,8 @@ const HomePage = () => {
   } = usePaginationHome()
   const searchParamsData = searchParams.get("search")
   const currentPageParams = Number(searchParams.get("currentPage"))
+  const tagsIdsParams = String(searchParams.get("tags"))
+  const setInitialLoadTags = useTagStore((state) => state.setInitialLoadTags)
   const [open, setOpen] = useState(window.innerWidth >= 1024)
 
   useEffect(() => {
@@ -43,7 +45,6 @@ const HomePage = () => {
       searchParamsData === null
     ) {
       setCurrentPage(1)
-      console.log("test2")
     }
   }, [searchParamsData])
   useEffect(() => {
@@ -51,18 +52,14 @@ const HomePage = () => {
   }, [currentPageParams])
 
   useEffect(() => {
-    if(initialLoad)setLoading(true)
+    if (initialLoad) setLoading(true)
     const fetchLibraries = async () => {
       try {
-        const urlParams = new URLSearchParams(window.location.search)
-        const tagsIds = String(urlParams.get("tags"))
-        const tagsIdsParams = String(searchParams.get("tags"))
-
         let librariesResponse
         librariesResponse = await getLibrariesSearch(
           currentPageParams,
           authUser !== null ? authUser.user.id : "0",
-          tagsIds ? tagsIds : tagsIdsParams ? tagsIdsParams : "",
+          tagsIdsParams ? tagsIdsParams : "",
           searchParamsData !== null ? searchParamsData : "",
           morePopular ? "desc" : "asc"
         )
@@ -74,6 +71,7 @@ const HomePage = () => {
         setTotalLibraries(totalLibraries)
         setLoading(false)
         setNotFound(false)
+        setInitialLoadTags(false)
       } catch (err) {
         console.error("Error fetching libraries:", err)
         if (currentPage !== 1 && totalPages > 1) {
@@ -86,9 +84,9 @@ const HomePage = () => {
         setLoading(false)
       }
     }
-
-    fetchLibraries()
+    if (tags.length > 0) fetchLibraries()
   }, [currentPageParams, tags, morePopular, searchParamsData])
+
   useEffect(() => {
     // Solo cambiar currentPage si no es la carga inicial
     if (!initialLoad && !initialLoadTags) {

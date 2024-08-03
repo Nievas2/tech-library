@@ -50,10 +50,13 @@ const usePaginationHome = () => {
       }
       const urlParams = new URLSearchParams(window.location.search)
       const search = urlParams.get("search")
+      const tagsParams = urlParams.get("tags")
+      console.log(tagsId);
+      
       setSearchParams({
         currentPage: page.toString(),
         search: search ? search : "",
-        tags:
+        tags: tagsParams ? tagsParams :
           tagsId.length > 0
             ? tagsId
             : ""

@@ -14,6 +14,7 @@ interface TagState {
   activeTag: (tagId: number) => void
   tagsActives: () => Tag[]
   initialLoadTags: boolean
+  setInitialLoadTags: (initialLoadTags: boolean) => void
 }
 
 const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
@@ -40,7 +41,11 @@ const storeApi: StateCreator<TagState, [["zustand/immer", never]]> = (
 
     const tagsActives = tags.filter((tag) => tag.selected)
     return tagsActives
-  }
+  },
+
+  setInitialLoadTags: (initialLoadTags: boolean) => {
+    set({ initialLoadTags })
+  },
 })
 
 export const useTagStore = create<TagState>()(immer(storeApi))
