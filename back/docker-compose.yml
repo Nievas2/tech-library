@@ -31,17 +31,17 @@ services:
       PORT: 8000
       LENGUAGE: es
       DEFAULT_PAGE_SIZE: 9
-      JWT_SECRET: secret
+      JWT_SECRET: 
       ORIGIN: 
-      GITHUB_CLIENT_ID:
-      GITHUB_CLIENT_SECRET:
-      GITHUB_CALLBACK_URL:
-      GOOGLE_CLIENT_ID:
-      GOOGLE_CLIENT_SECRET:
-      GOOGLE_CALLBACK_URL:
-      REDIRECT_URL:
+      GITHUB_CLIENT_ID: 
+      GITHUB_CLIENT_SECRET: 
+      GITHUB_CALLBACK_URL: 
+      GOOGLE_CLIENT_ID: 
+      GOOGLE_CLIENT_SECRET: 
+      GOOGLE_CALLBACK_URL: 
+      REDIRECT_URL: 
 
-    command: ["/usr/src/app/wait-for-it.sh", "tech_library_db:3306 -t 10", "--", "sh", "-c", "npm run db:create && npm start"]
+    command: ["/usr/src/app/wait-for-it.sh", "tech_library_db:3306", "--", "sh", "-c", "npm run db:create && npm start"]
 
 networks:
   tech_library_network:

@@ -12,7 +12,7 @@ RUN npm install
 
 COPY . .
 
-COPY wait-for-it.sh /usr/src/app/
+COPY wait-for-it.sh usr/src/app/
 RUN chmod +x /usr/src/app/wait-for-it.sh
 
 RUN npm run build
