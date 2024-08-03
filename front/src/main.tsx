@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from './components/ui/toaster.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <>
+  <React.StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <BrowserRouter>
         <AuthContextProvider>
@@ -16,5 +16,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </AuthContextProvider>
       </BrowserRouter>
     </ThemeProvider>
-  </>,
+  </React.StrictMode>,
 )
