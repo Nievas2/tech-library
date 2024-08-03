@@ -7,6 +7,6 @@ dist/
 src/migrations/*
 
 # Variables de entorno
-#.env
+.env
 # Directorios de bases de datos locales (si se generan)
 # mysql/
