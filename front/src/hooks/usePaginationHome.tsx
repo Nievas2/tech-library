@@ -51,8 +51,6 @@ const usePaginationHome = () => {
       const urlParams = new URLSearchParams(window.location.search)
       const search = urlParams.get("search")
       const tagsParams = urlParams.get("tags")
-      console.log(tagsId);
-      
       setSearchParams({
         currentPage: page.toString(),
         search: search ? search : "",
@@ -67,8 +65,6 @@ const usePaginationHome = () => {
 
   const sincronizeParams = useCallback(() => {
     const tags = tagActives()
-    console.log(tags);
-    
     let tagsId = ""
     if (tags.length >= 1) {
       tagsId = tags
@@ -79,9 +75,7 @@ const usePaginationHome = () => {
     }
     const urlParams = new URLSearchParams(window.location.search)
     const search = urlParams.get("search") || ""
-    const current = urlParams.get("currentPage") || ""
-    console.log(tagsId);
-    
+    const current = urlParams.get("currentPage") || ""    
     setSearchParams({
       currentPage: current,
       search: search,

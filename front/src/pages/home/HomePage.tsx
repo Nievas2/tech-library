@@ -23,6 +23,7 @@ const HomePage = () => {
   const [morePopular, setMorePopular] = useState(true)
   const [initialLoad, setInitialLoad] = useState(true)
   const tags = useTagStore((state) => state.tags)
+  const disableAllTags = useTagStore((state) => state.disableAllTags)
   const initialLoadTags = useTagStore((state) => state.initialLoadTags)
   const {
     currentPage,
@@ -50,7 +51,10 @@ const HomePage = () => {
   useEffect(() => {
     setCurrentPage(currentPageParams)
   }, [currentPageParams])
-
+  useEffect(() => {
+    if(tagsIdsParams.length === 0) disableAllTags()
+    
+  },[tagsIdsParams])
   useEffect(() => {
     if (initialLoad) setLoading(true)
     const fetchLibraries = async () => {
