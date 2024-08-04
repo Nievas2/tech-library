@@ -1,9 +1,10 @@
 services:
   tech_library:
     container_name: tech_library_db
-    image: mysql:9
+    image: mysql:5.7
     hostname: tech-library
     volumes:
+      - tech_library_volume:/var/lib/mysql
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3312:3306"
@@ -22,27 +23,32 @@ services:
       - "8000:8000"
     networks:
       - tech_library_network
+    volumes:
+      - tech_library_volume:/app
     environment:
       DB_HOST: tech_library_db
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: 
-      DB_NAME: tech_library
+      DB_DATABASE: tech_library
       PORT: 8000
       LENGUAGE: es
       DEFAULT_PAGE_SIZE: 9
-      JWT_SECRET: secret
+      JWT_SECRET: 
       ORIGIN: 
-      GITHUB_CLIENT_ID:
-      GITHUB_CLIENT_SECRET:
-      GITHUB_CALLBACK_URL:
-      GOOGLE_CLIENT_ID:
-      GOOGLE_CLIENT_SECRET:
-      GOOGLE_CALLBACK_URL:
-      REDIRECT_URL:
+      GITHUB_CLIENT_ID: 
+      GITHUB_CLIENT_SECRET: 
+      GITHUB_CALLBACK_URL: 
+      GOOGLE_CLIENT_ID: 
+      GOOGLE_CLIENT_SECRET: 
+      GOOGLE_CALLBACK_URL: 
+      REDIRECT_URL: 
 
-    command: ["/usr/src/app/wait-for-it.sh", "tech_library_db:3306 -t 10", "--", "sh", "-c", "npm run db:create && npm start"]
+    command: ["sh", "-c", "wait-port tech_library_db:3306 && npm run db:create && npm start"]
 
 networks:
   tech_library_network:
     driver: bridge
+
+volumes:
+  tech_library_volume: 
