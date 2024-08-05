@@ -23,11 +23,17 @@ export class TagService extends BaseService<TagEntity> {
   }
 
   async findAll(): Promise<TagEntity[]> {
-    return (await this.execRepository).find( { where: { isActive: true }, order: { name: "ASC" }, cache: true } );
+    return (await this.execRepository).find({
+      where: { isActive: true },
+      order: { name: "ASC" },
+      cache: true,
+    });
   }
 
   async findById(id: number): Promise<TagEntity> {
-    const data = await (await this.execRepository).findOneBy({ id: id, isActive: true });
+    const data = await (
+      await this.execRepository
+    ).findOneBy({ id: id, isActive: true });
     if (data === null) throw new TagNotFoundException("Tag not found");
     return data;
   }
@@ -39,13 +45,20 @@ export class TagService extends BaseService<TagEntity> {
 
   async update(id: number, tag: TagDto): Promise<TagResponseDto> {
     const data = await this.findById(id);
+
     if (data === null) throw new TagNotFoundException("Tag not found");
 
     if (tag.name) {
-      if (id !== tag.id) await this.existsByName(tag.name)
-      data.name = tag.name
-    };
-    if (tag.color) data.color = tag.color
+      const tagByName = await (
+        await this.execRepository
+      ).findOneBy({ name: tag.name });
+      if (tagByName && tagByName.id != id) {
+        throw new TagAlreadyExistException("Tag already exists");
+      }
+      data.name = tag.name;
+    }
+
+    if (tag.color) data.color = tag.color;
     data.updatedAt = new Date();
 
     await (await this.execRepository).update(id, data);
@@ -72,8 +85,11 @@ export class TagService extends BaseService<TagEntity> {
   //----------------------Helpers-----------------------------
 
   private async existsByName(name: string): Promise<void> {
-    const exist = await (await this.execRepository).createQueryBuilder("tag").where("LOWER(tag.name) = LOWER(:name)", { name }).andWhere("tag.isActive = true").getExists();
+    const exist = await (await this.execRepository)
+      .createQueryBuilder("tag")
+      .where("LOWER(tag.name) = LOWER(:name)", { name })
+      .andWhere("tag.isActive = true")
+      .getExists();
     if (exist) throw new TagAlreadyExistException("Tag not found");
   }
-
 }
