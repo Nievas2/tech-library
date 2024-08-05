@@ -33,6 +33,7 @@ const AdminDashboardPage = () => {
   const [tags, setTags] = useState<Tag[]>([])
   const [loading, setLoading] = useState(true)
   const [state, setState] = useState("all")
+  const [disabled, setDisabled] = useState(false)
   const [filterError, setFilterError] = useState<string>("")
   const {
     currentPage,
@@ -70,6 +71,7 @@ const AdminDashboardPage = () => {
   }
 
   async function fethLibraries(state: string) {
+    setDisabled(true)
     try {
       const response = await getLibrariesByStateAdmin(
         state.toLocaleLowerCase(),
@@ -81,6 +83,8 @@ const AdminDashboardPage = () => {
       setTotalPages(response.data.total_pages)
     } catch (error) {
       setFilterError("No se encontraron librerias con este estado.")
+    }finally {
+      setDisabled(false)
     }
     if (list) setLoading(false)
   }
@@ -217,6 +221,7 @@ const AdminDashboardPage = () => {
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
+                  disabled={disabled}
                 />
               </div>
             </>

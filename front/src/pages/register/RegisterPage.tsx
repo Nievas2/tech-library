@@ -175,7 +175,7 @@ const RegisterPage = () => {
                   <Input
                     type="text"
                     name="username"
-                    placeholder="Sani"
+                    placeholder="Username"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.username}

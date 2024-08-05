@@ -91,7 +91,7 @@ const LoginPage = () => {
                   <Input
                     className="bg-light"
                     type="Username"
-                    placeholder="randomuser"
+                    placeholder="Username"
                     {...getFieldProps("username")}
                     disabled={loading}
                   />

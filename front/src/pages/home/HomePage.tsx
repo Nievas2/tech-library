@@ -22,6 +22,7 @@ const HomePage = () => {
   const [notFound, setNotFound] = useState(false)
   const [morePopular, setMorePopular] = useState(true)
   const [initialLoad, setInitialLoad] = useState(true)
+  const [disabled, setDisabled] = useState(false)
   const tags = useTagStore((state) => state.tags)
   const disableAllTags = useTagStore((state) => state.disableAllTags)
   const initialLoadTags = useTagStore((state) => state.initialLoadTags)
@@ -52,13 +53,13 @@ const HomePage = () => {
     setCurrentPage(currentPageParams)
   }, [currentPageParams])
   useEffect(() => {
-    if(tagsIdsParams.length === 0) disableAllTags()
-    
-  },[tagsIdsParams])
+    if (tagsIdsParams.length === 0) disableAllTags()
+  }, [tagsIdsParams])
   useEffect(() => {
     if (initialLoad) setLoading(true)
     const fetchLibraries = async () => {
       try {
+        setDisabled(true)
         let librariesResponse
         librariesResponse = await getLibrariesSearch(
           currentPageParams,
@@ -86,6 +87,8 @@ const HomePage = () => {
         }
         setTotalPages(1)
         setLoading(false)
+      } finally {
+        setDisabled(false)
       }
     }
     if (tags.length > 0) fetchLibraries()
@@ -203,6 +206,7 @@ const HomePage = () => {
               currentPage={currentPage!}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              disabled={disabled}
             />
           )}
         </div>

@@ -33,6 +33,7 @@ const UserDashboardPage = () => {
   const [loading, setLoading] = useState(false)
   const [state, setState] = useState("all")
   const [filterError, setFilterError] = useState<string>()
+  const [disabled, setDisabled] = useState(false)
   const {
     currentPage,
     totalPages,
@@ -42,6 +43,7 @@ const UserDashboardPage = () => {
   } = usePagination()
 
   async function getLibrary() {
+    setDisabled(true)
     try {
       const response = await getLibrariesUserDashboard(
         authUser!.user.id,
@@ -52,6 +54,8 @@ const UserDashboardPage = () => {
       setTotalPages(Math.ceil(response.total_pages))
     } catch (error) {
       setFilterError("Aún no has sugerido librerias...")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -204,6 +208,7 @@ const UserDashboardPage = () => {
                     currentPage={currentPage!}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
+                    disabled={disabled}
                   />
                 </div>
               </section>
