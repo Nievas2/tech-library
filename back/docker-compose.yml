@@ -13,6 +13,7 @@ services:
       MYSQL_ROOT_PASSWORD: 
     networks:
       - tech_library_network
+    restart: unless-stopped
 
   tech_library_app:
     container_name: tech_library_app
@@ -35,20 +36,20 @@ services:
       LENGUAGE: es
       DEFAULT_PAGE_SIZE: 9
       JWT_SECRET: 
-      ORIGIN: 
+      ORIGIN: http://localhost:5173
       GITHUB_CLIENT_ID: 
       GITHUB_CLIENT_SECRET: 
-      GITHUB_CALLBACK_URL: 
+      GITHUB_CALLBACK_URL: http://localhost:8000/api/auth/github/callback
       GOOGLE_CLIENT_ID: 
       GOOGLE_CLIENT_SECRET: 
-      GOOGLE_CALLBACK_URL: 
-      REDIRECT_URL: 
-
-    command: ["sh", "-c", "wait-port tech_library_db:3306 && npm run db:create && npm start"]
+      GOOGLE_CALLBACK_URL: http://localhost:8000/api/auth/google/callback
+      REDIRECT_URL: http://localhost:5173/login/auth
+    command: ["sh", "-c", "wait-port tech_library_db:3306 && npm start"]
+    restart: unless-stopped
 
 networks:
   tech_library_network:
     driver: bridge
 
 volumes:
-  tech_library_volume: 
+  tech_library_volume:

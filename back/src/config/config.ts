@@ -18,7 +18,10 @@ export abstract class ConfigServer {
   }
 
   public getEnvironment(key: string): string | undefined {
-    return process.env[key];
+    let value = process.env[key];
+    if (!value) {
+      return undefined;}
+    return value.trim();
   }
 
   public getNumberEnvironment(key: string): number {

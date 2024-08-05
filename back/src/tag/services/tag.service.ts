@@ -41,10 +41,11 @@ export class TagService extends BaseService<TagEntity> {
     const data = await this.findById(id);
     if (data === null) throw new TagNotFoundException("Tag not found");
 
-    if (tag.name && data.name !== tag.name) await this.existsByName(tag.name);
-
+    if (tag.name) {
+      if (id !== tag.id) await this.existsByName(tag.name)
+      data.name = tag.name
+    };
     if (tag.color) data.color = tag.color
-    if (tag.name) data.name = tag.name
     data.updatedAt = new Date();
 
     await (await this.execRepository).update(id, data);
