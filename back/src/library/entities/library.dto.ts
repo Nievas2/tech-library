@@ -17,8 +17,8 @@ export class LibraryCreateDTO extends BaseDTO {
   name!: string;
 
   @IsNotEmpty()
-  @Length(4, 255, {
-    message: "Description must be between 4 and 255 characters",
+  @Length(4, 1000, {
+    message: "Description must be between 4 and 1000 characters",
   })
   description!: string;
 
@@ -37,8 +37,8 @@ export class LibraryUpdateDTO extends BaseDTO {
   name!: string;
   @IsNotEmpty()
   @IsOptional()
-  @Length(4, 255, {
-    message: "Description must be between 4 and 255 characters",
+  @Length(4, 1000, {
+    message: "Description must be between 4 and 1000 characters",
   })
   description!: string;
 

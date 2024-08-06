@@ -35,6 +35,7 @@ class ServerBootstrap extends ConfigServer {
   constructor() {
     super();
 
+    this.app.set('trust proxy', true);
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
@@ -52,8 +53,10 @@ class ServerBootstrap extends ConfigServer {
     this.dbConnect();
     this.app.use("/api", limiter, this.routers());
 
+    // Middleware para limitar la cantidad de peticiones por minuto
+    this.app.use(limiter);
     // Middleware para manejar rutas no encontradas (404)
-    this.app.use((_req, res, ) => {
+    this.app.use( (_req, res, ) => {
       res.status(404).sendFile(path.join(__dirname, "public", "index.html"));
     });
 

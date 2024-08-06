@@ -33,7 +33,7 @@ export class LibraryEntity extends BaseEntity {
   @Column({ type: "varchar", length: 25, nullable: false })
   name!: string;
 
-  @Column({ type: "varchar", length: 255, nullable: false })
+  @Column({ type: "text", nullable: false })
   description!: string;
 
   @Column({ type: "varchar", length: 300, nullable: false })
