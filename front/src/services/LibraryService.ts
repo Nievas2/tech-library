@@ -216,3 +216,14 @@ export function putLibraryAdmin(
     throw error
   }
 }
+
+export function deletelibrary(libraryId: number) {
+  try {
+    const response = axiosInstance.delete(
+      `library/delete/temporal/${libraryId}`
+    )
+    return response
+  } catch (error) {
+    throw error
+  }
+}
