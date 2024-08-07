@@ -26,8 +26,10 @@ interface CardProps {
 const Card = ({ library }: CardProps) => {
   const { authUser } = useAuthContext();
   const [liked, setLiked] = useState(library.liked);
-  const favorites = useFavoriteStore((state) => state.favorites);
-  const isFavorite = favorites?.some((favorite) => favorite.id === library.id);
+  const favorites = useFavoriteStore((state) =>
+    state.favorites.find((fav) => fav.userId === authUser?.user.id)?.libraries || []
+  );
+  const isFavorite = favorites.some((fav) => fav.id === library.id);
   const [showAuthLikeModal, setShowAuthLikeModal] = useState(false);
   const [showAuthFavoriteModal, setShowAuthFavoriteModal] = useState(false);
 
@@ -46,9 +48,9 @@ const Card = ({ library }: CardProps) => {
     }
 
     if (isFavorite) {
-      deleteFavoriteLibrary(library.id);
+      deleteFavoriteLibrary(authUser.user.id, library.id);
     } else {
-      addFavoriteLibrary(library);
+      addFavoriteLibrary(authUser.user.id, library);
     }
   };
 

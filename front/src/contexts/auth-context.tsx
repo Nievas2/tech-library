@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { useFavoriteStore } from '@/stores';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface User {
   id       : string;
@@ -30,6 +31,15 @@ export const useAuthContext = (): AuthContextType => {
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const storedUser = localStorage.getItem("library-user");
   const [authUser, setAuthUser] = useState<AuthUser | null>(storedUser ? JSON.parse(storedUser) : null);
+
+  const { setUserFavorites } = useFavoriteStore();
+
+  useEffect(() => {
+    if (authUser) {
+      const storedFavorites = JSON.parse(localStorage.getItem(`favorites-${authUser.user.id}`) || '[]');
+      setUserFavorites(authUser.user.id, storedFavorites);
+    }
+  }, [authUser]);
 
   return (
     <AuthContext.Provider value={{ authUser, setAuthUser }}>

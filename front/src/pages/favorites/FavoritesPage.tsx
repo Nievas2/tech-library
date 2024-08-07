@@ -1,9 +1,13 @@
 import CardsContainer from "@/components/shared/CardsContainer"
+import { useAuthContext } from "@/contexts";
 import { useFavoriteStore } from "@/stores";
 import { motion } from "framer-motion";
 
 const FavoritesPage = () => {
-  const favorites = useFavoriteStore((state) => state.favorites)
+  const { authUser } = useAuthContext();
+  const favorites = useFavoriteStore((state) =>
+    state.favorites.find((fav) => fav.userId === authUser?.user.id)?.libraries || []
+  );
 
   return (
     <motion.div className="flex flex-col gap-6"
@@ -23,6 +27,5 @@ const FavoritesPage = () => {
     </motion.div>
   )
 }
-
 
 export default FavoritesPage

@@ -102,6 +102,7 @@ const AdminDashboardPage = () => {
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Elegir un estado" />
             </SelectTrigger>
+
             <SelectContent>
               <SelectGroup className="flex flex-col gap-1">
                 <SelectItem
@@ -114,6 +115,7 @@ const AdminDashboardPage = () => {
                 >
                   TODOS
                 </SelectItem>
+
                 <SelectItem
                   value="ACTIVE"
                   className={`${
@@ -124,6 +126,7 @@ const AdminDashboardPage = () => {
                 >
                   ACTIVOS
                 </SelectItem>
+
                 <SelectItem
                   value="PENDING"
                   className={`${
@@ -134,6 +137,7 @@ const AdminDashboardPage = () => {
                 >
                   PENDIENTES
                 </SelectItem>
+
                 <SelectItem
                   value="INACTIVE"
                   className={`${
@@ -147,6 +151,7 @@ const AdminDashboardPage = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
+
           <Dialog>
             <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex items-center">
               <Icon
@@ -156,6 +161,7 @@ const AdminDashboardPage = () => {
               />
               Agregar categoria
             </DialogTrigger>
+
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Agregar categoria</DialogTitle>
@@ -163,6 +169,7 @@ const AdminDashboardPage = () => {
               <ChangeTag tag={undefined} />
             </DialogContent>
           </Dialog>
+
           <Button
             className={`${showTags ? "bg-main dark:text-white" : ""} `}
             onClick={() => setShowTags(!showTags)}
@@ -181,19 +188,20 @@ const AdminDashboardPage = () => {
 
         <div className="flex justify-end">
           <div>
-             <Dialog>
-            <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
-              Agregar libreria
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Agregar libreria</DialogTitle>
-              </DialogHeader>
-              <FormAddLibrary card={undefined} />
-            </DialogContent>
-          </Dialog>
+            <Dialog>
+              <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
+                Agregar libreria
+              </DialogTrigger>
+
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Agregar libreria</DialogTitle>
+                </DialogHeader>
+
+                <FormAddLibrary card={undefined} />
+              </DialogContent>
+            </Dialog>
           </div>
-         
         </div>
       </div>
 
@@ -216,6 +224,7 @@ const AdminDashboardPage = () => {
                     />
                   ))}
               </section>
+
               <div className="flex justify-center">
                 <Pagination
                   currentPage={currentPage}
@@ -235,10 +244,12 @@ const AdminDashboardPage = () => {
                     <DialogTrigger className="px-4 py-1 rounded-md border border-main flex">
                       {tag.name}
                     </DialogTrigger>
+
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Actualizar tag</DialogTitle>
                       </DialogHeader>
+                      
                       <ChangeTag tag={tag} />
                     </DialogContent>
                   </Dialog>

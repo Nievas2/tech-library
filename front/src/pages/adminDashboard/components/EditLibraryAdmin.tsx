@@ -77,6 +77,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
       }
     }
   })
+
   async function putLibraryFunction(valuesDate: LibraryDtoAdmin) {
     try {
       const response = await putLibraryAdmin(valuesDate, card.id)
@@ -126,6 +127,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
     >
       <div className="grid w-full items-center gap-1.5">
         <Label htmlFor="name">Nombre</Label>
+
         <Input
           {...formik.getFieldProps("name")}
           type="text"
@@ -136,14 +138,17 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           maxLength={20}
           disabled={loading}
         />
+
         {formik.touched.name && formik.errors.name && (
           <small className="font-bold text-[#ff4444]">
             {formik.errors.name}
           </small>
         )}
       </div>
+
       <div className="grid w-full items-center gap-1.5">
         <Label>Link</Label>
+
         <Input
           type="text"
           placeholder="https://es.react.dev/"
@@ -152,27 +157,32 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           maxLength={200}
           disabled={loading}
         />
+
         {formik.touched.link && formik.errors.link && (
           <small className="font-bold text-[#ff4444]">
             {formik.errors.link}
           </small>
         )}
       </div>
+
       <div className="grid w-full items-center gap-1.5">
         <Label>Descripcion</Label>
+
         <Textarea
           {...formik.getFieldProps("description")}
           placeholder="Description"
           className="bg-light"
-          maxLength={200}
+          maxLength={600}
           disabled={loading}
         />
+
         {formik.touched.description && formik.errors.description && (
           <small className="font-bold text-[#ff4444]">
             {formik.errors.description}
           </small>
         )}
       </div>
+
       <div className="flex w-full items-center gap-1.5 justify-between">
         <Select
           onValueChange={(value) => addTag(value)}
@@ -181,6 +191,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Elegir una categoria" />
           </SelectTrigger>
+
           <SelectContent>
             <SelectGroup>
               {tags?.map((tag) => (
@@ -194,6 +205,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
             </SelectGroup>
           </SelectContent>
         </Select>
+
         <Select
           onValueChange={(value) => editState(value)}
           disabled={loading}
@@ -202,6 +214,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Elegir un estado" />
           </SelectTrigger>
+
           <SelectContent>
             <SelectGroup>
               <SelectItem value="ACTIVE">Active</SelectItem>
@@ -211,6 +224,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           </SelectContent>
         </Select>
       </div>
+
       <div className="flex flex-row flex-wrap gap-2 text-sm mt-1">
         {tagsAdded.map((tag, index) => (
           <div
@@ -218,6 +232,7 @@ export default function EditLibraryAdmin({ card }: CardProps) {
             className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
           >
             <h4>{tag.name}</h4>
+
             <button
               className="w-[16px]"
               onClick={() => removeTag(index)}
@@ -232,9 +247,11 @@ export default function EditLibraryAdmin({ card }: CardProps) {
           </div>
         ))}
       </div>
+
       <small className="text-[#FF0000]">
         {error ? "Add at least one tag" : ""}
       </small>
+
       <Button
         variant={"marketing"}
         className="p-1"
