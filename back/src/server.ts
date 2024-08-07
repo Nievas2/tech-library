@@ -31,11 +31,14 @@ import  limiter from "./config/rate.limiter";
 class ServerBootstrap extends ConfigServer {
   public app: express.Application = express();
   private port = this.getNumberEnvironment("PORT") || 3000;
+  private useProxy = this.getEnvironment("USE_PROXY") == "true" ? true : false;
 
   constructor() {
     super();
 
-    this.app.set('trust proxy', 'loopback 127.0.0.1');
+    if (this.useProxy) {
+      this.app.set("trust proxy", "loopback 127.0.0.1");
+    }
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 

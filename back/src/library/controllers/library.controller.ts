@@ -4,6 +4,7 @@ import { GlobalExceptionHandling } from "../../shared/exception/global.exception
 import { LibraryService } from "../services/library.service";
 import { getValidNumber } from "../../shared/utils/utils";
 import { PayloadToken } from "../../auth/interfaces/auth.interface";
+import { UnauthorizedException } from "../../shared/exception/unauthorized.exception";
 
 /**
  * @version 1.0.0
@@ -118,7 +119,6 @@ export class LibraryController {
       if (state) {
         stateQuery = state as string;
       }
-      
       const userAuth = req.user as PayloadToken;
       const data = await this.service.findyAllByUserId(
         id,
@@ -168,8 +168,11 @@ export class LibraryController {
       let arrayIds: number[] = [];
 
       if (tags) {
-        if (tags.length > 0 || tags !== "" && tags !== undefined) {
-          arrayIds = tags.split(",").map((id) => parseInt(id)).filter((id) => !isNaN(id));
+        if (tags.length > 0 || (tags !== "" && tags !== undefined)) {
+          arrayIds = tags
+            .split(",")
+            .map((id) => parseInt(id))
+            .filter((id) => !isNaN(id));
         }
       }
 
@@ -181,7 +184,7 @@ export class LibraryController {
         query,
         orderLike
       );
-      
+
       if (data.results.length === 0)
         return this.libraryHttpResponse.NotFound(res, data);
       return this.libraryHttpResponse.Ok(res, data);
@@ -195,6 +198,12 @@ export class LibraryController {
   public async createLibrary(req: Request, res: Response) {
     try {
       const idUsuario = Number(req.params.userid);
+      const user = req.user as PayloadToken;
+      if (idUsuario != Number(user.sub)) {
+        throw new UnauthorizedException(
+          `User with id ${user.sub} not dont have permission to create this library`
+        );
+      }
       const data = await this.service.create(req.body, idUsuario);
       return this.libraryHttpResponse.Created(res, data);
     } catch (error) {
@@ -207,6 +216,12 @@ export class LibraryController {
     try {
       const idUsuario = Number(req.params.userid);
       const idLibrary = Number(req.params.libraryid);
+      const user = req.user as PayloadToken;
+      if (idUsuario != Number(user.sub)) {
+        throw new UnauthorizedException(
+          `User with id ${user.sub} not dont have permission to like this library`
+        );
+      }
       const data = await this.service.addLikeInLibrary(idUsuario, idLibrary);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -220,6 +235,11 @@ export class LibraryController {
     try {
       const user = req.user as PayloadToken;
       const id = Number(req.params.id);
+      if (id != Number(user.sub)) {
+        throw new UnauthorizedException(
+          `User with id ${user.sub} not dont have permission to update this library`
+        );
+      }
       const data = await this.service.update(id, req.body, user);
       return this.libraryHttpResponse.Ok(res, data);
     } catch (error) {
@@ -264,7 +284,15 @@ export class LibraryController {
 
   public async unlikeLibrary(req: Request, res: Response) {
     try {
+      const userAuth = req.user as PayloadToken;
       const idUsuario = Number(req.params.userid);
+
+      if (idUsuario != Number(userAuth.sub)) {
+        throw new UnauthorizedException(
+           `User with id ${userAuth.sub} not dont have permission to unlike this library`
+        );
+      }
+
       const idLibrary = Number(req.params.libraryid);
       const data = await this.service.removeLikeInLibrary(idUsuario, idLibrary);
       return this.libraryHttpResponse.Ok(res, data);
