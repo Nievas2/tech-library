@@ -45,9 +45,7 @@ export class GlobalExceptionHandling {
     const errorHandler = this.errorHandlerMap.get(
       error.constructor as ExceptionConstructor<Error>
     );
-
-    console.log(error);
-    
+    console.log(`Error: ${error.message}`);
     if (errorHandler) {
       return errorHandler(res);
     }
