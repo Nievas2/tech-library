@@ -5,6 +5,7 @@ import { LibraryService } from "../services/library.service";
 import { getValidNumber } from "../../shared/utils/utils";
 import { PayloadToken } from "../../auth/interfaces/auth.interface";
 import { UnauthorizedException } from "../../shared/exception/unauthorized.exception";
+import { RoleType } from "../../user/entities/role";
 
 /**
  * @version 1.0.0
@@ -235,7 +236,7 @@ export class LibraryController {
     try {
       const user = req.user as PayloadToken;
       const id = Number(req.params.id);
-      if (id != Number(user.sub)) {
+      if (id != Number(user.sub) && user.role !== RoleType.ADMIN) {
         throw new UnauthorizedException(
           `User with id ${user.sub} not dont have permission to update this library`
         );
