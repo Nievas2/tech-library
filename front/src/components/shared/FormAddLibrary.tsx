@@ -142,6 +142,7 @@ export default function FormAddLibrary({ card }: CardProps) {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col w-full gap-2">
           <Label htmlFor="name">Nombre</Label>
+
           <Input
             type="text"
             placeholder="React"
@@ -150,6 +151,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             maxLength={20}
             disabled={loading}
           />
+
           {formik.touched.name && formik.errors.name && (
             <small className="font-bold text-[#ff4444]">
               {formik.errors.name}
@@ -159,6 +161,7 @@ export default function FormAddLibrary({ card }: CardProps) {
 
         <div className="flex flex-col w-full gap-2">
           <Label>Link</Label>
+          
           <Input
             type="text"
             placeholder="https://es.react.dev/"
@@ -167,6 +170,7 @@ export default function FormAddLibrary({ card }: CardProps) {
             maxLength={200}
             disabled={loading}
           />
+
           {formik.touched.link && formik.errors.link && (
             <small className="font-bold text-[#ff4444]">
               {formik.errors.link}
@@ -176,13 +180,15 @@ export default function FormAddLibrary({ card }: CardProps) {
 
         <div className="flex flex-col w-full gap-2">
           <Label>Descripcion</Label>
+
           <Textarea
             placeholder="Description"
             {...formik.getFieldProps("description")}
             className="bg-light"
-            maxLength={200}
+            maxLength={600}
             disabled={loading}
           />
+
           {formik.touched.description && formik.errors.description && (
             <small className="font-bold text-[#ff4444]">
               {formik.errors.description}
@@ -190,12 +196,12 @@ export default function FormAddLibrary({ card }: CardProps) {
           )}
         </div>
 
-        {/* <div className="flex flex-col w-full gap-2.5"> */}
         <div className={`flex flex-col w-full ${error ? 'gap-2' : 'gap-2.5'}`}>
           <Select onValueChange={addTag}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Elegir una categoria" />
             </SelectTrigger>
+
             <SelectContent>
               <SelectGroup>
                 {tags.map((tag) => (
@@ -219,6 +225,7 @@ export default function FormAddLibrary({ card }: CardProps) {
                   className="flex gap-1 px-2 py-1 rounded-lg font-extrabold text-stroke-dark dark:text-stroke-light border border-dark dark:border-light"
                 >
                   <h4>{tag.name}</h4>
+
                   <button
                     type="button"
                     onClick={() => removeTag(index)}

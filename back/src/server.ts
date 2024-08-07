@@ -35,7 +35,7 @@ class ServerBootstrap extends ConfigServer {
   constructor() {
     super();
 
-    this.app.set('trust proxy', true);
+    this.app.set('trust proxy', 'loopback 127.0.0.1');
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
