@@ -33,10 +33,11 @@ const Marketing = () => {
         >
           TechLibrary
         </motion.div>
+
         <motion.h1
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, transition: { duration: 0.35 }, y: 0 }}
-          className="font-bold text-3xl mt-3 sm:mx-0 md:text-6xl text-center mb-4"
+          className="font-bold text-3xl mt-3 sm:mx-0 md:text-6xl text-center"
           ref={el}
           style={{
             minHeight: "72px",
@@ -44,32 +45,35 @@ const Marketing = () => {
           }}
         ></motion.h1>
       </div>
+
       <motion.div
         initial={{ x: -100, opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 0.35 }, x: 0 }}
         className={cn(
-          "text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto"
+          "text-sm font-semibold md:text-xl mt-4 max-w-xs md:max-w-2xl text-center mx-auto"
         )}
       >
         Explora entre las librerías más populares y útiles para tus proyectos,
         además de herramientas que facilitarán tus tareas diarias.
       </motion.div>
+
       <motion.div
         initial={{ x: 100, opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 0.35 }, x: 0 }}
         className={cn(
-          "text-sm md:text-xl text-neutral-400 max-w-xs md:max-w-2xl text-center"
+          "text-sm font-semibold md:text-xl text-neutral-400 max-w-xs md:max-w-2xl text-center"
         )}
       >
         Con un rápido acceso hacia su documentación oficial.
       </motion.div>
+      
       <motion.div
         initial={{ opacity: 0, y: +100 }}
         animate={{ opacity: 1, transition: { duration: 0.35 }, y: 0 }}
       >
         <Button
           variant="marketing"
-          className="mt-6"
+          className="mt-6 text-base md:text-lg"
           size="lg"
           id="explore"
           aria-label="explore"

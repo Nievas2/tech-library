@@ -26,8 +26,8 @@ const StateCard = ({ card }: { card: Library }) => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-bold">{card.name}</h2>
+        <div className="flex justify-between gap-4">
+          <h2 className="text-2xl font-bold truncate">{card.name}</h2>
 
           <div
             className={`flex items-center gap-2 border ${

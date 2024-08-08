@@ -100,7 +100,7 @@ const UserDashboardPage = () => {
 
   return (
     <motion.div 
-      className="flex mx-auto max-w-[1240px] flex-col relative gap-6"
+      className="flex flex-col mx-auto max-w-[1240px] relative gap-6"
       initial={{ opacity: 0 }} 
       animate={{ opacity: 1 }} 
       exit={{ opacity: 0 }}
@@ -203,6 +203,7 @@ const UserDashboardPage = () => {
                     />
                   ))}
                 </section>
+                
                 <div className="flex justify-center">
                   <Pagination
                     currentPage={currentPage!}
