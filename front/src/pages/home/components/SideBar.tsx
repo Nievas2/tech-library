@@ -133,7 +133,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
           >
             <h2 className="text-xl font-bold">CATEGORIAS</h2>
 
-            <div className="w-full flex h-8 border rounded-md">
+            <div className="w-full h-8 border rounded-md hidden md:flex">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
