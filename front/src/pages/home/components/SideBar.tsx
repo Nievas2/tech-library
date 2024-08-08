@@ -24,17 +24,17 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
   const [value] = useDebounce(text, 350);
   const { searchParams } = usePaginationHome();
 
-  useEffect(() => {
-    const handleResize = () => {
-      setOpen(window.innerWidth > 1024)
-    }
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setOpen(window.innerWidth > 1024)
+  //   }
 
-    window.addEventListener("resize", handleResize)
+  //   window.addEventListener("resize", handleResize)
 
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [])
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize)
+  //   }
+  // }, [])
 
   const fetchTags = async () => {
     try {
@@ -133,7 +133,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
           >
             <h2 className="text-xl font-bold">CATEGORIAS</h2>
 
-            <div className="w-full h-8 border rounded-md hidden md:flex">
+            <div className="w-full h-8 border rounded-md flex">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
