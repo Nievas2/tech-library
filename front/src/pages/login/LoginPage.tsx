@@ -8,7 +8,6 @@ import { loginSchema } from "@/utils"
 import { Login } from "@/services/AuthService"
 import useLogin from "@/hooks/useLogin"
 import { useState } from "react"
-import cofeeLogo from "../../assets/images/cofeeLogo.svg"
 import { motion } from "framer-motion"
 
 
@@ -63,19 +62,7 @@ const LoginPage = () => {
         onSubmit={handleSubmit}
         noValidate
       >
-        <div className="flex flex-col gap-5 items-center justify-center px-4 py-4 mx-auto">
-          <div
-            className="flex flex-row gap-3 items-center justify-center text-2xl font-semibold"
-          >
-            <img
-              className="w-12 h-12"
-              src={cofeeLogo}
-              alt="Techlibrary logo"
-            />
-            
-            <p className="leading-none mt-2" translate="no">TechLibrary</p>
-          </div>
-
+        <div className="flex flex-col gap-5 items-center justify-center px-4 py-7 mx-auto">
           <div className="w-full sm:w-96 bg-main/20 rounded-lg shadow p-6 sm:p-8 flex flex-col gap-3">
             <div className="flex flex-col gap-4 md:gap-6">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"

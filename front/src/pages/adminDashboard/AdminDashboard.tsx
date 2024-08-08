@@ -26,6 +26,7 @@ import { Tag } from "@/interfaces/Tag"
 import { Pagination } from "@/components/shared/Pagination"
 import usePagination from "@/hooks/usePagination"
 import { renderSkeletonsAdminDashboard } from "./skeletons/SkeletonAdminDashboard"
+import { motion } from "framer-motion";
 
 const AdminDashboardPage = () => {
   const [list, setList] = useState<Library[]>()
@@ -72,6 +73,7 @@ const AdminDashboardPage = () => {
 
   async function fethLibraries(state: string) {
     setDisabled(true)
+    
     try {
       const response = await getLibrariesByStateAdmin(
         state.toLocaleLowerCase(),
@@ -86,20 +88,27 @@ const AdminDashboardPage = () => {
     }finally {
       setDisabled(false)
     }
+    
     if (list) setLoading(false)
   }
 
   return (
-    <div className="flex flex-1 flex-col relative max-w-[1240px] gap-6">
+    <motion.div 
+      className="flex flex-col mx-auto max-w-[1240px] relative gap-6"
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+    >
       <h1 className="text-3xl font-bold text-center">Panel administrativo</h1>
 
-      <div className="flex flex-wrap py-2 gap-1">
-        <div className="flex flex-1 gap-4 flex-wrap">
+      <div className="flex justify-between py-2 min-w-[300px] sm:min-w-[608px] md:min-w-[736px] lg:min-w-[992px] xl:min-w-[1240px]">
+        <div className="flex flex-1 flex-col md:flex-row gap-4 justify-center items-center">
           <Select
             defaultValue="ALL"
             onValueChange={handleChangeSelect}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] md:w-[257.35px]">
               <SelectValue placeholder="Elegir un estado" />
             </SelectTrigger>
 
@@ -152,44 +161,34 @@ const AdminDashboardPage = () => {
             </SelectContent>
           </Select>
 
-          <Dialog>
-            <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex items-center">
-              <Icon
-                icon="material-symbols:add"
-                width="16"
-                height="16"
-              />
-              Agregar categoria
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Agregar categoria</DialogTitle>
-              </DialogHeader>
-              <ChangeTag tag={undefined} />
-            </DialogContent>
-          </Dialog>
-
-          <Button
-            className={`${showTags ? "bg-main dark:text-white" : ""} `}
-            onClick={() => setShowTags(!showTags)}
-            id="show-tags"
-            aria-label="Show tags"
-            role="button"
-          >
-            <Icon
-              icon="mdi:tag-outline"
-              width="20"
-              height="20"
-              color={`${showTags ? "white" : ""} `}
-            />
-          </Button>
-        </div>
-
-        <div className="flex justify-end">
           <div>
             <Dialog>
-              <DialogTrigger className="text-light dark:text-dark bg-dark dark:bg-light p-2 rounded-md flex">
+              <DialogTrigger className="text-light font-medium bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] py-2 px-4 rounded-md transition-colors duration-150 flex flex-row items-center gap-1 truncate">
+                <Icon
+                  icon="material-symbols:add"
+                  width="18"
+                  height="18"
+                />
+                Agregar categoria
+              </DialogTrigger>
+
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Agregar categoria</DialogTitle>
+                </DialogHeader>
+                <ChangeTag tag={undefined} />
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          <div className="flex flex-row md:flex-row-reverse gap-4 justify-center w-full md:justify-between md:gap-0">
+            <Dialog>
+              <DialogTrigger className="text-light font-medium bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] py-2 px-4 rounded-md transition-colors duration-150 flex flex-row items-center gap-1">
+                <Icon
+                  icon="material-symbols:add"
+                  width="18"
+                  height="18"
+                />
                 Agregar libreria
               </DialogTrigger>
 
@@ -201,6 +200,22 @@ const AdminDashboardPage = () => {
                 <FormAddLibrary card={undefined} />
               </DialogContent>
             </Dialog>
+
+            <Button
+              className={`${showTags ? "bg-dark hover:bg-dark/80 dark:bg-light dark:hover:bg-light/90" : "bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D]"} `}
+              onClick={() => setShowTags(!showTags)}
+              id="show-tags"
+              aria-label="Show tags"
+              role="button"
+              variant="popular"
+            >
+              <Icon
+                icon="mdi:tag-outline"
+                width="20"
+                height="20"
+                className={`${showTags ? "text-light dark:text-dark" : "text-light dark:text-light"} `}
+              />
+            </Button>
           </div>
         </div>
       </div>
@@ -214,7 +229,7 @@ const AdminDashboardPage = () => {
               <span className=" text-2xl font-bold">{filterError}</span>
             </div>
           ) : (
-            <>
+            <section className="flex flex-col gap-6">
               <section className="mx-auto max-w-[1240px] grid sm:grid-cols-2 lg:grid-cols-3 justify-center gap-5">
                 {list &&
                   list?.map((card) => (
@@ -233,7 +248,7 @@ const AdminDashboardPage = () => {
                   disabled={disabled}
                 />
               </div>
-            </>
+            </section>
           )}
 
           {showTags && (
@@ -259,7 +274,7 @@ const AdminDashboardPage = () => {
           )}
         </>
       )}
-    </div>
+    </motion.div>
   )
 }
 

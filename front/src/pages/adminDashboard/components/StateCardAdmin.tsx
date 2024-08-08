@@ -13,6 +13,8 @@ import { formatGoogleUsername } from "@/utils/formatGoogleUsername"
 import { formatDate } from "@/utils"
 import { Button } from "@/components/ui/button"
 import { deletelibrary } from "@/services/LibraryService"
+import { motion } from "framer-motion"
+
 const StateCardAdmin = ({ card }: { card: Library }) => {
   async function handleDelete() {
     try {
@@ -22,11 +24,24 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
       return
     }
   }
+
   return (
-    <div className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4 min-w-[300px] sm:min-w-[300px] md:min-w-[320px]">
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-bold">{card.name}</h2>
+    <motion.div 
+      className="flex bg-main/15 flex-col justify-between border border-dark dark:border-light rounded-md shadow-xl p-4 min-w-[300px] sm:min-w-[300px] md:min-w-[320px]"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.35 }}
+    >
+      <motion.div 
+        className="flex flex-1 flex-col gap-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex justify-between gap-4">
+          <h2 className="text-2xl font-bold truncate">{card.name}</h2>
           <div
             className={`flex items-center gap-2 border ${
               card.state === "ACTIVE"
@@ -61,7 +76,8 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
         </div>
 
         <p className="text-base line-clamp-3">{card.description}</p>
-      </div>
+      </motion.div>
+
       <div className="flex items-center justify-between mt-4 gap-2">
         <Dialog>
           <DialogTrigger className="flex-grow flex flex-row gap-2 justify-center items-center cursor-pointe bg-main hover:bg-[#F84F9A] hover:dark:bg-[#C9216D] transition-colors duration-150 text-light py-2 rounded-sm">
@@ -81,7 +97,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
           </DialogContent>
         </Dialog>
         <Dialog>
-          <DialogTrigger className="bg-[#6e0202] focus:bg-[#ff284cbf] focus:dark:bg-[#ff284cbf] hover:bg-[#ff284cbf] hover:dark:bg-[#ff284cbf] focus:text-light text-base cursor-pointer duration-150 text-light p-2 px-4 rounded-sm">
+          <DialogTrigger className="bg-[#ff284ceb] hover:bg-[#ff284cbf] hover:dark:bg-[#ff284ca8] focus:text-light text-base cursor-pointer duration-150 text-light p-2 px-4 rounded-sm">
             <Icon
               icon="mdi:trash"
               width="20"
@@ -111,6 +127,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
           </DialogContent>
         </Dialog>
       </div>
+      
       <div className="flex items-end justify-end w-full mt-4">
         <small className="text-dark dark:text-light font-medium">
           Sugerido por{" "}
@@ -120,7 +137,7 @@ const StateCardAdmin = ({ card }: { card: Library }) => {
           el {formatDate(card.createdAt)}
         </small>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
