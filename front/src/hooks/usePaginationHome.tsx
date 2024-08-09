@@ -98,7 +98,8 @@ const usePaginationHome = () => {
     handleSearch,
     searchParams,
     sincronizeParams,
-    setCurrentPage
+    setCurrentPage,
+    setSearchParams
   }
 }
 
