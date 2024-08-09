@@ -162,6 +162,11 @@ export class LibraryController {
     try {
       const { currentPage, pageSize } = this.getParams(req);
       const idUsuario = Number(req.params.userid);
+
+      if (isNaN(idUsuario) || idUsuario == undefined) {
+        return this.libraryHttpResponse.BadRequest(res, "INVALID_ID");
+      }
+
       const query = req.query.q as string;
       const orderLike = req.query.like as string;
 
@@ -290,7 +295,7 @@ export class LibraryController {
 
       if (idUsuario != Number(userAuth.sub)) {
         throw new UnauthorizedException(
-           `User with id ${userAuth.sub} not dont have permission to unlike this library`
+          `User with id ${userAuth.sub} not dont have permission to unlike this library`
         );
       }
 
