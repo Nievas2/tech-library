@@ -120,15 +120,13 @@ const HomePage = () => {
       setInitialLoad(false) // Marcar que ya se ha completado la carga inicial
     }
   }, [searchParamsData, tags])
-
   useEffect(() => {
     const firstTimeStorage = localStorage.getItem("firstTime")
     if (firstTimeStorage === null) {
-      localStorage.setItem("firstTime", "true")
-    }
-    if (firstTimeStorage === "true") {
       localStorage.setItem("firstTime", "false")
       setfirstTime(true)
+    } else {
+      setfirstTime(false)
     }
   }, [])
   return (
@@ -183,7 +181,10 @@ const HomePage = () => {
                           </Button>
                         </motion.div>
 
-                        <Dialog defaultOpen={firstTime}>
+                        <Dialog
+                          defaultOpen={firstTime}
+                          onOpenChange={setfirstTime}
+                        >
                           <DialogTrigger className="text-light font-medium  py-2 px-4 rounded-md transition-colors duration-150 flex flex-row items-center gap-1">
                             Sugerir libreria
                           </DialogTrigger>
@@ -191,7 +192,7 @@ const HomePage = () => {
                           <DialogContent>
                             <DialogHeader className="flex flex-col gap-4">
                               <DialogTitle className="text-2xl font-bold leading-none">
-                                Sugerir libreria
+                                Sugerir libreria {firstTime}
                               </DialogTitle>
                               <div className="flex flex-col gap-4">
                                 <span className="text-lg text-left font-semibold">
