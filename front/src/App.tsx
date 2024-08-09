@@ -20,7 +20,7 @@ function App() {
   const { authUser } = useAuthContext();
 
   return (
-    <main className="bg-light dark:bg-dark text-dark dark:text-light">
+    <main className="bg-light dark:bg-dark text-dark dark:text-light scrollable">
       <section className="w-full font-poppins flex flex-col justify-center items-center min-h-screen">
         <Navbar />
 

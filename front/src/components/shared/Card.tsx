@@ -85,7 +85,7 @@ const Card = ({ library }: CardProps) => {
 
   return (
     <motion.div 
-      className="flex bg-main/15 flex-col justify-between gap-6 border border-dark dark:border-light rounded-md shadow-xl p-4"
+      className="flex bg-main/15 flex-col justify-between gap-6 rounded-md shadow-xl p-4"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
