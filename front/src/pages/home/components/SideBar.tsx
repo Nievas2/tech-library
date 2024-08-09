@@ -65,7 +65,6 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
   function handleChangeSelect(value: string) {
     if (value.length === 0) {
       setTags(originalTags)
-      //setTagsActives(true);
     } else {
       const tagsFiltered = originalTags.filter((tag: Tag) => {
         if (tag.name.toLowerCase().includes(value.toLowerCase())) {

@@ -1,3 +1,10 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog"
 import CardsContainer from "@/components/shared/CardsContainer"
 import SideBar from "./components/SideBar"
 import SearchBar from "./components/SearchBar"
@@ -13,6 +20,7 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import { renderSkeletonHome } from "./skeletons/SkeletonHome"
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
 
 const HomePage = () => {
   const [libraries, setLibraries] = useState<Library[]>([])
@@ -22,6 +30,7 @@ const HomePage = () => {
   const [notFound, setNotFound] = useState(false)
   const [morePopular, setMorePopular] = useState(true)
   const [initialLoad, setInitialLoad] = useState(true)
+  const [firstTime, setfirstTime] = useState(false)
   const [disabled, setDisabled] = useState(false)
   const tags = useTagStore((state) => state.tags)
   const disableAllTags = useTagStore((state) => state.disableAllTags)
@@ -49,12 +58,15 @@ const HomePage = () => {
       setCurrentPage(1)
     }
   }, [searchParamsData])
+
   useEffect(() => {
     setCurrentPage(currentPageParams)
   }, [currentPageParams])
+
   useEffect(() => {
     if (tagsIdsParams.length === 0) disableAllTags()
   }, [tagsIdsParams])
+
   useEffect(() => {
     if (initialLoad) setLoading(true)
     const fetchLibraries = async () => {
@@ -108,6 +120,17 @@ const HomePage = () => {
       setInitialLoad(false) // Marcar que ya se ha completado la carga inicial
     }
   }, [searchParamsData, tags])
+
+  useEffect(() => {
+    const firstTimeStorage = localStorage.getItem("firstTime")
+    if (firstTimeStorage === null) {
+      localStorage.setItem("firstTime", "true")
+    }
+    if (firstTimeStorage === "true") {
+      localStorage.setItem("firstTime", "false")
+      setfirstTime(true)
+    }
+  }, [])
   return (
     <>
       <motion.section
@@ -138,27 +161,61 @@ const HomePage = () => {
                     </>
                   ) : (
                     <>
-                      <motion.div whileTap={{ scale: 1.2 }}>
-                        <Button
-                          variant="popular"
-                          size="popularSize"
-                          onClick={() => setMorePopular(!morePopular)}
-                          id="popular"
-                          aria-label="popular"
-                          role="button"
-                        >
-                          <Icon
-                            icon="uil:arrow-up"
-                            width="24"
-                            height="24"
-                            className={`${
-                              morePopular ? "rotate-180" : ""
-                            } transition-transform duration-100`}
-                          />
-                          Más populares
-                        </Button>
-                      </motion.div>
+                      <div className="flex gap-4">
+                        <motion.div whileTap={{ scale: 1.2 }}>
+                          <Button
+                            variant="popular"
+                            size="popularSize"
+                            onClick={() => setMorePopular(!morePopular)}
+                            id="popular"
+                            aria-label="popular"
+                            role="button"
+                          >
+                            <Icon
+                              icon="uil:arrow-up"
+                              width="24"
+                              height="24"
+                              className={`${
+                                morePopular ? "rotate-180" : ""
+                              } transition-transform duration-100`}
+                            />
+                            Más populares
+                          </Button>
+                        </motion.div>
 
+                        <Dialog defaultOpen={firstTime}>
+                          <DialogTrigger className="text-light font-medium  py-2 px-4 rounded-md transition-colors duration-150 flex flex-row items-center gap-1">
+                            Sugerir libreria
+                          </DialogTrigger>
+
+                          <DialogContent>
+                            <DialogHeader className="flex flex-col gap-4">
+                              <DialogTitle className="text-2xl font-bold leading-none">
+                                Sugerir libreria
+                              </DialogTitle>
+                              <div className="flex flex-col gap-4">
+                                <span className="text-lg text-left font-semibold">
+                                  Te recordamos que podes sugerir librerias para
+                                  implementar en la web.
+                                </span>
+                                <p className="text-base text-left">
+                                  Ingrese en el siguiente link, presione donde
+                                  dice sugerir y complete los datos.
+                                </p>
+                                <p className="text-base text-left">
+                                  Si tu suguerencia es valida sera aceptada por
+                                  los administradores.
+                                </p>
+                                <Button variant={"directLink"}>
+                                  <Link to="/user-dashboard">
+                                    Ir a mi perfil
+                                  </Link>
+                                </Button>
+                              </div>
+                            </DialogHeader>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                       <p className="text-main text-sm text-center cp:text-right">
                         ({totalLibraries}){" "}
                         <span className="text-dark dark:text-light">
