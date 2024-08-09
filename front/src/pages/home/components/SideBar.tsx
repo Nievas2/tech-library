@@ -24,18 +24,6 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
   const [value] = useDebounce(text, 350);
   const { searchParams } = usePaginationHome();
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setOpen(window.innerWidth > 1024)
-  //   }
-
-  //   window.addEventListener("resize", handleResize)
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize)
-  //   }
-  // }, [])
-
   const fetchTags = async () => {
     try {
       const response = await getTagsApi()
@@ -89,7 +77,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35 }}
-      className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static border-l-[1px] border-r-[1px] border-dark dark:border-light bg-[#F9D8DF] dark:bg-[#311421] ${open ? "w-60" : "w-0 border-none"}`}
+      className={`min-h-full transition-width z-40 duration-300 ease-out fixed lg:static  bg-[#F9D8DF] dark:bg-[#311421] ${open ? "w-60 border-r-[1px] border-dark dark:border-light lg:border-none" : "w-0 border-none"}`}
     >
       <div className="w-full h-full relative">
         <motion.div
