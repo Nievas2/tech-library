@@ -16,6 +16,7 @@ const SkeletonCard = () => {
           ))}
         </div>
       </div>
+      
       <div className="flex flex-col gap-4">
         <div className="flex flex-row gap-4 justify-start items-center">
           <Skeleton className="h-10 w-full sm:w-3/4 rounded-md" />

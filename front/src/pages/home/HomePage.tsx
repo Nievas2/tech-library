@@ -69,6 +69,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (initialLoad) setLoading(true)
+
     const fetchLibraries = async () => {
       try {
         setDisabled(true)
@@ -87,6 +88,10 @@ const HomePage = () => {
         setTotalPages(totalPages)
         setTotalLibraries(totalLibraries)
         setLoading(false)
+
+
+
+
         setNotFound(false)
         setInitialLoadTags(false)
       } catch (err) {
@@ -120,6 +125,7 @@ const HomePage = () => {
       setInitialLoad(false) // Marcar que ya se ha completado la carga inicial
     }
   }, [searchParamsData, tags])
+
   useEffect(() => {
     const firstTimeStorage = localStorage.getItem("firstTime")
     if (firstTimeStorage === null) {
@@ -129,6 +135,7 @@ const HomePage = () => {
       setfirstTime(false)
     }
   }, [])
+
   return (
     <>
       <motion.section
@@ -153,14 +160,23 @@ const HomePage = () => {
               {notFound ? null : (
                 <>
                   {loading ? (
-                    <>
-                      <Skeleton className="h-5 w-[140px] mb-2" />
-                      <Skeleton className="h-10 w-[100px] mb-2 cp:h-5 cp:w-[147px]" />
-                    </>
+                    <div className="flex flex-row w-full justify-between">
+                      <div className="flex flex-row gap-7">
+                        <Skeleton className="h-5 w-[140px] my-2" />
+                        <Skeleton className="h-5 w-[140px] my-2" />
+                      </div>
+                      <Skeleton className="h-10 w-[100px] my-2 cp:h-5 cp:w-[147px]" />
+                    </div>
                   ) : (
                     <>
                       <div className="flex gap-4">
-                        <motion.div whileTap={{ scale: 1.2 }}>
+                        <motion.div 
+                          whileTap={{ scale: 1.2 }}
+                          initial={{ opacity: 0, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.35 }}
+                        >
                           <Button
                             variant="popular"
                             size="popularSize"
@@ -168,6 +184,7 @@ const HomePage = () => {
                             id="popular"
                             aria-label="popular"
                             role="button"
+                            className="py-2 px-2 hover:underline hover:text-main hover:dark:text-main transition-colors duration-150"
                           >
                             <Icon
                               icon="uil:arrow-up"
@@ -185,44 +202,61 @@ const HomePage = () => {
                           defaultOpen={firstTime}
                           onOpenChange={setfirstTime}
                         >
-                          <DialogTrigger className="text-light font-medium  py-2 px-4 rounded-md transition-colors duration-150 flex flex-row items-center gap-1">
-                            Sugerir libreria
-                          </DialogTrigger>
+                          <motion.div 
+                            className="flex"
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.35 }}
+                          >
+                            <DialogTrigger 
+                              className="text-dark text-sm dark:text-light font-medium py-2 px-2 rounded-md hover:underline hover:text-main hover:dark:text-main transition-colors duration-150"
+                            >
+                              Sugerir librería
+                            </DialogTrigger>
+                          </motion.div>
 
                           <DialogContent>
-                            <DialogHeader className="flex flex-col gap-4">
+                            <DialogHeader className="flex flex-col gap-8">
                               <DialogTitle className="text-2xl font-bold leading-none">
-                                Sugerir libreria {firstTime}
+                                Sugerir librería {firstTime}
                               </DialogTitle>
-                              <div className="flex flex-col gap-4">
+                              <div className="flex flex-col gap-2">
                                 <span className="text-lg text-left font-semibold">
-                                  Te recordamos que podes sugerir librerias para
-                                  implementar en la web.
+                                  Te recordamos que podés sugerir librerías para implementar en la web.
                                 </span>
                                 <p className="text-base text-left">
-                                  Ingrese en el siguiente link, presione donde
-                                  dice sugerir y complete los datos.
+                                  Ingresá en el siguiente enlace, presiona donde dice "sugerir" y completa los datos.
                                 </p>
                                 <p className="text-base text-left">
-                                  Si tu suguerencia es valida sera aceptada por
-                                  los administradores.
+                                  Si tu sugerencia es válida, será aceptada por los administradores.
                                 </p>
-                                <Button variant={"directLink"}>
-                                  <Link to="/user-dashboard">
-                                    Ir a mi perfil
-                                  </Link>
-                                </Button>
                               </div>
+                              <Link to="/user-dashboard" className="w-full">
+                                <Button
+                                  variant={"marketing"}
+                                  type="button"
+                                  className="w-full p-1"
+                                >
+                                  Ir a mi perfil
+                                </Button>
+                              </Link>
                             </DialogHeader>
                           </DialogContent>
                         </Dialog>
                       </div>
-                      <p className="text-main text-sm text-center cp:text-right">
+                      <motion.p 
+                        className="text-main text-sm text-center cp:text-right flex flex-row gap-1"
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35 }}
+                      >
                         ({totalLibraries}){" "}
-                        <span className="text-dark dark:text-light">
-                          total de librerías
-                        </span>
-                      </p>
+                        <div className="text-dark dark:text-light">
+                          Total de librerías
+                        </div>
+                      </motion.p>
                     </>
                   )}
                 </>
