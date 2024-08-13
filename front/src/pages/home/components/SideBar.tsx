@@ -179,7 +179,13 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
               </motion.div>
             </div>
             {tagsActives && (
-              <div className="flex">
+              <motion.div 
+                className="flex"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+              >
                 <Button
                   variant="directLink"
                   className="px-1 py-3 justify-start h-0 gap-1"
@@ -192,7 +198,7 @@ export default function SideBar({ open, setOpen }: SideBarProps) {
                   />
                   Eliminar filtros
                 </Button>
-              </div>
+              </motion.div>
             )}
             <ul className="flex flex-col gap-1 overflow-y-scroll overflow-x-hidden scroll-smooth h-[400px]">
               {loading ? (

@@ -156,7 +156,7 @@ const HomePage = () => {
           <div className="flex flex-col gap-3 justify-center">
             <SearchBar />
 
-            <div className="flex justify-between items-center gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
               {notFound ? null : (
                 <>
                   {loading ? (
@@ -169,7 +169,7 @@ const HomePage = () => {
                     </div>
                   ) : (
                     <>
-                      <div className="flex gap-4">
+                      <div className="flex gap-4 items-center">
                         <motion.div 
                           whileTap={{ scale: 1.2 }}
                           initial={{ opacity: 0, x: 10 }}
@@ -245,18 +245,17 @@ const HomePage = () => {
                           </DialogContent>
                         </Dialog>
                       </div>
-                      <motion.p 
-                        className="text-main text-sm text-center cp:text-right flex flex-row gap-1"
+
+                      <motion.div 
+                        className="text-sm text-right text-dark dark:text-light flex justify-end gap-1"
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.35 }}
                       >
-                        ({totalLibraries}){" "}
-                        <div className="text-dark dark:text-light">
-                          Total de librerías
-                        </div>
-                      </motion.p>
+                        <p className="text-main">({totalLibraries})</p>
+                        Total de librerías
+                      </motion.div>
                     </>
                   )}
                 </>
