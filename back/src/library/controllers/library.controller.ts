@@ -113,6 +113,12 @@ export class LibraryController {
   public async getLibrarysByUser(req: Request, res: Response) {
     try {
       const id = Number(req.params.userid);
+      const userAuth = req.user as PayloadToken;
+      if (id != Number(userAuth.sub) || id === undefined) {
+        throw new UnauthorizedException(
+          `You dont have permission to see this results`
+        );
+      }
       const { currentPage, pageSize } = this.getParams(req);
       const { state } = req.query;
       let stateQuery!: string | undefined;
@@ -120,7 +126,6 @@ export class LibraryController {
       if (state) {
         stateQuery = state as string;
       }
-      const userAuth = req.user as PayloadToken;
       const data = await this.service.findyAllByUserId(
         id,
         currentPage,
