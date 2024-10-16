@@ -39,9 +39,9 @@ const LoginPage = () => {
     }
   }
 
-  function loginGoogle() {
+ /*  function loginGoogle() {
     window.open(`${import.meta.env.VITE_API_URL}/login/google`, "_self")
-  }
+  } */
   
   function loginGithub() {
     window.open(
@@ -148,7 +148,7 @@ const LoginPage = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <button
+                   {/*  <button
                       className="px-5 py-2.5 border flex justify-center items-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
                       type="button"
                       onClick={loginGoogle}
@@ -158,7 +158,7 @@ const LoginPage = () => {
                         icon="logos:google-icon"
                       />
                       <span className="text-sm">Continuar con Google</span>
-                    </button>
+                    </button> */}
 
                     <button
                       className="px-5 py-2.5 border flex justify-center gap-2 border-main/40 hover:bg-main/20 transition-colors duration-150 rounded-lg w-full "
